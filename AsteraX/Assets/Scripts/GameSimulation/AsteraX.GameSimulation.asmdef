@@ -1,0 +1,21 @@
+{
+    "name": "AsteraX.GameSimulation",
+    "rootNamespace": "AsteraX.GameSimulation",
+    "references": [
+        "GUID:127be14384db49b28d9405d369eb5d0a",
+        "GUID:1e5a2659f74345b1888dbda21eb5ea78",
+        "GUID:7940848a1f8443b595722245c1f55fe0",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:3d2092a5764e5f544bda868bbd5e023d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

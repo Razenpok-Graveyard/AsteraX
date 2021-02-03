@@ -1,0 +1,17 @@
+{
+    "name": "AsteraX.UI",
+    "rootNamespace": "AsteraX.UI",
+    "references": [
+        "GUID:127be14384db49b28d9405d369eb5d0a",
+        "GUID:1e5a2659f74345b1888dbda21eb5ea78"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,14 @@
+{
+    "name": "AsteraX.Mediator",
+    "rootNamespace": "AsteraX.Mediator",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

@@ -1,0 +1,21 @@
+{
+    "name": "AsteraX.Infrastructure",
+    "rootNamespace": "AsteraX.Infrastructure",
+    "references": [
+        "GUID:127be14384db49b28d9405d369eb5d0a",
+        "GUID:4d48a74ff4004a14a70684d4234d1e55",
+        "GUID:1e5a2659f74345b1888dbda21eb5ea78",
+        "GUID:7940848a1f8443b595722245c1f55fe0",
+        "GUID:556c7d8af8f7452980236e36aa132d65",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
