@@ -1,6 +1,6 @@
 {
-    "name": "AsteraX.Mediator",
-    "rootNamespace": "AsteraX.Mediator",
+    "name": "MediatR",
+    "rootNamespace": "MediatR",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

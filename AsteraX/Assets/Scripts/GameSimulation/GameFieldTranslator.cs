@@ -1,12 +1,14 @@
-﻿using AsteraX.GameSimulation.Commands;
-using AsteraX.Mediator.Assets.Scripts;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AsteraX.GameSimulation.Commands;
+using MediatR;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation
 {
     public class GameFieldTranslator : MonoBehaviour, IRequestHandler<TranslateGameFieldObjectCommand>
     {
-        public void Handle(TranslateGameFieldObjectCommand command)
+        public Task<Unit> Handle(TranslateGameFieldObjectCommand command, CancellationToken cancellationToken)
         {
             var go = command.GameObject;
             go.transform.Translate(command.Translation);
@@ -14,6 +16,7 @@ namespace AsteraX.GameSimulation
             var position = go.transform.position;
             position.z = 0;
             go.transform.position = position;
+            return Unit.Task;
         }
 
         private void OnTriggerExit(Collider other)

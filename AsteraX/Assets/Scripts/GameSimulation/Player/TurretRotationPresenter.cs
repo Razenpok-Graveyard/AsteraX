@@ -1,6 +1,7 @@
-﻿using AsteraX.GameSimulation.Commands;
-using AsteraX.Mediator.Assets.Scripts;
-using JetBrains.Annotations;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AsteraX.GameSimulation.Commands;
+using MediatR;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation.Player
@@ -16,11 +17,11 @@ namespace AsteraX.GameSimulation.Player
             _mainCamera = Camera.main;
         }
 
-        public void Handle([NotNull] RotateShipCommand command)
+        public Task<Unit> Handle(RotateShipCommand command, CancellationToken cancellationToken)
         {
             if (!isActiveAndEnabled)
             {
-                return;
+                return Unit.Task;
             }
 
             var positionOnScreen = _mainCamera.WorldToViewportPoint(_turret.position);
@@ -28,6 +29,7 @@ namespace AsteraX.GameSimulation.Player
             var rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
             // Offset because of model
             _turret.rotation = rotation * Quaternion.Euler(0, 0, 90);
+            return Unit.Task;
         }
 
         private static float AngleBetweenPoints(Vector2 a, Vector2 b)

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using MediatR;
+using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class MoveShipCommand
+    public class MoveShipCommand : IRequest
     {
         public MoveShipCommand(Vector2 movement)
         {

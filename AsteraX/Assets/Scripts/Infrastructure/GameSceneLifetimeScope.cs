@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AsteraX.Mediator.Assets.Scripts;
 using JetBrains.Annotations;
+using MediatR;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -15,8 +15,8 @@ namespace AsteraX.Infrastructure
         protected override void Configure([NotNull] IContainerBuilder builder)
         {
             builder.RegisterContainer();
-            builder.Register<ISender, Mediator>(Lifetime.Singleton);
 
+            RegisterMediatR(builder);
             RegisterRequestHandlers(builder);
 
             var requestHandlerType = typeof(IRequestHandler<>);
@@ -29,6 +29,14 @@ namespace AsteraX.Infrastructure
                     registration.AsImplementedInterfaces();
                 }
             }
+        }
+
+        private static void RegisterMediatR([NotNull] IContainerBuilder builder)
+        {
+            IObjectResolver resolver = null;
+            builder.RegisterInstance<ServiceFactory>(t => resolver.Resolve(t));
+            builder.Register<ISender, Mediator>(Lifetime.Singleton);
+            builder.RegisterBuildCallback(r => resolver = r);
         }
 
         private static void RegisterRequestHandlers([NotNull] IContainerBuilder builder)

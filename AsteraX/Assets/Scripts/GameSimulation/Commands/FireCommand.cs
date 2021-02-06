@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using MediatR;
+using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class FireCommand
+    public class FireCommand : IRequest
     {
         public FireCommand(Vector2 screenPosition)
         {

@@ -1,5 +1,7 @@
-﻿using AsteraX.GameSimulation.Commands;
-using AsteraX.Mediator.Assets.Scripts;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AsteraX.GameSimulation.Commands;
+using MediatR;
 using UnityEngine;
 using VContainer;
 
@@ -14,13 +16,14 @@ namespace AsteraX.GameSimulation.Player
 
         [Inject]
         public void Construct(ISender sender) => _sender = sender;
-        
-        public void Handle(FireCommand command)
+
+        public Task<Unit> Handle(FireCommand command, CancellationToken cancellationToken)
         {
             var bulletPosition = _shootingPoint.position;
             var turretPosition = _turret.position;
             var direction = Quaternion.LookRotation(bulletPosition - turretPosition);
             _sender.Send(new SpawnBulletCommand(turretPosition, direction));
+            return Unit.Task;
         }
     }
 }

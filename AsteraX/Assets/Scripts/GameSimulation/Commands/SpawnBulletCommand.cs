@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using MediatR;
+using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class SpawnBulletCommand
+    public class SpawnBulletCommand : IRequest
     {
         public SpawnBulletCommand(Vector3 worldPosition, Quaternion direction)
         {

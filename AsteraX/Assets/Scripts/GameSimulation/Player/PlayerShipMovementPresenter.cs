@@ -1,5 +1,7 @@
-﻿using AsteraX.GameSimulation.Commands;
-using AsteraX.Mediator.Assets.Scripts;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AsteraX.GameSimulation.Commands;
+using MediatR;
 using UnityEngine;
 using VContainer;
 
@@ -15,11 +17,11 @@ namespace AsteraX.GameSimulation.Player
         [Inject]
         public void Construct(ISender sender) => _sender = sender;
 
-        public void Handle(MoveShipCommand command)
+        public Task<Unit> Handle(MoveShipCommand command, CancellationToken cancellationToken)
         {
             if (!isActiveAndEnabled)
             {
-                return;
+                return Unit.Task;
             }
 
             var movement = command.Movement;
@@ -30,6 +32,7 @@ namespace AsteraX.GameSimulation.Player
             var rotationVector = new Vector2(movement.y, -movement.x);
             var rotation = rotationVector * _settings.MaximumTilt;
             _ship.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
+            return Unit.Task;
         }
     }
 }

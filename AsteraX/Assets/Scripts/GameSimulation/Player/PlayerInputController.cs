@@ -1,5 +1,5 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using AsteraX.Mediator.Assets.Scripts;
+using MediatR;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using VContainer;
