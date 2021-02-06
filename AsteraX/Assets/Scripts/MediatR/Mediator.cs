@@ -11,7 +11,7 @@ namespace MediatR
     /// <summary>
     /// Default mediator implementation relying on single- and multi instance delegates for resolving handlers.
     /// </summary>
-    public class Mediator : IMediator
+    public partial class Mediator : IMediator
     {
         private readonly ServiceFactory _serviceFactory;
 

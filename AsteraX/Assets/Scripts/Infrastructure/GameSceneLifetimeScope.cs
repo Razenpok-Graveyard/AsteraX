@@ -34,9 +34,17 @@ namespace AsteraX.Infrastructure
         private static void RegisterMediatR([NotNull] IContainerBuilder builder)
         {
             IObjectResolver resolver = null;
-            builder.RegisterInstance<ServiceFactory>(t => resolver.Resolve(t));
-            builder.Register<ISender, Mediator>(Lifetime.Singleton);
             builder.RegisterBuildCallback(r => resolver = r);
+            
+            object ServiceFactory(Type t) => resolver.Resolve(t);
+            var mediator = new Mediator(ServiceFactory);
+            
+            builder.RegisterInstance<ServiceFactory>(ServiceFactory);
+            builder.RegisterInstance<ISender>(mediator);
+            builder.RegisterInstance<IPublisher>(mediator);
+            builder.RegisterInstance<IMediator>(mediator);
+
+            MediatorSingleton.Instantiate(mediator);
         }
 
         private static void RegisterRequestHandlers([NotNull] IContainerBuilder builder)
@@ -51,7 +59,8 @@ namespace AsteraX.Infrastructure
         }
 
         [ItemNotNull]
-        private static IEnumerable<Type> GetAllClassesImplementingOpenGenericInterface(Type openGenericType, Assembly assembly)
+        private static IEnumerable<Type> GetAllClassesImplementingOpenGenericInterface(Type openGenericType,
+            Assembly assembly)
         {
             return assembly.GetTypes()
                 .Where(t => IsClassImplementingOpenGenericInterface(t, openGenericType));
@@ -63,9 +72,9 @@ namespace AsteraX.Infrastructure
             {
                 return false;
             }
-            
+
             var baseType = type.BaseType;
-            
+
             foreach (var @interface in type.GetInterfaces())
             {
                 if (baseType != null && baseType.IsGenericType &&

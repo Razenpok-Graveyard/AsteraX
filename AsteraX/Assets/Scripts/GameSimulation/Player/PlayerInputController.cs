@@ -1,14 +1,12 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-using VContainer;
+using static MediatR.MediatorSingleton;
 
 namespace AsteraX.GameSimulation.Player
 {
     public class PlayerInputController : MonoBehaviour
     {
-        private ISender _sender;
         private Camera _mainCamera;
 
         private void Awake()
@@ -16,20 +14,17 @@ namespace AsteraX.GameSimulation.Player
             _mainCamera = Camera.main;
         }
 
-        [Inject]
-        public void Construct(ISender sender) => _sender = sender;
-
         private void Update()
         {
             var movement = GetMovement();
-            _sender.Send(new MoveShipCommand(movement));
+            Send(new MoveShipCommand(movement));
 
             var mouseScreenPosition = (Vector2) _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-            _sender.Send(new RotateShipCommand(mouseScreenPosition));
+            Send(new RotateShipCommand(mouseScreenPosition));
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
-                _sender.Send(new FireCommand(mouseScreenPosition));
+                Send(new FireCommand(mouseScreenPosition));
             }
         }
 

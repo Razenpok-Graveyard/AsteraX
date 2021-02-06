@@ -1,6 +1,6 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR;
 using UnityEngine;
+using static MediatR.MediatorSingleton;
 
 namespace AsteraX.GameSimulation.Player.Bullets
 {
@@ -9,13 +9,11 @@ namespace AsteraX.GameSimulation.Player.Bullets
         private float _speed;
         private float _lifetime;
         private float _passedLifetime;
-        private ISender _sender;
 
-        public void Initialize(float speed, float lifetime, ISender sender)
+        public void Initialize(float speed, float lifetime)
         {
             _speed = speed;
             _lifetime = lifetime;
-            _sender = sender;
         }
 
         private void Update()
@@ -30,7 +28,7 @@ namespace AsteraX.GameSimulation.Player.Bullets
             var command = new TranslateGameFieldObjectCommand(
                 gameObject, 
                 Vector3.forward * Time.deltaTime * _speed);
-            _sender.Send(command);
+            Send(command);
         }
     }
 }

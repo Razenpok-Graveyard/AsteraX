@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AsteraX.GameSimulation.Commands;
 using MediatR;
 using UnityEngine;
-using VContainer;
+using static MediatR.MediatorSingleton;
 
 namespace AsteraX.GameSimulation.Player
 {
@@ -11,11 +11,6 @@ namespace AsteraX.GameSimulation.Player
     {
         [SerializeField] private Transform _ship;
         [SerializeField] private PlayerShipSettings _settings;
-
-        private ISender _sender;
-
-        [Inject]
-        public void Construct(ISender sender) => _sender = sender;
 
         public Task<Unit> Handle(MoveShipCommand command, CancellationToken cancellationToken)
         {
@@ -27,7 +22,7 @@ namespace AsteraX.GameSimulation.Player
             var movement = command.Movement;
             var translationVector = new Vector2(movement.x, movement.y);
             var translation = translationVector * _settings.MaximumSpeed * Time.deltaTime;
-            _sender.Send(new TranslateGameFieldObjectCommand(gameObject, translation));
+            Send(new TranslateGameFieldObjectCommand(gameObject, translation), cancellationToken);
 
             var rotationVector = new Vector2(movement.y, -movement.x);
             var rotation = rotationVector * _settings.MaximumTilt;
