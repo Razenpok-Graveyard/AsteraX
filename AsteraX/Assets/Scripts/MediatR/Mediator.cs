@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+
 namespace MediatR
 {
     using Wrappers;
@@ -6,12 +8,11 @@ namespace MediatR
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Default mediator implementation relying on single- and multi instance delegates for resolving handlers.
     /// </summary>
-    public partial class Mediator : IMediator
+    public class Mediator : IMediator
     {
         private readonly ServiceFactory _serviceFactory;
 
@@ -28,7 +29,7 @@ namespace MediatR
         public Mediator(ServiceFactory serviceFactory)
             => _serviceFactory = serviceFactory;
 
-        public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
+        public UniTask<TResponse> Send<TResponse>(IRequest<TResponse> request,
             CancellationToken cancellationToken = default)
         {
             if (request == null)
@@ -51,7 +52,7 @@ namespace MediatR
             }
         }
 
-        public Task<object?> Send(object request, CancellationToken cancellationToken = default)
+        public UniTask<object> Send(object request, CancellationToken cancellationToken = default)
         {
             if (request == null)
             {
@@ -86,7 +87,7 @@ namespace MediatR
             return handler.Handle(request, cancellationToken, _serviceFactory);
         }
 
-        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
+        public UniTask Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
             where TNotification : INotification
         {
             if (notification == null)
@@ -97,7 +98,7 @@ namespace MediatR
             return PublishNotification(notification, cancellationToken);
         }
 
-        public Task Publish(object notification, CancellationToken cancellationToken = default) =>
+        public UniTask Publish(object notification, CancellationToken cancellationToken = default) =>
             notification switch
             {
                 null => throw new ArgumentNullException(nameof(notification)),
@@ -112,16 +113,16 @@ namespace MediatR
         /// <param name="notification">The notification being published</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>A task representing invoking all handlers</returns>
-        protected virtual async Task PublishCore(IEnumerable<Func<INotification, CancellationToken, Task>> allHandlers,
+        protected virtual async UniTask PublishCore(IEnumerable<Func<INotification, CancellationToken, UniTask>> allHandlers,
             INotification notification, CancellationToken cancellationToken)
         {
             foreach (var handler in allHandlers)
             {
-                await handler(notification, cancellationToken).ConfigureAwait(false);
+                await handler(notification, cancellationToken);
             }
         }
 
-        private Task PublishNotification(INotification notification, CancellationToken cancellationToken = default)
+        private UniTask PublishNotification(INotification notification, CancellationToken cancellationToken = default)
         {
             var notificationType = notification.GetType();
             var handler = _notificationHandlers.GetOrAdd(notificationType,

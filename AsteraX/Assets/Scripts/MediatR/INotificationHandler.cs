@@ -1,5 +1,5 @@
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace MediatR
 {
@@ -15,7 +15,7 @@ namespace MediatR
         /// </summary>
         /// <param name="notification">The notification</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        Task Handle(TNotification notification, CancellationToken cancellationToken);
+        UniTask Handle(TNotification notification, CancellationToken cancellationToken);
     }
 
     /// <summary>
@@ -25,11 +25,11 @@ namespace MediatR
     public abstract class NotificationHandler<TNotification> : INotificationHandler<TNotification>
         where TNotification : INotification
     {
-        Task INotificationHandler<TNotification>.Handle(TNotification notification, CancellationToken cancellationToken)
+        UniTask INotificationHandler<TNotification>.Handle(TNotification notification, CancellationToken cancellationToken)
         {
             Handle(notification);
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         /// <summary>

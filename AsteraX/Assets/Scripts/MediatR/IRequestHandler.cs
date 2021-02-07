@@ -1,5 +1,5 @@
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace MediatR
 {
@@ -17,7 +17,7 @@ namespace MediatR
         /// <param name="request">The request</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Response from the request</returns>
-        Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+        UniTask<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
     }
 
     /// <summary>
@@ -37,9 +37,9 @@ namespace MediatR
     public abstract class AsyncRequestHandler<TRequest> : IRequestHandler<TRequest>
         where TRequest : IRequest
     {
-        async Task<Unit> IRequestHandler<TRequest, Unit>.Handle(TRequest request, CancellationToken cancellationToken)
+        async UniTask<Unit> IRequestHandler<TRequest, Unit>.Handle(TRequest request, CancellationToken cancellationToken)
         {
-            await Handle(request, cancellationToken).ConfigureAwait(false);
+            await Handle(request, cancellationToken);
             return Unit.Value;
         }
 
@@ -49,7 +49,7 @@ namespace MediatR
         /// <param name="request">Request</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Response</returns>
-        protected abstract Task Handle(TRequest request, CancellationToken cancellationToken);
+        protected abstract UniTask Handle(TRequest request, CancellationToken cancellationToken);
     }
 
     /// <summary>
@@ -60,8 +60,8 @@ namespace MediatR
     public abstract class RequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        Task<TResponse> IRequestHandler<TRequest, TResponse>.Handle(TRequest request, CancellationToken cancellationToken)
-            => Task.FromResult(Handle(request));
+        UniTask<TResponse> IRequestHandler<TRequest, TResponse>.Handle(TRequest request, CancellationToken cancellationToken)
+            => UniTask.FromResult(Handle(request));
 
         /// <summary>
         /// Override in a derived class for the handler logic
@@ -78,7 +78,7 @@ namespace MediatR
     public abstract class RequestHandler<TRequest> : IRequestHandler<TRequest>
         where TRequest : IRequest
     {
-        Task<Unit> IRequestHandler<TRequest, Unit>.Handle(TRequest request, CancellationToken cancellationToken)
+        UniTask<Unit> IRequestHandler<TRequest, Unit>.Handle(TRequest request, CancellationToken cancellationToken)
         {
             Handle(request);
             return Unit.Task;

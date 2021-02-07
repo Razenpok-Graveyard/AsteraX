@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace MediatR
 {
@@ -15,7 +15,7 @@ namespace MediatR
         /// <param name="request">Request object</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
         /// <returns>A task that represents the send operation. The task result contains the handler response</returns>
-        Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
+        UniTask<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Asynchronously send an object request to a single handler via dynamic dispatch
@@ -23,6 +23,6 @@ namespace MediatR
         /// <param name="request">Request object</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
         /// <returns>A task that represents the send operation. The task result contains the type erased handler response</returns>
-        Task<object> Send(object request, CancellationToken cancellationToken = default);
+        UniTask<object> Send(object request, CancellationToken cancellationToken = default);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using AsteraX.GameSimulation.Commands;
+using Cysharp.Threading.Tasks;
 using MediatR;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace AsteraX.GameSimulation.Player.Bullets
     {
         [SerializeField] private BulletSettings _bulletSettings;
 
-        public Task<Unit> Handle(SpawnBulletCommand command, CancellationToken cancellationToken)
+        public UniTask<Unit> Handle(SpawnBulletCommand command, CancellationToken cancellationToken)
         {
             var bullet = Instantiate(_bulletSettings.Prefab, command.WorldPosition, command.Direction);
             bullet.Initialize(_bulletSettings.Speed, _bulletSettings.Lifetime);

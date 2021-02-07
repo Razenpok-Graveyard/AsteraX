@@ -1,7 +1,8 @@
-﻿namespace MediatR
+﻿using Cysharp.Threading.Tasks;
+
+namespace MediatR
 {
     using System;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a void type, since <see cref="System.Void"/> is not a valid return type in C#.
@@ -16,7 +17,7 @@
         /// <summary>
         /// Task from a <see cref="Unit"/> type.
         /// </summary>
-        public static readonly Task<Unit> Task = System.Threading.Tasks.Task.FromResult(Value);
+        public static readonly UniTask<Unit> Task = UniTask.FromResult(Value);
 
         /// <summary>
         /// Compares the current object with another object of the same type.

@@ -1,8 +1,9 @@
+using Cysharp.Threading.Tasks;
+
 namespace MediatR.Pipeline
 {
     using System.Collections.Generic;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Behavior for executing all <see cref="IRequestPostProcessor{TRequest,TResponse}"/> instances after handling the request
@@ -17,9 +18,9 @@ namespace MediatR.Pipeline
         public RequestPostProcessorBehavior(IEnumerable<IRequestPostProcessor<TRequest, TResponse>> postProcessors) 
             => _postProcessors = postProcessors;
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async UniTask<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var response = await next().ConfigureAwait(false);
+            var response = await next();
 
             foreach (var processor in _postProcessors)
             {

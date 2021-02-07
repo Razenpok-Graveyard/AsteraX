@@ -1,4 +1,6 @@
 
+using Cysharp.Threading.Tasks;
+
 namespace MediatR
 {
     using System.Threading;
@@ -9,7 +11,7 @@ namespace MediatR
     /// </summary>
     /// <typeparam name="TResponse">Response type</typeparam>
     /// <returns>Awaitable task returning a <typeparamref name="TResponse"/></returns>
-    public delegate Task<TResponse> RequestHandlerDelegate<TResponse>();
+    public delegate UniTask<TResponse> RequestHandlerDelegate<TResponse>();
 
     /// <summary>
     /// Pipeline behavior to surround the inner handler.
@@ -26,6 +28,6 @@ namespace MediatR
         /// <param name="cancellationToken">Cancellation token</param>
         /// <param name="next">Awaitable delegate for the next action in the pipeline. Eventually this delegate represents the handler.</param>
         /// <returns>Awaitable task returning the <typeparamref name="TResponse"/></returns>
-        Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next);
+        UniTask<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next);
     }
 }

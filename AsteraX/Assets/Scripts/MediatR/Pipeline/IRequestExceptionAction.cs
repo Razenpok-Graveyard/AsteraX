@@ -1,8 +1,9 @@
+using System.Threading;
+using Cysharp.Threading.Tasks;
+
 namespace MediatR.Pipeline
 {
     using System;
-    using System.Threading;
-    using System.Threading.Tasks;
     
     /// <summary>
     /// Defines an exception action for a request
@@ -20,7 +21,7 @@ namespace MediatR.Pipeline
         /// <param name="exception">The thrown exception</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>An awaitable task</returns>
-        Task Execute(TRequest request, TException exception, CancellationToken cancellationToken);
+        UniTask Execute(TRequest request, TException exception, CancellationToken cancellationToken);
     }
 
     /// <summary>
@@ -42,9 +43,9 @@ namespace MediatR.Pipeline
     public abstract class AsyncRequestExceptionAction<TRequest> : IRequestExceptionAction<TRequest>
         where TRequest : IRequest
     {
-        async Task IRequestExceptionAction<TRequest, Exception>.Execute(TRequest request, Exception exception, CancellationToken cancellationToken)
+        async UniTask IRequestExceptionAction<TRequest, Exception>.Execute(TRequest request, Exception exception, CancellationToken cancellationToken)
         {
-            await Execute(request, exception, cancellationToken).ConfigureAwait(false);
+            await Execute(request, exception, cancellationToken);
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace MediatR.Pipeline
         /// <param name="request">Failed request</param>
         /// <param name="exception">Original exception from request handler</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        protected abstract Task Execute(TRequest request, Exception exception, CancellationToken cancellationToken);
+        protected abstract UniTask Execute(TRequest request, Exception exception, CancellationToken cancellationToken);
     }
 
     /// <summary>
@@ -65,10 +66,10 @@ namespace MediatR.Pipeline
         where TRequest : notnull
         where TException : Exception
     {
-        Task IRequestExceptionAction<TRequest, TException>.Execute(TRequest request, TException exception, CancellationToken cancellationToken)
+        UniTask IRequestExceptionAction<TRequest, TException>.Execute(TRequest request, TException exception, CancellationToken cancellationToken)
         {
             Execute(request, exception);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         /// <summary>
@@ -86,10 +87,10 @@ namespace MediatR.Pipeline
     public abstract class RequestExceptionAction<TRequest> : IRequestExceptionAction<TRequest>
         where TRequest : notnull
     {
-        Task IRequestExceptionAction<TRequest, Exception>.Execute(TRequest request, Exception exception, CancellationToken cancellationToken)
+        UniTask IRequestExceptionAction<TRequest, Exception>.Execute(TRequest request, Exception exception, CancellationToken cancellationToken)
         {
             Execute(request, exception);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         /// <summary>

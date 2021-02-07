@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using AsteraX.GameSimulation.Commands;
+using Cysharp.Threading.Tasks;
 using MediatR;
 using UnityEngine;
 using static MediatR.MediatorSingleton;
@@ -12,7 +12,7 @@ namespace AsteraX.GameSimulation.Player
         [SerializeField] private Transform _ship;
         [SerializeField] private PlayerShipSettings _settings;
 
-        public Task<Unit> Handle(MoveShipCommand command, CancellationToken cancellationToken)
+        public UniTask<Unit> Handle(MoveShipCommand command, CancellationToken cancellationToken)
         {
             if (!isActiveAndEnabled)
             {

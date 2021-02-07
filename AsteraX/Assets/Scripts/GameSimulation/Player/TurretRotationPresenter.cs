@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using AsteraX.GameSimulation.Commands;
+using Cysharp.Threading.Tasks;
 using MediatR;
 using UnityEngine;
 
@@ -17,7 +17,7 @@ namespace AsteraX.GameSimulation.Player
             _mainCamera = Camera.main;
         }
 
-        public Task<Unit> Handle(RotateShipCommand command, CancellationToken cancellationToken)
+        public UniTask<Unit> Handle(RotateShipCommand command, CancellationToken cancellationToken)
         {
             if (!isActiveAndEnabled)
             {

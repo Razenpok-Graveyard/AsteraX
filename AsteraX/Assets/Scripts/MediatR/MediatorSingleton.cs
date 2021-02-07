@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace MediatR
@@ -12,25 +12,25 @@ namespace MediatR
 
         private void Awake() => DontDestroyOnLoad(_instance = this);
 
-        public static Task<TResponse> Send<TResponse>(
+        public static UniTask<TResponse> Send<TResponse>(
             IRequest<TResponse> request,
             CancellationToken cancellationToken = default)
         {
             return _instance.Mediator.Send(request, cancellationToken);
         }
 
-        public static Task<object> Send(object request, CancellationToken cancellationToken = default)
+        public static UniTask<object> Send(object request, CancellationToken cancellationToken = default)
         {
             return _instance.Mediator.Send(request, cancellationToken);
         }
 
-        public static Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
+        public static UniTask Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
             where TNotification : INotification
         {
             return _instance.Mediator.Publish(notification, cancellationToken);
         }
 
-        public static Task Publish(object notification, CancellationToken cancellationToken = default)
+        public static UniTask Publish(object notification, CancellationToken cancellationToken = default)
         {
             return _instance.Mediator.Publish(notification, cancellationToken);
         }

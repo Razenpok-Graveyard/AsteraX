@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+
 namespace MediatR.Pipeline
 {
     using Internal;
@@ -7,7 +9,6 @@ namespace MediatR.Pipeline
     using System.Reflection;
     using System.Runtime.ExceptionServices;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Behavior for executing all <see cref="IRequestExceptionHandler{TRequest,TResponse,TException}"/>
@@ -23,11 +24,11 @@ namespace MediatR.Pipeline
 
         public RequestExceptionProcessorBehavior(ServiceFactory serviceFactory) => _serviceFactory = serviceFactory;
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async UniTask<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             try
             {
-                return await next().ConfigureAwait(false);
+                return await next();
             }
             catch (Exception exception)
             {
@@ -44,8 +45,8 @@ namespace MediatR.Pipeline
                     {
                         try
                         {
-                            await ((Task)(handleMethod.Invoke(exceptionHandler, new object[] { request, exception, state, cancellationToken })
-                                ?? throw new InvalidOperationException("Did not return a Task from the exception handler."))).ConfigureAwait(false);
+                            await ((UniTask)(handleMethod.Invoke(exceptionHandler, new object[] { request, exception, state, cancellationToken })
+                                             ?? throw new InvalidOperationException("Did not return a Task from the exception handler.")));
                         }
                         catch (TargetInvocationException invocationException) when (invocationException.InnerException != null)
                         {

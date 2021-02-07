@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using AsteraX.GameSimulation.Commands;
+using Cysharp.Threading.Tasks;
 using MediatR;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace AsteraX.GameSimulation
 {
     public class GameFieldTranslator : MonoBehaviour, IRequestHandler<TranslateGameFieldObjectCommand>
     {
-        public Task<Unit> Handle(TranslateGameFieldObjectCommand command, CancellationToken cancellationToken)
+        public UniTask<Unit> Handle(TranslateGameFieldObjectCommand command, CancellationToken cancellationToken)
         {
             var go = command.GameObject;
             go.transform.Translate(command.Translation);

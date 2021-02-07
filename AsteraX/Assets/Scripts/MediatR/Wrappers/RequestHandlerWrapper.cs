@@ -1,14 +1,15 @@
+using Cysharp.Threading.Tasks;
+
 namespace MediatR.Wrappers
 {
     using System;
     using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
-    using System.Threading.Tasks;
 
     public abstract class RequestHandlerBase
     {
-        public abstract Task<object> Handle(object request, CancellationToken cancellationToken,
+        public abstract UniTask<object> Handle(object request, CancellationToken cancellationToken,
             ServiceFactory serviceFactory);
 
         protected static THandler GetHandler<THandler>(ServiceFactory factory)
@@ -35,34 +36,41 @@ namespace MediatR.Wrappers
 
     public abstract class RequestHandlerWrapper<TResponse> : RequestHandlerBase
     {
-        public abstract Task<TResponse> Handle(IRequest<TResponse> request, CancellationToken cancellationToken,
+        public abstract UniTask<TResponse> Handle(IRequest<TResponse> request, CancellationToken cancellationToken,
             ServiceFactory serviceFactory);
     }
 
     public class RequestHandlerWrapperImpl<TRequest, TResponse> : RequestHandlerWrapper<TResponse>
         where TRequest : IRequest<TResponse>
     {
-        public override Task<object> Handle(object request, CancellationToken cancellationToken,
-            ServiceFactory serviceFactory) =>
-            Handle((IRequest<TResponse>)request, cancellationToken, serviceFactory)
-                .ContinueWith(t =>
-                {
-                    if (t.IsFaulted && !(t.Exception?.InnerException is null))
-                    {
-                        ExceptionDispatchInfo.Capture(t.Exception.InnerException).Throw();
-                    }
-                    return (object)t.Result;
-                }, cancellationToken);
-
-        public override Task<TResponse> Handle(IRequest<TResponse> request, CancellationToken cancellationToken,
+        public override async UniTask<object> Handle(object request, CancellationToken cancellationToken,
             ServiceFactory serviceFactory)
         {
-            Task<TResponse> Handler() => GetHandler<IRequestHandler<TRequest, TResponse>>(serviceFactory).Handle((TRequest) request, cancellationToken);
+            try
+            {
+                return await Handle((IRequest<TResponse>) request, cancellationToken, serviceFactory);
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException != null)
+                {
+                    ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                }
+                throw;
+            }
+        }
+
+        public override UniTask<TResponse> Handle(IRequest<TResponse> request, CancellationToken cancellationToken,
+            ServiceFactory serviceFactory)
+        {
+            UniTask<TResponse> Handler() => GetHandler<IRequestHandler<TRequest, TResponse>>(serviceFactory)
+                .Handle((TRequest) request, cancellationToken);
 
             return serviceFactory
                 .GetInstances<IPipelineBehavior<TRequest, TResponse>>()
                 .Reverse()
-                .Aggregate((RequestHandlerDelegate<TResponse>) Handler, (next, pipeline) => () => pipeline.Handle((TRequest)request, cancellationToken, next))();
+                .Aggregate((RequestHandlerDelegate<TResponse>) Handler,
+                    (next, pipeline) => () => pipeline.Handle((TRequest) request, cancellationToken, next))();
         }
     }
 }
