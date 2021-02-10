@@ -2,7 +2,7 @@
 
 namespace AsteraX.GameSimulation.Player.Bullets
 {
-    [CreateAssetMenu(menuName = "AsteraX/Create BulletSettings", fileName = "BulletSettings")]
+    [CreateAssetMenu(fileName = "BulletSettings", menuName = "AsteraX/Create BulletSettings")]
     public class BulletSettings : ScriptableObject
     {
         [SerializeField] private Bullet _prefab;

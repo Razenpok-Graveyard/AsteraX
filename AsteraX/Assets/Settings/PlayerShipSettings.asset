@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerShipSettings
   m_EditorClassIdentifier: 
   _maximumSpeed: 10
-  _maximumTilt: 20
+  _maximumTilt: 25
