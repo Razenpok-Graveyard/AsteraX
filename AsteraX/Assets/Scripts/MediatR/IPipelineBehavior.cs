@@ -19,7 +19,7 @@ namespace MediatR
     /// </summary>
     /// <typeparam name="TRequest">Request type</typeparam>
     /// <typeparam name="TResponse">Response type</typeparam>
-    public interface IPipelineBehavior<in TRequest, TResponse> where TRequest : notnull
+    public interface IPipelineBehavior<in TRequest, TResponse>
     {
         /// <summary>
         /// Pipeline handler. Perform any additional behavior and await the <paramref name="next"/> delegate as necessary

@@ -1,14 +1,17 @@
-﻿using System.Threading;
-using AsteraX.GameSimulation.Commands;
-using Cysharp.Threading.Tasks;
-using MediatR;
+﻿using AsteraX.GameSimulation.Commands;
+using MediatR.Unity;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation
 {
-    public class GameFieldTranslator : MonoBehaviour, IRequestHandler<TranslateGameFieldObjectCommand>
+    public class GameFieldTranslator : MonoBehaviour
     {
-        public UniTask<Unit> Handle(TranslateGameFieldObjectCommand command, CancellationToken cancellationToken)
+        private void Awake()
+        {
+            this.RegisterRequestHandler<TranslateGameFieldObjectCommand>(Handle);
+        }
+
+        private void Handle(TranslateGameFieldObjectCommand command)
         {
             var go = command.GameObject;
             go.transform.Translate(command.Translation);
@@ -16,7 +19,6 @@ namespace AsteraX.GameSimulation
             var position = go.transform.position;
             position.z = 0;
             go.transform.position = position;
-            return Unit.Task;
         }
 
         private void OnTriggerExit(Collider other)

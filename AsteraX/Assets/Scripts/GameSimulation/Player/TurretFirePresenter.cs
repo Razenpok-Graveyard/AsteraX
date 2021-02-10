@@ -1,24 +1,25 @@
-﻿using System.Threading;
-using AsteraX.GameSimulation.Commands;
-using Cysharp.Threading.Tasks;
-using MediatR;
+﻿using AsteraX.GameSimulation.Commands;
+using MediatR.Unity;
 using UnityEngine;
-using static MediatR.MediatorSingleton;
 
 namespace AsteraX.GameSimulation.Player
 {
-    public class TurretFirePresenter : MonoBehaviour, IRequestHandler<FireCommand>
+    public class TurretFirePresenter : MonoBehaviour
     {
         [SerializeField] private Transform _turret;
         [SerializeField] private Transform _shootingPoint;
 
-        public UniTask<Unit> Handle(FireCommand command, CancellationToken cancellationToken)
+        private void Awake()
+        {
+            this.RegisterRequestHandler<FireCommand>(Handle);
+        }
+
+        private void Handle(FireCommand command)
         {
             var bulletPosition = _shootingPoint.position;
             var turretPosition = _turret.position;
             var direction = Quaternion.LookRotation(bulletPosition - turretPosition);
-            Send(new SpawnBulletCommand(turretPosition, direction), cancellationToken);
-            return Unit.Task;
+            UnityMediator.Send(new SpawnBulletCommand(turretPosition, direction));
         }
     }
 }

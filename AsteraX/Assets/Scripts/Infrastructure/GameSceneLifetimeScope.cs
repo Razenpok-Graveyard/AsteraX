@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 using MediatR;
-using UnityEngine;
+using MediatR.Unity;
 using VContainer;
 using VContainer.Unity;
 
@@ -17,18 +17,7 @@ namespace AsteraX.Infrastructure
             builder.RegisterContainer();
 
             RegisterMediatR(builder);
-            RegisterRequestHandlers(builder);
-
-            var requestHandlerType = typeof(IRequestHandler<>);
-            foreach (var monoBehaviour in FindObjectsOfType<MonoBehaviour>())
-            {
-                var type = monoBehaviour.GetType();
-                var registration = builder.RegisterComponent(monoBehaviour);
-                if (IsClassImplementingOpenGenericInterface(type, requestHandlerType))
-                {
-                    registration.AsImplementedInterfaces();
-                }
-            }
+            //RegisterRequestHandlers(builder);
         }
 
         private static void RegisterMediatR([NotNull] IContainerBuilder builder)
@@ -44,7 +33,7 @@ namespace AsteraX.Infrastructure
             builder.RegisterInstance<IPublisher>(mediator);
             builder.RegisterInstance<IMediator>(mediator);
 
-            MediatorSingleton.Instantiate(mediator);
+            UnityMediator.SecondaryMediator = mediator;
         }
 
         private static void RegisterRequestHandlers([NotNull] IContainerBuilder builder)

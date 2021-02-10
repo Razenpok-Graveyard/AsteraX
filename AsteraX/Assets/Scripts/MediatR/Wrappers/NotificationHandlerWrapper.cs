@@ -7,20 +7,34 @@ namespace MediatR.Wrappers
     using System.Linq;
     using System.Threading;
 
+    public delegate UniTask PublishDelegate(
+        IEnumerable<Func<INotification, CancellationToken, UniTask>> allHandlers,
+        INotification notification,
+        CancellationToken cancellationToken);
+    
     public abstract class NotificationHandlerWrapper
     {
-        public abstract UniTask Handle(INotification notification, CancellationToken cancellationToken, ServiceFactory serviceFactory,
-                                    Func<IEnumerable<Func<INotification, CancellationToken, UniTask>>, INotification, CancellationToken, UniTask> publish);
+        public abstract UniTask Handle(
+            INotification notification,
+            CancellationToken cancellationToken,
+            ServiceFactory serviceFactory,
+            PublishDelegate publish);
     }
 
     public class NotificationHandlerWrapperImpl<TNotification> : NotificationHandlerWrapper
         where TNotification : INotification
     {
-        public override UniTask Handle(INotification notification, CancellationToken cancellationToken, ServiceFactory serviceFactory,
-                                    Func<IEnumerable<Func<INotification, CancellationToken, UniTask>>, INotification, CancellationToken, UniTask> publish)
+        public override UniTask Handle(
+            INotification notification,
+            CancellationToken cancellationToken,
+            ServiceFactory serviceFactory,
+            PublishDelegate publish)
         {
-            var handlers = Enumerable.Select(serviceFactory
-                    .GetInstances<INotificationHandler<TNotification>>(), x => new Func<INotification, CancellationToken, UniTask>((theNotification, theToken) => x.Handle((TNotification)theNotification, theToken)));
+            var handlers = serviceFactory
+                .GetInstances<INotificationHandler<TNotification>>()
+                .Select(handler => 
+                    new Func<INotification, CancellationToken, UniTask>(
+                        (n, t) => handler.Handle((TNotification)n, t)));
 
             return publish(handlers, notification, cancellationToken);
         }

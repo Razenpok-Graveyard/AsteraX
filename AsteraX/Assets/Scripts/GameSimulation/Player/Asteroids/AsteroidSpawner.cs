@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading;
-using AsteraX.GameSimulation.Commands;
-using Cysharp.Threading.Tasks;
-using MediatR;
+﻿using AsteraX.GameSimulation.Commands;
+using MediatR.Unity;
 using UnityEngine;
 using Random = System.Random;
 
 namespace AsteraX.GameSimulation.Player.Asteroids
 {
-    public class AsteroidSpawner : MonoBehaviour, IRequestHandler<SpawnAsteroidCommand>
+    public class AsteroidSpawner : MonoBehaviour
     {
         private static readonly Random Random = new Random();
 
@@ -18,14 +15,15 @@ namespace AsteraX.GameSimulation.Player.Asteroids
 
         private void Awake()
         {
+            this.RegisterRequestHandler<SpawnAsteroidCommand>(Handle);
             UnityEngine.Application.quitting += () => isApplicationQuitting = true;
         }
 
-        public UniTask<Unit> Handle(SpawnAsteroidCommand command, CancellationToken cancellationToken)
+        private void Handle(SpawnAsteroidCommand command)
         {
             if (isApplicationQuitting)
             {
-                return Unit.Task;
+                return;
             }
 
             const int childCount = 3;
@@ -38,7 +36,6 @@ namespace AsteraX.GameSimulation.Player.Asteroids
                 _asteroidSettings.Speed,
                 _asteroidSettings.RotationSpeed
             );
-            return Unit.Task;
         }
     }
 }

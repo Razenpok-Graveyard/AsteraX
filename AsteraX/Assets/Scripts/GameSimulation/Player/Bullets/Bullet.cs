@@ -1,7 +1,6 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using AsteraX.GameSimulation.Player.Asteroids;
+using MediatR.Unity;
 using UnityEngine;
-using static MediatR.MediatorSingleton;
 
 namespace AsteraX.GameSimulation.Player.Bullets
 {
@@ -29,16 +28,7 @@ namespace AsteraX.GameSimulation.Player.Bullets
             var command = new TranslateGameFieldObjectCommand(
                 gameObject, 
                 Vector3.forward * Time.deltaTime * _speed);
-            Send(command);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.GetComponent<Asteroid>() != null)
-            {
-                Destroy(other.gameObject);
-                Destroy(gameObject);
-            }
+            UnityMediator.Send(command);
         }
     }
 }

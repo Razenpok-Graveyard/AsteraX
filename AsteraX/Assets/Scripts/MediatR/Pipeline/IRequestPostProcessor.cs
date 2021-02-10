@@ -8,7 +8,7 @@ namespace MediatR.Pipeline
     /// </summary>
     /// <typeparam name="TRequest">Request type</typeparam>
     /// <typeparam name="TResponse">Response type</typeparam>
-    public interface IRequestPostProcessor<in TRequest, in TResponse> where TRequest : notnull
+    public interface IRequestPostProcessor<in TRequest, in TResponse>
     {
         /// <summary>
         /// Process method executes after the Handle method on your handler

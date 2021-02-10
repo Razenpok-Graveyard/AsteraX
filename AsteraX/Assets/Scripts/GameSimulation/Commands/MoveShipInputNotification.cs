@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class MoveShipCommand : IRequest
+    public class MoveShipInputNotification : INotification
     {
-        public MoveShipCommand(Vector2 movement)
+        public MoveShipInputNotification(Vector2 movement)
         {
             Movement = movement;
         }

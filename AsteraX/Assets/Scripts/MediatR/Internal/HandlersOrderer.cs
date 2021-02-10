@@ -7,7 +7,6 @@ namespace MediatR.Internal
     internal static class HandlersOrderer
     {
         public static IList<object> Prioritize<TRequest>(IList<object> handlers, TRequest request)
-            where TRequest : notnull
         {
             if (handlers.Count < 2)
             {

@@ -1,7 +1,7 @@
 ﻿using AsteraX.GameSimulation.Commands;
+using MediatR.Unity;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-using static MediatR.MediatorSingleton;
 
 namespace AsteraX.GameSimulation.Player
 {
@@ -17,14 +17,14 @@ namespace AsteraX.GameSimulation.Player
         private void Update()
         {
             var movement = GetMovement();
-            Send(new MoveShipCommand(movement));
+            UnityMediator.Publish(new MoveShipInputNotification(movement));
 
             var mouseScreenPosition = (Vector2) _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-            Send(new RotateShipCommand(mouseScreenPosition));
+            UnityMediator.Send(new RotateShipCommand(mouseScreenPosition));
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
-                Send(new FireCommand(mouseScreenPosition));
+                UnityMediator.Send(new FireCommand(mouseScreenPosition));
             }
         }
 

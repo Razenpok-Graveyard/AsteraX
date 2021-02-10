@@ -1,12 +1,10 @@
-﻿using System.Threading;
-using AsteraX.GameSimulation.Commands;
-using Cysharp.Threading.Tasks;
-using MediatR;
+﻿using AsteraX.GameSimulation.Commands;
+using MediatR.Unity;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation.Player
 {
-    public class TurretRotationPresenter : MonoBehaviour, IRequestHandler<RotateShipCommand>
+    public class TurretRotationPresenter : MonoBehaviour
     {
         [SerializeField] private Transform _turret;
 
@@ -14,14 +12,15 @@ namespace AsteraX.GameSimulation.Player
 
         private void Awake()
         {
+            this.RegisterRequestHandler<RotateShipCommand>(Handle);
             _mainCamera = Camera.main;
         }
 
-        public UniTask<Unit> Handle(RotateShipCommand command, CancellationToken cancellationToken)
+        private void Handle(RotateShipCommand command)
         {
             if (!isActiveAndEnabled)
             {
-                return Unit.Task;
+                return;
             }
 
             var positionOnScreen = _mainCamera.WorldToViewportPoint(_turret.position);
@@ -29,7 +28,6 @@ namespace AsteraX.GameSimulation.Player
             var rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
             // Offset because of model
             _turret.rotation = rotation * Quaternion.Euler(0, 0, 90);
-            return Unit.Task;
         }
 
         private static float AngleBetweenPoints(Vector2 a, Vector2 b)

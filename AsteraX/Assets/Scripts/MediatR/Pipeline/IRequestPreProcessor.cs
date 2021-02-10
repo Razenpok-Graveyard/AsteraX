@@ -7,7 +7,7 @@ namespace MediatR.Pipeline
     /// Defined a request pre-processor for a handler
     /// </summary>
     /// <typeparam name="TRequest">Request type</typeparam>
-    public interface IRequestPreProcessor<in TRequest> where TRequest : notnull
+    public interface IRequestPreProcessor<in TRequest>
     {
         /// <summary>
         /// Process method executes before calling the Handle method on your handler

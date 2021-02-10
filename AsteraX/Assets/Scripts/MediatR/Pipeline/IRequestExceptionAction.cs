@@ -11,7 +11,6 @@ namespace MediatR.Pipeline
     /// <typeparam name="TRequest">Request type</typeparam>
     /// <typeparam name="TException">Exception type</typeparam>
     public interface IRequestExceptionAction<in TRequest, in TException>
-        where TRequest : notnull
         where TException : Exception
     {
         /// <summary>
@@ -32,7 +31,6 @@ namespace MediatR.Pipeline
     /// </summary>
     /// <typeparam name="TRequest">The type of failed request</typeparam>
     public interface IRequestExceptionAction<in TRequest> : IRequestExceptionAction<TRequest, Exception>
-        where TRequest : notnull
     {
     }
 
@@ -63,7 +61,6 @@ namespace MediatR.Pipeline
     /// <typeparam name="TRequest">Request type</typeparam>
     /// <typeparam name="TException">Exception type</typeparam>
     public abstract class RequestExceptionAction<TRequest, TException> : IRequestExceptionAction<TRequest, TException>
-        where TRequest : notnull
         where TException : Exception
     {
         UniTask IRequestExceptionAction<TRequest, TException>.Execute(TRequest request, TException exception, CancellationToken cancellationToken)
@@ -85,7 +82,6 @@ namespace MediatR.Pipeline
     /// </summary>
     /// <typeparam name="TRequest">Request type</typeparam>
     public abstract class RequestExceptionAction<TRequest> : IRequestExceptionAction<TRequest>
-        where TRequest : notnull
     {
         UniTask IRequestExceptionAction<TRequest, Exception>.Execute(TRequest request, Exception exception, CancellationToken cancellationToken)
         {
