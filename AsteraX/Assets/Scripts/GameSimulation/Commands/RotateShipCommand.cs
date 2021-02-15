@@ -1,9 +1,8 @@
-﻿using MediatR;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class RotateShipCommand : IRequest
+    public class RotateShipCommand
     {
         public RotateShipCommand(Vector2 screenPosition)
         {

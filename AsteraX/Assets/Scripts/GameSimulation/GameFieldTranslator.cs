@@ -1,5 +1,4 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation
@@ -8,7 +7,7 @@ namespace AsteraX.GameSimulation
     {
         private void Awake()
         {
-            this.RegisterRequestHandler<TranslateGameFieldObjectCommand>(Handle);
+            this.Subscribe<TranslateGameFieldObjectCommand>(Handle);
         }
 
         private void Handle(TranslateGameFieldObjectCommand command)

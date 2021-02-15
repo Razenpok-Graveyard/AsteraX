@@ -1,9 +1,8 @@
-﻿using MediatR;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class SpawnAsteroidCommand : IRequest
+    public class SpawnAsteroidCommand
     {
         public SpawnAsteroidCommand(int size, Vector3 worldPosition, Quaternion direction)
         {

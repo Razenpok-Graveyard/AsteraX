@@ -1,5 +1,4 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation.Player
@@ -12,7 +11,7 @@ namespace AsteraX.GameSimulation.Player
 
         private void Awake()
         {
-            this.RegisterRequestHandler<RotateShipCommand>(Handle);
+            this.Subscribe<RotateShipCommand>(Handle);
             _mainCamera = Camera.main;
         }
 

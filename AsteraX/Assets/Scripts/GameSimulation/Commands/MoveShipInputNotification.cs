@@ -1,9 +1,8 @@
-﻿using MediatR;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class MoveShipInputNotification : INotification
+    public class MoveShipInputNotification
     {
         public MoveShipInputNotification(Vector2 movement)
         {

@@ -1,5 +1,5 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
+using UniTaskPubSub;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,7 +16,7 @@ namespace AsteraX.GameSimulation
                 const int size = 3;
                 var position = GetRandomSpawnPosition();
                 var direction = Random.rotation;
-                UnityMediator.Send(new SpawnAsteroidCommand(size, position, direction));
+                AsyncMessageBus.Default.Publish(new SpawnAsteroidCommand(size, position, direction));
             }
         }
 

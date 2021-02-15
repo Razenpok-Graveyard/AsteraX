@@ -1,9 +1,8 @@
-﻿using MediatR;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AsteraX.GameSimulation.Commands
 {
-    public class TranslateGameFieldObjectCommand : IRequest
+    public class TranslateGameFieldObjectCommand
     {
         public TranslateGameFieldObjectCommand(GameObject gameObject, Vector3 translation)
         {

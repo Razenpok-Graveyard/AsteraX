@@ -1,4 +1,4 @@
-﻿using AsteraX.GameSimulation.Player.Asteroids;
+﻿using AsteraX.GameSimulation.Asteroids;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation.Player

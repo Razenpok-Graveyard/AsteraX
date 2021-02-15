@@ -1,5 +1,5 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
+using UniTaskPubSub;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation.Player
@@ -11,7 +11,7 @@ namespace AsteraX.GameSimulation.Player
 
         private void Awake()
         {
-            this.RegisterRequestHandler<FireCommand>(Handle);
+            this.Subscribe<FireCommand>(Handle);
         }
 
         private void Handle(FireCommand command)
@@ -19,7 +19,7 @@ namespace AsteraX.GameSimulation.Player
             var bulletPosition = _shootingPoint.position;
             var turretPosition = _turret.position;
             var direction = Quaternion.LookRotation(bulletPosition - turretPosition);
-            UnityMediator.Send(new SpawnBulletCommand(turretPosition, direction));
+            AsyncMessageBus.Default.Publish(new SpawnBulletCommand(turretPosition, direction));
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
+using UniTaskPubSub;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AsteraX.GameSimulation.Player.Asteroids
+namespace AsteraX.GameSimulation.Asteroids
 {
     public class Asteroid : MonoBehaviour
     {
@@ -28,8 +28,7 @@ namespace AsteraX.GameSimulation.Player.Asteroids
             var command = new TranslateGameFieldObjectCommand(
                 gameObject, 
                 Vector3.forward * Time.deltaTime * _speed);
-            UnityMediator.Send(command);
-
+            AsyncMessageBus.Default.Publish(command);
             transform.Rotate(_rotationVector, _rotationSpeed);
         }
 
@@ -44,7 +43,7 @@ namespace AsteraX.GameSimulation.Player.Asteroids
             {
                 var position = transform.position + Random.onUnitSphere / 5;
                 position.z = 0;
-                UnityMediator.Send(new SpawnAsteroidCommand(_size - 1, position, Random.rotation));
+                AsyncMessageBus.Default.Publish(new SpawnAsteroidCommand(_size - 1, position, Random.rotation));
             }
         }
     }

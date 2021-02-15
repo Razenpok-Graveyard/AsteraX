@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "7d21a75ea8abbc3ed43afedeb450c8d44f244ece"
     },
+    "com.neuecc.unirx": {
+      "version": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "284d5c50d3f1ddd9fa7df3d382ea904732a9c2ff"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -124,6 +131,13 @@
         "com.unity.modules.xr": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "jp.hadashikick.unitaskpubsub": {
+      "version": "https://github.com/hadashiA/UniTaskPubSub.git?path=Assets/UniTaskPubSub#0.10.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "cde09c607cb29e33e80c8fa04a12afe559455b97"
     },
     "jp.hadashikick.vcontainer": {
       "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#072f5da",

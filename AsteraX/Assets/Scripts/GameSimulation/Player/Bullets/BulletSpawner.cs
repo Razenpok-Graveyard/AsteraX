@@ -1,5 +1,4 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation.Player.Bullets
@@ -12,7 +11,7 @@ namespace AsteraX.GameSimulation.Player.Bullets
 
         private void Awake()
         {
-            this.RegisterRequestHandler<SpawnBulletCommand>(Handle);
+            this.Subscribe<SpawnBulletCommand>(Handle);
             UnityEngine.Application.quitting += () => isApplicationQuitting = true;
         }
 

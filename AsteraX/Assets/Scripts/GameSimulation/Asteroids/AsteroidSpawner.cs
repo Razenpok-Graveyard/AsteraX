@@ -1,9 +1,8 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
 using UnityEngine;
 using Random = System.Random;
 
-namespace AsteraX.GameSimulation.Player.Asteroids
+namespace AsteraX.GameSimulation.Asteroids
 {
     public class AsteroidSpawner : MonoBehaviour
     {
@@ -15,7 +14,7 @@ namespace AsteraX.GameSimulation.Player.Asteroids
 
         private void Awake()
         {
-            this.RegisterRequestHandler<SpawnAsteroidCommand>(Handle);
+            this.Subscribe<SpawnAsteroidCommand>(Handle);
             UnityEngine.Application.quitting += () => isApplicationQuitting = true;
         }
 

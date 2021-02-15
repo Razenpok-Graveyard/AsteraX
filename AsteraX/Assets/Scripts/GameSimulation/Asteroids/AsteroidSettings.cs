@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AsteraX.GameSimulation.Player.Asteroids
+namespace AsteraX.GameSimulation.Asteroids
 {
     [CreateAssetMenu(fileName = "AsteroidSettings", menuName = "AsteraX/Create AsteroidSettings")]
     public class AsteroidSettings : ScriptableObject

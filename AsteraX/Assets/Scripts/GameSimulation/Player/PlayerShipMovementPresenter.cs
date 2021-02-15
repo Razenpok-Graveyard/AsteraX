@@ -1,5 +1,5 @@
 ﻿using AsteraX.GameSimulation.Commands;
-using MediatR.Unity;
+using UniTaskPubSub;
 using UnityEngine;
 
 namespace AsteraX.GameSimulation.Player
@@ -11,7 +11,7 @@ namespace AsteraX.GameSimulation.Player
 
         private void Awake()
         {
-            this.RegisterNotificationHandler<MoveShipInputNotification>(Handle);
+            this.Subscribe<MoveShipInputNotification>(Handle);
         }
 
         private void Handle(MoveShipInputNotification notification)
@@ -24,7 +24,7 @@ namespace AsteraX.GameSimulation.Player
             var movement = notification.Movement;
             var translationVector = new Vector2(movement.x, movement.y);
             var translation = translationVector * _settings.MaximumSpeed * Time.deltaTime;
-            UnityMediator.Send(new TranslateGameFieldObjectCommand(gameObject, translation));
+            AsyncMessageBus.Default.Publish(new TranslateGameFieldObjectCommand(gameObject, translation));
 
             var rotationVector = new Vector2(movement.y, -movement.x);
             var rotation = rotationVector * _settings.MaximumTilt;
