@@ -1,9 +1,9 @@
-﻿using AsteraX.GameSimulation.Asteroids;
-using AsteraX.GameSimulation.Commands;
+﻿using Asteroids;
+using Commands;
 using UniTaskPubSub;
 using UnityEngine;
 
-namespace AsteraX.GameSimulation.Player.Bullets
+namespace Player.Bullets
 {
     public class Bullet : MonoBehaviour
     {

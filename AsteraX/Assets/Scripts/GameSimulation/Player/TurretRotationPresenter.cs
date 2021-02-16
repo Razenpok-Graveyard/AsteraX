@@ -1,7 +1,7 @@
-﻿using AsteraX.GameSimulation.Commands;
+﻿using Commands;
 using UnityEngine;
 
-namespace AsteraX.GameSimulation.Player
+namespace Player
 {
     public class TurretRotationPresenter : MonoBehaviour
     {

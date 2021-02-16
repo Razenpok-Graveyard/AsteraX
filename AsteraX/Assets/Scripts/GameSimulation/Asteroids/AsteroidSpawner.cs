@@ -1,8 +1,8 @@
-﻿using AsteraX.GameSimulation.Commands;
+﻿using Commands;
 using UnityEngine;
 using Random = System.Random;
 
-namespace AsteraX.GameSimulation.Asteroids
+namespace Asteroids
 {
     public class AsteroidSpawner : MonoBehaviour
     {

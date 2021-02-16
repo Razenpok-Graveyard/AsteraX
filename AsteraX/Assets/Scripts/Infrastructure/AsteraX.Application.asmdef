@@ -1,0 +1,17 @@
+{
+    "name": "AsteraX.Infrastructure",
+    "rootNamespace": "AsteraX.Application",
+    "references": [
+        "GUID:36911e48397645e39d759948a2cecf07",
+        "GUID:2daa647f6354483aa7c3fe42e62c795f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

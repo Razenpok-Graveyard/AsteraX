@@ -1,9 +1,9 @@
-﻿using AsteraX.GameSimulation.Commands;
+﻿using Commands;
 using UniTaskPubSub;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AsteraX.GameSimulation.Asteroids
+namespace Asteroids
 {
     public class Asteroid : MonoBehaviour
     {

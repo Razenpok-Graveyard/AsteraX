@@ -1,8 +1,8 @@
-﻿using AsteraX.GameSimulation.Commands;
+﻿using Commands;
 using UniTaskPubSub;
 using UnityEngine;
 
-namespace AsteraX.GameSimulation.Player
+namespace Player
 {
     public class PlayerShipMovementPresenter : MonoBehaviour
     {

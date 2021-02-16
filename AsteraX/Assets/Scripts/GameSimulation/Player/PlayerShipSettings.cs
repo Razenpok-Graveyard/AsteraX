@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AsteraX.GameSimulation.Player
+namespace Player
 {
     [CreateAssetMenu(menuName = "AsteraX/Create PlayerShipSettings", fileName = "PlayerShipSettings")]
     public class PlayerShipSettings : ScriptableObject

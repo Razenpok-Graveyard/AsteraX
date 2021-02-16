@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AsteraX.GameSimulation.Commands
+namespace Commands
 {
     public class SpawnAsteroidCommand
     {

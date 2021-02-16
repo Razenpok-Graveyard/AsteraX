@@ -1,9 +1,9 @@
-﻿using AsteraX.GameSimulation.Commands;
+﻿using Commands;
 using UniTaskPubSub;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace AsteraX.GameSimulation.Player
+namespace Player
 {
     public class PlayerInputController : MonoBehaviour
     {

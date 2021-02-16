@@ -1,7 +1,7 @@
-﻿using AsteraX.GameSimulation.Commands;
+﻿using Commands;
 using UnityEngine;
 
-namespace AsteraX.GameSimulation.Player.Bullets
+namespace Player.Bullets
 {
     public class BulletSpawner : MonoBehaviour
     {

@@ -1,7 +1,9 @@
 {
     "name": "AsteraX.Domain",
     "rootNamespace": "AsteraX.Domain",
-    "references": [],
+    "references": [
+        "GUID:36911e48397645e39d759948a2cecf07"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

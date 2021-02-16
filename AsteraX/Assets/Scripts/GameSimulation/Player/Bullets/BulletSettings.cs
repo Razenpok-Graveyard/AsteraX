@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AsteraX.GameSimulation.Player.Bullets
+namespace Player.Bullets
 {
     [CreateAssetMenu(fileName = "BulletSettings", menuName = "AsteraX/Create BulletSettings")]
     public class BulletSettings : ScriptableObject

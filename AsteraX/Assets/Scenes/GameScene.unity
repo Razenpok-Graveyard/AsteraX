@@ -170,7 +170,9 @@ MonoBehaviour:
   parentReference:
     TypeName: 
   autoRun: 1
-  autoInjectGameObjects: []
+  autoInjectGameObjects:
+  - {fileID: 2066196652}
+  _gameField: {fileID: 1666005261}
 --- !u!1 &935103729
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +409,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1666005256}
+  - component: {fileID: 1666005261}
   - component: {fileID: 1666005258}
   - component: {fileID: 1666005257}
   - component: {fileID: 1666005260}
@@ -486,6 +489,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _asteroidSettings: {fileID: 11400000, guid: 34643ab5bf006864999eadddcf253e2e, type: 2}
+--- !u!114 &1666005261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666005255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a443b33028d479ba0b7ad6d3dd1f2ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerShip: {fileID: 2066196652}
 --- !u!1 &1854861993
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +732,12 @@ PrefabInstance:
 --- !u!4 &2066196651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4368249187107940, guid: 2c350f2ea6d36435b8b50bf6e3c429cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2066196650}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2066196652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1664251521892296, guid: 2c350f2ea6d36435b8b50bf6e3c429cb,
     type: 3}
   m_PrefabInstance: {fileID: 2066196650}
   m_PrefabAsset: {fileID: 0}
