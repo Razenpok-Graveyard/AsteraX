@@ -4,7 +4,7 @@ namespace AsteraX.Infrastructure.Data
 {
     public class GameSessionRepository : IGameSessionRepository
     {
-        private readonly GameSession _gameSession = new GameSession(3);
+        private readonly GameSession _gameSession = new GameSession(1);
         
         public GameSession GetCurrentSession()
         {

@@ -9,6 +9,8 @@
 
         public int Jumps { get; private set; }
 
+        public int Score { get; set; }
+
         public void KillPlayer()
         {
             AddDomainEvent(new PlayerDeathEvent());

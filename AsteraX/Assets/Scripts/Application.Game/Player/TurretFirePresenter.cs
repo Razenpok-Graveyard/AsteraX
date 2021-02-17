@@ -1,4 +1,5 @@
 ﻿using AsteraX.Application.Game.Commands;
+using AsteraX.Application.SharedKernel;
 using UniTaskPubSub;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace AsteraX.Application.Game.Player
             this.Subscribe<FireCommand>(Handle);
         }
 
-        private void Handle(FireCommand command)
+        private void Handle()
         {
             var bulletPosition = _shootingPoint.position;
             var turretPosition = _turret.position;

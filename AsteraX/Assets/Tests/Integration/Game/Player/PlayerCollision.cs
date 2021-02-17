@@ -1,8 +1,8 @@
+using System.Threading;
 using AsteraX.Application.Game;
 using AsteraX.Application.Game.Asteroids;
 using AsteraX.Application.Game.Player;
-using AsteraX.Domain.GameSession;
-using AsteraX.Infrastructure;
+using AsteraX.Infrastructure.Data;
 using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
@@ -14,29 +14,23 @@ namespace AsteraX.Tests.Integration.Game.Player
         [Test]
         public void Should_destroy_collided_objects()
         {
-            var repository = new StubGameSessionRepository();
+            var repository = new GameSessionRepository();
             var gameField = new FakeGameField();
             
             var sut = new PlayerShipCollisionController.CommandHandler(repository, gameField);
 
             var go = new GameObject();
             var asteroid = go.AddComponent<Asteroid>();
-            sut.Execute(asteroid);
+            var command = new PlayerShipCollisionController.Command
+            {
+                Asteroid = asteroid
+            };
+            sut.Handle(command, CancellationToken.None);
 
             gameField.DestroyedPlayerShip.Should().BeTrue();
             gameField.DestroyedAsteroid.Should().Be(asteroid);
             
             Object.Destroy(go);
-        }
-    }
-
-    public class StubGameSessionRepository : IGameSessionRepository
-    {
-        private readonly GameSession _gameSession = new GameSession(3);
-        
-        public GameSession GetCurrentSession()
-        {
-            return _gameSession;
         }
     }
 

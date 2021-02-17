@@ -1,4 +1,5 @@
 ﻿using AsteraX.Application.Game.Commands;
+using AsteraX.Application.SharedKernel;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
