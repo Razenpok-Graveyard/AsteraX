@@ -1,15 +1,15 @@
 {
-    "name": "AsteraX.Domain",
+    "name": "AsteraX.Application.UI",
     "references": [
-        "GUID:36911e48397645e39d759948a2cecf07"
+        "GUID:127be14384db49b28d9405d369eb5d0a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

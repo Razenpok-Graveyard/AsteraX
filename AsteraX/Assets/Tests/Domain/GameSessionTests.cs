@@ -1,9 +1,8 @@
-﻿using AsteraX.Domain;
-using AsteraX.Domain.GameSession;
+﻿using AsteraX.Domain.GameSession;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Tests.Domain
+namespace AsteraX.Tests.Domain
 {
     public class GameSessionTests
     {
