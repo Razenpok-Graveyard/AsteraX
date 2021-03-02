@@ -2,7 +2,7 @@
     "name": "AsteraX.Application",
     "rootNamespace": "AsteraX.Application",
     "references": [
-        "GUID:8161667de84644ec1b7c7b2a6d8e757d",
+        "GUID:36911e48397645e39d759948a2cecf07",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
         "GUID:560b04d1a97f54a4e82edc0cbbb69285",
         "GUID:127be14384db49b28d9405d369eb5d0a",

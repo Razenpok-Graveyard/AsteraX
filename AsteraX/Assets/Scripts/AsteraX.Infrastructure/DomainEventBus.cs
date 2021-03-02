@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AsteraX.Domain;
+using CSharpFunctionalExtensions;
 
 namespace AsteraX.Infrastructure
 {

@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using AsteraX.Application.Common;
 using AsteraX.Infrastructure;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -12,7 +13,7 @@ namespace AsteraX.Application.UI
         [SerializeField] private TextMeshProUGUI _jumps;
         [SerializeField] private TextMeshProUGUI _score;
 
-        private QueryHandler _queryHandler;
+        private IRequestHandler<Query, Model> _queryHandler;
 
         [Inject]
         public void Construct(QueryHandler queryHandler)
@@ -31,7 +32,7 @@ namespace AsteraX.Application.UI
         {
             while (!ct.IsCancellationRequested)
             {
-                var model = await _queryHandler.Handle(new Query(), ct);
+                var model = _queryHandler.Handle(new Query());
                 _jumps.text = $"{model.Jumps} Jumps";
                 _score.text = $"{model.Score:C0}";
                 await UniTask.Yield();
@@ -54,8 +55,8 @@ namespace AsteraX.Application.UI
             {
                 _gameSessionRepository = gameSessionRepository;
             }
-            
-            protected override Model HandleCore(Query request)
+
+            protected override Model Handle(Query request)
             {
                 var gameSession = _gameSessionRepository.GetCurrentSession();
                 return new Model

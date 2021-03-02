@@ -1,6 +1,7 @@
-﻿using AsteraX.Application.Game.Asteroids;
+﻿using AsteraX.Application.Common;
+using AsteraX.Application.Game.Asteroids;
 using AsteraX.Infrastructure;
-using Cysharp.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using UnityEngine;
 using VContainer;
 
@@ -8,7 +9,7 @@ namespace AsteraX.Application.Game.Player
 {
     public class PlayerShipCollisionController : MonoBehaviour
     {
-        private CommandHandler _commandHandler;
+        private IRequestHandler<Command, Result> _commandHandler;
 
         [Inject]
         public void Construct(CommandHandler commandHandler)
@@ -18,37 +19,55 @@ namespace AsteraX.Application.Game.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            var asteroid = other.GetComponent<Asteroid>();
-            if (asteroid != null)
+            if (other.TryGetComponent<AsteroidInstance>(out var asteroid))
             {
-                var command = new Command { Asteroid = asteroid };
-                _commandHandler.Handle(command).Forget();
+                var command = new Command {AsteroidId = asteroid.Id};
+                var (_, isFailure, error) = _commandHandler.Handle(command);
+                if (isFailure)
+                {
+                    Debug.LogError(error);
+                }
             }
         }
 
-        public class Command : IRequest
+        public class Command : IRequest<Result>
         {
-            public Asteroid Asteroid { get; set; }
+            public long AsteroidId { get; set; }
         }
 
-        public class CommandHandler : RequestHandler<Command>
+        public class CommandHandler : RequestHandler<Command, Result>
         {
             private readonly IGameSessionRepository _gameSessionRepository;
-            private readonly IGameField _gameField;
+            private readonly IApplicationTaskPublisher _applicationTaskPublisher;
 
-            public CommandHandler(IGameSessionRepository gameSessionRepository, IGameField gameField)
+            public CommandHandler(
+                IGameSessionRepository gameSessionRepository,
+                IApplicationTaskPublisher applicationTaskPublisher)
             {
                 _gameSessionRepository = gameSessionRepository;
-                _gameField = gameField;
+                _applicationTaskPublisher = applicationTaskPublisher;
             }
 
-            protected override void HandleCore(Command command)
+            protected override Result Handle(Command command)
             {
                 var gameSession = _gameSessionRepository.GetCurrentSession();
-                gameSession.KillPlayer();
-                DomainEventBus.DispatchEvents(gameSession);
-                _gameField.Destroy(command.Asteroid);
-                _gameField.DestroyPlayerShip();
+                var maybeAsteroid = gameSession.LevelAttempt.Asteroids
+                    .TryFirst(a => a.Id == command.AsteroidId);
+                if (maybeAsteroid.HasNoValue)
+                {
+                    return Result.Failure($"Cannot destroy dead asteroid {command.AsteroidId}");
+                }
+
+                gameSession.CollideAsteroidWithPlayerShip(maybeAsteroid.Value);
+                _gameSessionRepository.Save(gameSession);
+
+                _applicationTaskPublisher.Publish(new DestroyAsteroid
+                {
+                    Id = command.AsteroidId
+                });
+                _applicationTaskPublisher.Publish(new DestroyPlayerShip());
+
+                return Result.Success();
             }
         }
     }

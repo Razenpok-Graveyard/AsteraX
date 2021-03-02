@@ -1,7 +1,6 @@
-﻿using AsteraX.Domain;
+﻿using AsteraX.Application.Common;
+using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
-using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using VContainer;
@@ -14,7 +13,7 @@ namespace AsteraX.Application.UI
         [SerializeField] private TextMeshProUGUI _level;
         [SerializeField] private TextMeshProUGUI _score;
 
-        private QueryHandler _queryHandler;
+        private IRequestHandler<Query, Model> _queryHandler;
 
         [Inject]
         public void Construct(QueryHandler queryHandler)
@@ -22,16 +21,16 @@ namespace AsteraX.Application.UI
             _queryHandler = queryHandler;
         }
         
-        private void Awake()
+        private void Start()
         {
-            this.SubscribeToDomain<GameOverEvent>(FadeIn);
+            this.SubscribeToDomain<GameOverEvent>(_ => FadeIn());
         }
 
-        private async UniTask FadeIn()
+        private void FadeIn()
         {
             _canvasGroup.alpha = 1;
             _canvasGroup.blocksRaycasts = true;
-            var model = await _queryHandler.Handle(new Query());
+            var model = _queryHandler.Handle(new Query());
             _level.text = $"Final level: {model.Level}";
             _score.text = $"Final score: {model.Score}";
         }
@@ -53,8 +52,7 @@ namespace AsteraX.Application.UI
                 _gameSessionRepository = gameSessionRepository;
             }
 
-            [NotNull]
-            protected override Model HandleCore(Query query)
+            protected override Model Handle(Query query)
             {
                 var gameSession = _gameSessionRepository.GetCurrentSession();
                 return new Model

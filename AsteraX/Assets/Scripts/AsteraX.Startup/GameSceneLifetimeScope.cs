@@ -1,7 +1,8 @@
-using AsteraX.Application.Game;
+using AsteraX.Application.Common;
 using AsteraX.Infrastructure;
 using AsteraX.Infrastructure.Data;
 using JetBrains.Annotations;
+using UniTaskPubSub;
 using UnityEditorInternal;
 using UnityEngine;
 using VContainer;
@@ -11,7 +12,6 @@ namespace AsteraX.Startup
 {
     public class GameSceneLifetimeScope : LifetimeScope
     {
-        [SerializeField] private GameField _gameField;
         [SerializeField] private AssemblyDefinitionAsset[] _requestHandlerAssemblies;
 
         protected override void Configure([NotNull] IContainerBuilder builder)
@@ -19,7 +19,13 @@ namespace AsteraX.Startup
             builder.RegisterContainer();
             builder.RegisterRequestHandlers(_requestHandlerAssemblies);
 
-            builder.RegisterInstance(_gameField).As<IGameField>();
+            var publisher = new ApplicationTaskPublisher(AsyncMessageBus.Default);
+            var subscriber = new ApplicationTaskSubscriber(AsyncMessageBus.Default);
+            builder.RegisterInstance(publisher).As<IApplicationTaskPublisher>();
+            builder.RegisterInstance(subscriber).As<IApplicationTaskSubscriber>();
+            ApplicationTaskDispatcher.Subscriber = subscriber;
+
+            builder.Register<ILevelRepository, LevelRepository>(Lifetime.Singleton);
             builder.Register<IGameSessionRepository, GameSessionRepository>(Lifetime.Singleton);
             
             builder.RegisterBuildCallback(InjectAllMonoBehaviours);

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using AsteraX.Application;
+using AsteraX.Application.Common;
 using UnityEditorInternal;
 using UnityEngine;
 using VContainer;
@@ -30,8 +31,13 @@ namespace AsteraX.Startup
         private static void RegisterRequestHandlers(Assembly assembly, IContainerBuilder builder)
         {
             var baseRequestHandlerType = typeof(IBaseRequestHandler);
-            var requestHandlerType = typeof(IRequestHandler<>);
-            var requestHandlerType2 = typeof(IRequestHandler<,>);
+            var requestHandlerTypes = new[]
+            {
+                typeof(IRequestHandler<>),
+                typeof(IRequestHandler<,>),
+                typeof(IAsyncRequestHandler<>),
+                typeof(IAsyncRequestHandler<,>)
+            };
             foreach (var type in assembly.GetTypes())
             {
                 if (!baseRequestHandlerType.IsAssignableFrom(type))
@@ -40,20 +46,18 @@ namespace AsteraX.Startup
                 }
 
                 var registration = builder.Register(type, Lifetime.Transient).AsSelf();
-                
+
                 foreach (var @interface in type.GetInterfaces())
                 {
                     if (!@interface.IsGenericType)
                     {
                         continue;
                     }
+
                     var genericTypeDefinition = @interface.GetGenericTypeDefinition();
-                    var isRequestHandler = genericTypeDefinition == requestHandlerType
-                                           || genericTypeDefinition == requestHandlerType2;
-                    if (isRequestHandler)
+                    if (requestHandlerTypes.Contains(genericTypeDefinition))
                     {
                         registration.As(@interface);
-                        Debug.Log(type.FullName + " to " + @interface.FullName);
                     }
                 }
             }

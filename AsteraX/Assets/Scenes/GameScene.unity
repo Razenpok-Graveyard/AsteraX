@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -171,7 +171,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _gameField: {fileID: 1666005261}
   _requestHandlerAssemblies:
   - {fileID: 5897886265953266890, guid: 2fb452967ef871e44860844b3d07cf4c, type: 3}
   - {fileID: 5897886265953266890, guid: 4d48a74ff4004a14a70684d4234d1e55, type: 3}
@@ -1282,6 +1281,78 @@ RectTransform:
   m_AnchoredPosition: {x: 10, y: -10}
   m_SizeDelta: {x: 175, y: 75}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &1194742225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1194742226}
+  - component: {fileID: 1194742229}
+  - component: {fileID: 1194742228}
+  - component: {fileID: 1194742227}
+  m_Layer: 0
+  m_Name: AsteroidContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1194742226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194742225}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1666005256}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1194742227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194742225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5c4ba3d415349b38c6494f5f4c752b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _instanceContainer: {fileID: 1194742229}
+--- !u!114 &1194742228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194742225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796fab175c3a425aa74b0dca5ee5758d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _instanceContainer: {fileID: 1194742229}
+  _asteroidSettings: {fileID: 11400000, guid: 34643ab5bf006864999eadddcf253e2e, type: 2}
+--- !u!114 &1194742229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194742225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d63a646fc5f34e9793decbcd257ad250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1224492610
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1574,10 +1645,9 @@ GameObject:
   - component: {fileID: 1666005261}
   - component: {fileID: 1666005258}
   - component: {fileID: 1666005257}
-  - component: {fileID: 1666005260}
   - component: {fileID: 1666005259}
   m_Layer: 0
-  m_Name: GameField
+  m_Name: Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1598,6 +1668,7 @@ Transform:
   - {fileID: 1224492611}
   - {fileID: 2066196651}
   - {fileID: 2004735216}
+  - {fileID: 1194742226}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1638,19 +1709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f00a8e4f04094348a24661a3dbee168e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1666005260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666005255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 796fab175c3a425aa74b0dca5ee5758d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _asteroidSettings: {fileID: 11400000, guid: 34643ab5bf006864999eadddcf253e2e, type: 2}
 --- !u!114 &1666005261
 MonoBehaviour:
   m_ObjectHideFlags: 0

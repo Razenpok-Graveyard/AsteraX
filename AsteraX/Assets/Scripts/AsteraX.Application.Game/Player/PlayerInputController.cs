@@ -1,13 +1,27 @@
-﻿using AsteraX.Application.Game.Commands;
-using UniTaskPubSub;
+﻿using AsteraX.Application.Common;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using VContainer;
 
 namespace AsteraX.Application.Game.Player
 {
     public class PlayerInputController : MonoBehaviour
     {
         private Camera _mainCamera;
+        private readonly MovePlayerShip _movePlayerShipMessage
+            = new MovePlayerShip();
+        private readonly RotatePlayerShipTurret _rotatePlayerShipTurretMessage
+            = new RotatePlayerShipTurret();
+        private readonly FirePlayerShipTurret _firePlayerShipTurret
+            = new FirePlayerShipTurret();
+
+        private IApplicationTaskPublisher _applicationTaskPublisher;
+
+        [Inject]
+        public void Construct(IApplicationTaskPublisher applicationTaskPublisher)
+        {
+            _applicationTaskPublisher = applicationTaskPublisher;
+        }
 
         private void Awake()
         {
@@ -17,14 +31,17 @@ namespace AsteraX.Application.Game.Player
         private void Update()
         {
             var movement = GetMovement();
-            AsyncMessageBus.Default.Publish(new MoveShipInputNotification(movement));
+            _movePlayerShipMessage.Movement = movement;
+            _applicationTaskPublisher.Publish(_movePlayerShipMessage);
 
             var mouseScreenPosition = (Vector2) _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-            AsyncMessageBus.Default.Publish(new RotateShipCommand(mouseScreenPosition));
+            _rotatePlayerShipTurretMessage.ScreenPosition = mouseScreenPosition;
+            _applicationTaskPublisher.Publish(_rotatePlayerShipTurretMessage);
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
-                AsyncMessageBus.Default.Publish(new FireCommand(mouseScreenPosition));
+                _firePlayerShipTurret.ScreenPosition = mouseScreenPosition;
+                _applicationTaskPublisher.Publish(_firePlayerShipTurret);
             }
         }
 
