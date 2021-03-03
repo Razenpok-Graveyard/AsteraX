@@ -4,17 +4,24 @@ namespace AsteraX.Infrastructure.Data
 {
     public class GameSessionRepository : IGameSessionRepository
     {
-        private GameSession _gameSession = new GameSession(3);
-        
+        private readonly GameSession _gameSession = new GameSession(3);
+        private readonly GameSessionObservableModelRepository _observableModelRepository;
+
+        public GameSessionRepository(GameSessionObservableModelRepository observableModelRepository)
+        {
+            _observableModelRepository = observableModelRepository;
+            _observableModelRepository.Update(_gameSession);
+        }
+
         public GameSession GetCurrentSession()
         {
             return _gameSession;
         }
 
-        public void Save(GameSession gameSession)
+        public void Commit()
         {
-            _gameSession = gameSession;
-            DomainEventBus.DispatchEvents(gameSession);
+            DomainEventBus.DispatchEvents(_gameSession);
+            _observableModelRepository.Update(_gameSession);
         }
     }
 }

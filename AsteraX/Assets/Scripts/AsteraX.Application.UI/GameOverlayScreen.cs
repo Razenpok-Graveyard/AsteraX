@@ -1,8 +1,8 @@
-﻿using System.Threading;
+﻿using System;
 using AsteraX.Infrastructure;
 using Common.Application;
-using Cysharp.Threading.Tasks;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -23,46 +23,41 @@ namespace AsteraX.Application.UI
 
         private void Start()
         {
-            UpdateValuesAsync(this.GetCancellationTokenOnDestroy())
-                .SuppressCancellationThrow()
-                .Forget();
-        }
-
-        private async UniTask UpdateValuesAsync(CancellationToken ct = default)
-        {
-            while (!ct.IsCancellationRequested)
-            {
-                var model = _queryHandler.Handle(new Query());
-                _jumps.text = $"{model.Jumps} Jumps";
-                _score.text = $"{model.Score:C0}";
-                await UniTask.Yield();
-            }
+            var model = _queryHandler.Handle(new Query());
+            model.Jumps
+                .Select(jumps => $"{jumps} Jumps")
+                .SubscribeToText(_jumps)
+                .AddTo(this);
+            model.Score
+                .Select(score => $"{score:C0}")
+                .SubscribeToText(_score)
+                .AddTo(this);
         }
 
         public class Model
         {
-            public int Jumps { get; set; }
-            public int Score { get; set; }
+            public IObservable<int> Jumps { get; set; }
+            public IObservable<int> Score { get; set; }
         }
         
         public class Query : IRequest<Model> { }
 
         public class QueryHandler : RequestHandler<Query, Model>
         {
-            private readonly IGameSessionRepository _gameSessionRepository;
+            private readonly IGameSessionObservableModelRepository _gameSessionObservableModelRepository;
 
-            public QueryHandler(IGameSessionRepository gameSessionRepository)
+            public QueryHandler(IGameSessionObservableModelRepository gameSessionObservableModelRepository)
             {
-                _gameSessionRepository = gameSessionRepository;
+                _gameSessionObservableModelRepository = gameSessionObservableModelRepository;
             }
 
             protected override Model Handle(Query request)
             {
-                var gameSession = _gameSessionRepository.GetCurrentSession();
+                var readModel = _gameSessionObservableModelRepository.GetObservableModel();
                 return new Model
                 {
-                    Jumps = gameSession.Jumps,
-                    Score = gameSession.Score
+                    Jumps = readModel.Jumps,
+                    Score = readModel.Score
                 };
             }
         }

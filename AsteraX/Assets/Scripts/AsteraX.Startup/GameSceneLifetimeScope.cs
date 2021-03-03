@@ -27,6 +27,9 @@ namespace AsteraX.Startup
 
             builder.Register<ILevelRepository, LevelRepository>(Lifetime.Singleton);
             builder.Register<IGameSessionRepository, GameSessionRepository>(Lifetime.Singleton);
+            builder.Register<GameSessionObservableModelRepository>(Lifetime.Singleton)
+                .AsSelf()
+                .As<IGameSessionObservableModelRepository>();
             
             builder.RegisterBuildCallback(InjectAllMonoBehaviours);
         }
