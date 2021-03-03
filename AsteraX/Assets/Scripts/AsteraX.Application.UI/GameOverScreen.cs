@@ -1,6 +1,6 @@
-﻿using AsteraX.Application.Common;
-using AsteraX.Domain.Game;
+﻿using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
+using Common.Application;
 using TMPro;
 using UnityEngine;
 using VContainer;

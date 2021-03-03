@@ -1,6 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
-using CSharpFunctionalExtensions;
+using Common.Domain;
 
 namespace AsteraX.Domain.Game
 {

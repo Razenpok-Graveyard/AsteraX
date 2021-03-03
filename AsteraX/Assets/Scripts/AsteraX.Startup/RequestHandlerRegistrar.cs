@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using AsteraX.Application;
-using AsteraX.Application.Common;
+using Common.Application;
 using UnityEditorInternal;
 using UnityEngine;
 using VContainer;

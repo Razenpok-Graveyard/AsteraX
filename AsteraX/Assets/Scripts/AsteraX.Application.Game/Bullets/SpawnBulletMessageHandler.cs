@@ -1,5 +1,4 @@
 ﻿using System;
-using AsteraX.Application.Common;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;

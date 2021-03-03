@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Common.Domain;
 
 namespace AsteraX.Domain.Game
 {

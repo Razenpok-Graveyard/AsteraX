@@ -1,4 +1,4 @@
-﻿using AsteraX.Application.Common;
+﻿using Common.Application;
 using UnityEngine;
 
 namespace AsteraX.Application.Game

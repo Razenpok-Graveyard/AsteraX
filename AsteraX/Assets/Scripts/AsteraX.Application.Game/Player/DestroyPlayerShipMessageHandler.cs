@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading;
-using AsteraX.Application.Common;
 using AsteraX.Application.Game.Asteroids;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

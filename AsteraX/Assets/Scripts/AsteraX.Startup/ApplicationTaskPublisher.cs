@@ -1,5 +1,5 @@
 using System.Threading;
-using AsteraX.Application.Common;
+using Common.Application;
 using Cysharp.Threading.Tasks;
 using UniTaskPubSub;
 

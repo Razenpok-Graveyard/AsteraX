@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using AsteraX.Application.Common;
 using AsteraX.Infrastructure;
+using Common.Application;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;

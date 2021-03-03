@@ -1,7 +1,7 @@
-using AsteraX.Application.Common;
 using AsteraX.Application.Game.Asteroids;
 using AsteraX.Infrastructure;
-using CSharpFunctionalExtensions;
+using Common.Application;
+using Common.Functional;
 using UnityEngine;
 using VContainer;
 

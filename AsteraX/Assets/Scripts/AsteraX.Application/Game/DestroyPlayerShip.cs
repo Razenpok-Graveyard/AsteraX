@@ -1,4 +1,4 @@
-using AsteraX.Application.Common;
+using Common.Application;
 
 namespace AsteraX.Application.Game
 {

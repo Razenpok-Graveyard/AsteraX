@@ -1,5 +1,4 @@
-﻿using AsteraX.Application.Common;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AsteraX.Application.Game.Asteroids
 {
