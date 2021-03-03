@@ -2,17 +2,12 @@
 
 namespace AsteraX.Application.Game.Player
 {
-    public class MovePlayerShipMessageHandler : MonoBehaviour
+    public class MovePlayerShipTaskHandler : ApplicationTaskHandler<MovePlayerShip>
     {
         [SerializeField] private Transform _ship;
         [SerializeField] private PlayerShipSettings _settings;
 
-        private void Awake()
-        {
-            this.Subscribe<MovePlayerShip>(Handle);
-        }
-
-        private void Handle(MovePlayerShip notification)
+        protected override void Handle(MovePlayerShip notification)
         {
             if (!isActiveAndEnabled)
             {

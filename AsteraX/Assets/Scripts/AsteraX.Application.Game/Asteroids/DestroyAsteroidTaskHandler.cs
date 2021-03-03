@@ -7,7 +7,7 @@ using VContainer;
 
 namespace AsteraX.Application.Game.Asteroids
 {
-    public class DestroyAsteroidMessageHandler : MonoBehaviour
+    public class DestroyAsteroidTaskHandler : ApplicationTaskHandler<DestroyAsteroid>
     {
         [SerializeField] private AsteroidInstanceContainer _instanceContainer;
         
@@ -21,12 +21,7 @@ namespace AsteraX.Application.Game.Asteroids
             _applicationTaskPublisher = applicationTaskPublisher;
         }
 
-        private void Awake()
-        {
-            this.Subscribe<DestroyAsteroid>(Handle);
-        }
-
-        private void Handle(DestroyAsteroid message)
+        protected override void Handle(DestroyAsteroid message)
         {
             var instance = _instanceContainer.Get(message.Id);
             var command = new Command

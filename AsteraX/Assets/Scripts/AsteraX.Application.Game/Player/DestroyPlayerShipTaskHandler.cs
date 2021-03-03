@@ -6,16 +6,11 @@ using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class DestroyPlayerShipMessageHandler : MonoBehaviour
+    public class DestroyPlayerShipTaskHandler : ApplicationTaskHandler<DestroyPlayerShip>
     {
         [SerializeField] private GameObject _playerShip;
 
-        private void Awake()
-        {
-            this.Subscribe<DestroyPlayerShip>(DestroyPlayerShip);
-        }
-
-        private void DestroyPlayerShip(DestroyPlayerShip message)
+        protected override void Handle(DestroyPlayerShip message)
         {
             DestroyPlayerShipAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }

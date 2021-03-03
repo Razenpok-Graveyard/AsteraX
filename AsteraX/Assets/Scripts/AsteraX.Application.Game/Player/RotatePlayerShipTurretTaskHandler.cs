@@ -2,19 +2,19 @@
 
 namespace AsteraX.Application.Game.Player
 {
-    public class RotatePlayerShipTurretMessageHandler : MonoBehaviour
+    public class RotatePlayerShipTurretTaskHandler : ApplicationTaskHandler<RotatePlayerShipTurret>
     {
         [SerializeField] private Transform _turret;
 
         private Camera _mainCamera;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _mainCamera = Camera.main;
-            this.Subscribe<RotatePlayerShipTurret>(Handle);
         }
 
-        private void Handle(RotatePlayerShipTurret message)
+        protected override void Handle(RotatePlayerShipTurret message)
         {
             if (!isActiveAndEnabled)
             {

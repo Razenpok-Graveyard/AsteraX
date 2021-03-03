@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace AsteraX.Application.Game.Bullets
 {
-    public class SpawnBulletMessageHandler : MonoBehaviour
+    public class SpawnBulletTaskHandler : ApplicationTaskHandler<SpawnBullet>
     {
         [SerializeField] private BulletSettings _bulletSettings;
 
@@ -19,12 +19,7 @@ namespace AsteraX.Application.Game.Bullets
             _objectResolver = objectResolver;
         }
 
-        private void Awake()
-        {
-            this.Subscribe<SpawnBullet>(Handle);
-        }
-
-        private void Handle(SpawnBullet command)
+        protected override void Handle(SpawnBullet command)
         {
             var bullet = _objectResolver.Instantiate(
                 _bulletSettings.Prefab,

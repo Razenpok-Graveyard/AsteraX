@@ -4,7 +4,7 @@ using VContainer;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class FirePlayerShipTurretMessageHandler : MonoBehaviour
+    public class FirePlayerShipTurretTaskHandler : ApplicationTaskHandler<FirePlayerShipTurret>
     {
         [SerializeField] private Transform _turret;
         [SerializeField] private Transform _shootingPoint;
@@ -17,12 +17,7 @@ namespace AsteraX.Application.Game.Player
             _applicationTaskPublisher = applicationTaskPublisher;
         }
 
-        private void Awake()
-        {
-            this.Subscribe<FirePlayerShipTurret>(Handle);
-        }
-
-        private void Handle(FirePlayerShipTurret message)
+        protected override void Handle(FirePlayerShipTurret message)
         {
             var bulletPosition = _shootingPoint.position;
             var turretPosition = _turret.position;

@@ -2,17 +2,12 @@
 
 namespace AsteraX.Application.Game.Asteroids
 {
-    public class SpawnAsteroidMessageHandler : MonoBehaviour
+    public class SpawnAsteroidTaskHandler : ApplicationTaskHandler<SpawnAsteroid>
     {
         [SerializeField] private AsteroidInstanceContainer _instanceContainer;
         [SerializeField] private AsteroidSettings _asteroidSettings;
 
-        private void Awake()
-        {
-            this.Subscribe<SpawnAsteroid>(Handle);
-        }
-
-        private void Handle(SpawnAsteroid message)
+        protected override void Handle(SpawnAsteroid message)
         {
             var asteroid = InstantiateAsteroid(message);
             var instance = AsteroidInstance.AddTo(asteroid, message.Id);
