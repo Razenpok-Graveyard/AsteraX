@@ -94,7 +94,7 @@ namespace AsteraX.Domain.Tests
         }
 
         [Test]
-        public void Collision_of_asteroid_and_bullet_should_increase_score_by_asteroid_score()
+        public void Collision_of_asteroid_and_bullet_increases_score_by_asteroid_score()
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
 
