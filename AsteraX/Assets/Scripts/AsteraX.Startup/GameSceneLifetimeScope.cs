@@ -25,6 +25,7 @@ namespace AsteraX.Startup
             builder.RegisterInstance(subscriber).As<IApplicationTaskSubscriber>();
             ApplicationTaskDispatcher.Subscriber = subscriber;
 
+            builder.Register<GameSessionSettings>(Lifetime.Singleton);
             builder.Register<ILevelRepository, LevelRepository>(Lifetime.Singleton);
             builder.Register<IGameSessionRepository, GameSessionRepository>(Lifetime.Singleton);
             builder.Register<GameSessionObservableModelRepository>(Lifetime.Singleton)

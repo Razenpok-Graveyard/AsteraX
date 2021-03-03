@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace AsteraX.Application.Game
+namespace AsteraX.Application.Game.Components
 {
-    public class GameFieldWrapper : MonoBehaviour
+    public class WrapOutOfBounds : MonoBehaviour
     {
         private void OnTriggerExit(Collider other)
         {
