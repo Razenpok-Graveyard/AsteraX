@@ -25,7 +25,21 @@ namespace AsteraX.Startup
             CancellationToken ct = default)
             where T : IAsyncApplicationTask
         {
-            return _asyncSubscriber.Subscribe(handler, ct);
+            
+            return _asyncSubscriber.Subscribe<T>(
+                (msg, ct2) => Handle(handler, msg, ct, ct2)
+            );
+        }
+
+        private static async UniTask Handle<T>(
+            Func<T, CancellationToken, UniTask> handler,
+            T message,
+            CancellationToken ct,
+            CancellationToken ct2)
+            where T : IAsyncApplicationTask
+        {
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, ct2);
+            await handler(message, linkedCts.Token);
         }
     }
 }

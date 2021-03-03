@@ -12,6 +12,8 @@ namespace AsteraX.Domain.Game
         }
 
         public int Jumps { get; private set; }
+        
+        public bool IsOver { get; private set; }
 
         public int Score { get; set; }
 
@@ -42,6 +44,7 @@ namespace AsteraX.Domain.Game
             if (Jumps == 0)
             {
                 AddDomainEvent(new GameOverEvent());
+                IsOver = true;
             }
             else
             {

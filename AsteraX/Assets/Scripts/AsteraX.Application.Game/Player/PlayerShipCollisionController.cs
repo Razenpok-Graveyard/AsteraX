@@ -1,8 +1,8 @@
-﻿using System;
-using AsteraX.Application.Game.Asteroids;
+﻿using AsteraX.Application.Game.Asteroids;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Common.Functional;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
@@ -63,11 +63,22 @@ namespace AsteraX.Application.Game.Player
                 gameSession.CollideAsteroidWithPlayerShip(maybeAsteroid.Value);
                 _gameSessionRepository.Commit();
 
-                _applicationTaskPublisher.Publish(new DestroyAsteroid
+                var destroyAsteroidTask = new DestroyAsteroid
                 {
                     Id = command.AsteroidId
-                });
+                };
+                _applicationTaskPublisher.Publish(destroyAsteroidTask);
                 _applicationTaskPublisher.Publish(new DestroyPlayerShip());
+
+                if (!gameSession.IsOver)
+                {
+                    const float respawnDelay = 2;
+                    var respawnPlayerShipTask = new RespawnPlayerShip
+                    {
+                        Delay = respawnDelay
+                    };
+                    _applicationTaskPublisher.PublishAsync(respawnPlayerShipTask).Forget();
+                }
 
                 return Result.Success();
             }

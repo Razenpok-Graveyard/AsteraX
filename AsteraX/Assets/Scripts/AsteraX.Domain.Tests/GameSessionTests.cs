@@ -59,6 +59,7 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithPlayerShip(asteroid);
 
+            session.IsOver.Should().BeTrue();
             session.DomainEvents.Should().ContainSingle(e => e is GameOverEvent);
         }
 
@@ -70,6 +71,7 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithPlayerShip(asteroid);
 
+            session.IsOver.Should().BeFalse();
             session.DomainEvents.Should().NotContain(e => e is GameOverEvent);
         }
 
