@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BulletSettings
   m_EditorClassIdentifier: 
   _prefab: {fileID: 1657914042213664, guid: 0e9c239fd33d94404b671bc44ab4f6b4, type: 3}
-  _speed: 10
+  _speed: 20
   _lifetime: 2

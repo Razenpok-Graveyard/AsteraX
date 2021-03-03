@@ -6,7 +6,7 @@ namespace AsteraX.Infrastructure.Data
     {
         public Level GetLevel()
         {
-            return new Level(1, 3, 3);
+            return new Level(1, 1, 0);
         }
     }
 }
