@@ -15,7 +15,9 @@ namespace AsteraX.Application.Game.Asteroids
         private IApplicationTaskPublisher _applicationTaskPublisher;
 
         [Inject]
-        public void Construct(CommandHandler commandHandler, IApplicationTaskPublisher applicationTaskPublisher)
+        public void Construct(
+            IRequestHandler<Command, Model> commandHandler,
+            IApplicationTaskPublisher applicationTaskPublisher)
         {
             _commandHandler = commandHandler;
             _applicationTaskPublisher = applicationTaskPublisher;

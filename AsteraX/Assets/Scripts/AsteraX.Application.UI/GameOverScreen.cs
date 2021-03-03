@@ -16,7 +16,7 @@ namespace AsteraX.Application.UI
         private IRequestHandler<Query, Model> _queryHandler;
 
         [Inject]
-        public void Construct(QueryHandler queryHandler)
+        public void Construct(IRequestHandler<Query, Model> queryHandler)
         {
             _queryHandler = queryHandler;
         }

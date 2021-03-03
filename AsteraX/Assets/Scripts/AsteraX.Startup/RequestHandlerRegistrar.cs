@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using AsteraX.Application;
 using Common.Application;
 using UnityEditorInternal;
 using UnityEngine;
@@ -45,7 +44,7 @@ namespace AsteraX.Startup
                     continue;
                 }
 
-                var registration = builder.Register(type, Lifetime.Transient).AsSelf();
+                var registration = builder.Register(type, Lifetime.Transient);
 
                 foreach (var @interface in type.GetInterfaces())
                 {

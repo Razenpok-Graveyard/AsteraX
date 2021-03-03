@@ -1,4 +1,5 @@
-﻿using AsteraX.Application.Game.Asteroids;
+﻿using System;
+using AsteraX.Application.Game.Asteroids;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Common.Functional;
@@ -13,7 +14,7 @@ namespace AsteraX.Application.Game.Player
         private IRequestHandler<Command, Result> _commandHandler;
 
         [Inject]
-        public void Construct(CommandHandler commandHandler)
+        public void Construct(IRequestHandler<Command, Result> commandHandler)
         {
             _commandHandler = commandHandler;
         }
