@@ -82,7 +82,8 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithPlayerShip(asteroid);
 
-            session.Score.Should().Be(0);
+            const int expectedScore = 0;
+            session.Score.Should().Be(expectedScore);
         }
 
         [Test]
@@ -102,7 +103,8 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithBullet(asteroid);
 
-            session.Score.Should().Be(asteroid.Score);
+            var expectedScore = asteroid.Score;
+            session.Score.Should().Be(expectedScore);
         }
 
         private static (GameSession, Asteroid) CreateGameSessionWithOneAsteroid()
