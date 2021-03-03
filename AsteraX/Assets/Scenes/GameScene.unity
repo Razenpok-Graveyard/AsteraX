@@ -1110,6 +1110,12 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!198 &991271767 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3737762738510612292, guid: a89fc9c9129f080449c75b067b7a170a,
+    type: 3}
+  m_PrefabInstance: {fileID: 3737762737519352851}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &991271768 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3737762738510612299, guid: a89fc9c9129f080449c75b067b7a170a,
@@ -1742,6 +1748,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerShip: {fileID: 2066196652}
+  _exhaustTrail: {fileID: 991271767}
+  _appearEffect: {fileID: 2433453824641962130, guid: 87e46b91aaf525d4fa529f67f0c6a78b,
+    type: 3}
 --- !u!114 &1666005261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1755,6 +1764,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerShip: {fileID: 2066196652}
+  _exhaustTrail: {fileID: 991271767}
+  _disappearEffect: {fileID: 2884558111660424880, guid: 85502e8edf091254fa6608eab8b37830,
+    type: 3}
 --- !u!1 &1819826369
 GameObject:
   m_ObjectHideFlags: 0
