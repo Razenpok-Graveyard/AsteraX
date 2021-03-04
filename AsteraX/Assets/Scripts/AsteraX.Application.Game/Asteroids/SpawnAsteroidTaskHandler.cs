@@ -1,36 +1,55 @@
-﻿using UnityEngine;
+﻿using AsteraX.Application.Game.Level;
+using UnityEngine;
 
 namespace AsteraX.Application.Game.Asteroids
 {
-    public class SpawnAsteroidTaskHandler : ApplicationTaskHandler<SpawnAsteroid>
+    public class SpawnAsteroidTaskHandler : ApplicationTaskHandler<SpawnAsteroids>
     {
         [SerializeField] private AsteroidInstanceContainer _instanceContainer;
         [SerializeField] private AsteroidSettings _asteroidSettings;
+        [SerializeField] private LevelBounds _levelBounds;
 
-        protected override void Handle(SpawnAsteroid message)
+        protected override void Handle(SpawnAsteroids message)
         {
-            var asteroid = InstantiateAsteroid(message);
-            var instance = AsteroidInstance.AddTo(asteroid, message.Id);
-            _instanceContainer.Add(message.Id, instance);
+            foreach (var asteroidDto in message.Asteroids)
+            {
+                var asteroid = InstantiateAsteroid(asteroidDto, GetRandomSpawnPosition(), transform);
+                var physicsBody = asteroid.GetComponent<AsteroidPhysicsBody>();
+                physicsBody.SetRandomVelocity();
+            }
         }
 
-        private GameObject InstantiateAsteroid(SpawnAsteroid message)
+        private GameObject InstantiateAsteroid(
+            SpawnAsteroids.AsteroidDto asteroidDto,
+            Vector3 position,
+            Transform parent)
         {
             var prefabIndex = Random.Range(0, _asteroidSettings.Prefabs.Length);
             var prefab = _asteroidSettings.Prefabs[prefabIndex];
-            var asteroid = Instantiate(
-                prefab,
-                message.WorldPosition,
-                message.Direction,
-                transform
-            );
-            
-            asteroid.transform.localScale = Vector3.one * message.Size;
-            var movementDirection = Random.insideUnitCircle.normalized;
-            var rigidBody = asteroid.GetComponent<Rigidbody>();
-            rigidBody.velocity = movementDirection * _asteroidSettings.Speed;
-            rigidBody.angularVelocity = Random.onUnitSphere * _asteroidSettings.RotationSpeed;
+            var asteroid = Instantiate(prefab, position, Random.rotation, parent);
+            asteroid.transform.localScale = Vector3.one * asteroidDto.Size / parent.lossyScale.x;
+
+            var instance = AsteroidInstance.AddTo(asteroid, asteroidDto.Id);
+            _instanceContainer.Add(asteroidDto.Id, instance);
+
+            var childContainer = asteroid.AddComponent<AsteroidChildContainer>();
+
+            foreach (var childDto in asteroidDto.Children)
+            {
+                var childPosition = asteroid.transform.position + Random.onUnitSphere;
+                var child = InstantiateAsteroid(childDto, childPosition, asteroid.transform);
+                var childPhysicsBody = child.GetComponent<AsteroidPhysicsBody>();
+                childPhysicsBody.Disable();
+                childContainer.Add(childPhysicsBody);
+            }
+
             return asteroid;
+        }
+
+        private Vector3 GetRandomSpawnPosition()
+        {
+            var spawnPadding = new Vector2(0.5f, 0.5f);
+            return _levelBounds.GetRandomPositionOutsideSafeArea(spawnPadding);
         }
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23797079329656280}
   - component: {fileID: 64536637146463518}
   - component: {fileID: 54329969971019666}
+  - component: {fileID: -3146615681428880482}
   m_Layer: 10
   m_Name: Asteroid_A
   m_TagString: Untagged
@@ -113,3 +114,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
+--- !u!114 &-3146615681428880482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029653053436338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f57c7b4a18845daa4d68125edd328a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 54329969971019666}
+  _meshCollider: {fileID: 64536637146463518}
+  _asteroidSettings: {fileID: 11400000, guid: 34643ab5bf006864999eadddcf253e2e, type: 2}

@@ -6,7 +6,7 @@ using Common.Application;
 using UnityEngine;
 using VContainer;
 
-namespace AsteraX.Application.Game
+namespace AsteraX.Application.Game.Level
 {
     public class LevelStarter : MonoBehaviour
     {
@@ -25,42 +25,11 @@ namespace AsteraX.Application.Game
         private void Start()
         {
             var model = _commandHandler.Handle(new Command());
-            foreach (var asteroid in model.Asteroids)
+            var spawnTask = new SpawnAsteroids
             {
-                var position = GetRandomSpawnPosition();
-                var direction = Random.rotation;
-                var spawnTask = new SpawnAsteroid
-                {
-                    Id = asteroid.Id,
-                    Size = asteroid.Size,
-                    WorldPosition = position,
-                    Direction = direction
-                };
-                _applicationTaskPublisher.Publish(spawnTask);
-            }
-        }
-
-        private static Vector3 GetRandomSpawnPosition()
-        {
-            var minPosition = new Vector2(-15.5f, -8.5f);
-            var maxPosition = new Vector2(15.5f, 8.5f);
-
-            Vector2 randomPosition;
-            do
-            {
-                randomPosition = new Vector2(
-                    Random.Range(minPosition.x, maxPosition.x),
-                    Random.Range(minPosition.y, maxPosition.y)
-                );
-            } while (IsInsideSafeArea(randomPosition));
-
-            return randomPosition;
-        }
-
-        private static bool IsInsideSafeArea(Vector2 position)
-        {
-            var safeArea = Rect.MinMaxRect(-5, -4, 5, 4);
-            return safeArea.Contains(position);
+                Asteroids = model.Asteroids.Select(AsteroidDto.ToSpawnAsteroidsDto).ToList()
+            };
+            _applicationTaskPublisher.Publish(spawnTask);
         }
 
         public class Model
@@ -81,6 +50,16 @@ namespace AsteraX.Application.Game
                     Id = asteroid.Id,
                     Size = asteroid.Size,
                     Children = asteroid.Children.Select(FromAsteroid).ToList()
+                };
+            }
+
+            public static SpawnAsteroids.AsteroidDto ToSpawnAsteroidsDto(AsteroidDto asteroidDto)
+            {
+                return new SpawnAsteroids.AsteroidDto
+                {
+                    Id = asteroidDto.Id,
+                    Size = asteroidDto.Size,
+                    Children = asteroidDto.Children.Select(ToSpawnAsteroidsDto).ToList()
                 };
             }
         }
