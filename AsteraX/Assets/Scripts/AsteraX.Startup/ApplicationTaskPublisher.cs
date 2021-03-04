@@ -14,12 +14,12 @@ namespace AsteraX.Startup
             _asyncPublisher = asyncPublisher;
         }
         
-        public void Publish<T>(T task) where T : IApplicationTask
+        public void PublishTask<T>(T task) where T : IApplicationTask
         {
             _asyncPublisher.Publish(task);
         }
 
-        public UniTask PublishAsync<T>(T task, CancellationToken ct = default) where T : IAsyncApplicationTask
+        public UniTask PublishAsyncTask<T>(T task, CancellationToken ct = default) where T : IAsyncApplicationTask
         {
             return _asyncPublisher.PublishAsync(task, ct);
         }

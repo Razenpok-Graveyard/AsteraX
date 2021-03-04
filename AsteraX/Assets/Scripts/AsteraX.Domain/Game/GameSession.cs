@@ -9,10 +9,13 @@ namespace AsteraX.Domain.Game
             Contract.Requires(initialJumps >= 0, "initialJumps >= 0");
 
             Jumps = initialJumps;
+            IsPlayerAlive = true;
         }
 
         public int Jumps { get; private set; }
-        
+
+        public bool IsPlayerAlive { get; private set; }
+
         public bool IsOver { get; private set; }
 
         public int Score { get; set; }
@@ -32,13 +35,18 @@ namespace AsteraX.Domain.Game
 
         public void CollideAsteroidWithPlayerShip(Asteroid asteroid)
         {
-            
             LevelAttempt.Destroy(asteroid);
             KillPlayer();
         }
 
+        public void RespawnPlayer()
+        {
+            IsPlayerAlive = true;
+        }
+
         private void KillPlayer()
         {
+            IsPlayerAlive = false;
             AddDomainEvent(new PlayerShipDestroyedEvent());
 
             if (Jumps == 0)

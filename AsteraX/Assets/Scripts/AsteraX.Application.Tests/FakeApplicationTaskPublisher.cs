@@ -12,12 +12,12 @@ namespace AsteraX.Application.Tests
     {
         private readonly List<object> _publishedTasks = new List<object>();
 
-        public void Publish<T>(T task) where T : IApplicationTask
+        public void PublishTask<T>(T task) where T : IApplicationTask
         {
             _publishedTasks.Add(task);
         }
 
-        public UniTask PublishAsync<T>(T task, CancellationToken ct = default) where T : IAsyncApplicationTask
+        public UniTask PublishAsyncTask<T>(T task, CancellationToken ct = default) where T : IAsyncApplicationTask
         {
             _publishedTasks.Add(task);
             return UniTask.CompletedTask;

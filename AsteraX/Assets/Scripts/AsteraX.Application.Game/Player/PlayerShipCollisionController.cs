@@ -1,4 +1,5 @@
-﻿using AsteraX.Application.Game.Asteroids;
+﻿using System.Threading;
+using AsteraX.Application.Game.Asteroids;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Common.Functional;
@@ -11,10 +12,10 @@ namespace AsteraX.Application.Game.Player
     
     public class PlayerShipCollisionController : MonoBehaviour
     {
-        private IRequestHandler<Command, Result> _commandHandler;
+        private IAsyncRequestHandler<Command, Result> _commandHandler;
 
         [Inject]
-        public void Construct(IRequestHandler<Command, Result> commandHandler)
+        public void Construct(IAsyncRequestHandler<Command, Result> commandHandler)
         {
             _commandHandler = commandHandler;
         }
@@ -23,13 +24,20 @@ namespace AsteraX.Application.Game.Player
         {
             if (other.TryGetComponent<AsteroidInstance>(out var asteroid))
             {
-                var command = new Command {AsteroidId = asteroid.Id};
-                var (_, isFailure, error) = _commandHandler.Handle(command);
-                if (isFailure)
-                {
-                    Debug.LogError(error);
-                }
+                HandleCollision(asteroid.Id).Forget();
             }
+        }
+
+        private async UniTask HandleCollision(long asteroidId)
+        {
+            enabled = false;
+            var command = new Command {AsteroidId = asteroidId};
+            var (_, isFailure, error) = await _commandHandler.Handle(command);
+            if (isFailure)
+            {
+                Debug.LogError(error);
+            }
+            enabled = true;
         }
 
         public class Command : IRequest<Result>
@@ -37,20 +45,20 @@ namespace AsteraX.Application.Game.Player
             public long AsteroidId { get; set; }
         }
 
-        public class CommandHandler : RequestHandler<Command, Result>
+        public class CommandHandler : AsyncRequestHandler<Command, Result>
         {
             private readonly IGameSessionRepository _gameSessionRepository;
-            private readonly IApplicationTaskPublisher _applicationTaskPublisher;
+            private readonly IApplicationTaskPublisher _taskPublisher;
 
             public CommandHandler(
                 IGameSessionRepository gameSessionRepository,
-                IApplicationTaskPublisher applicationTaskPublisher)
+                IApplicationTaskPublisher taskPublisher)
             {
                 _gameSessionRepository = gameSessionRepository;
-                _applicationTaskPublisher = applicationTaskPublisher;
+                _taskPublisher = taskPublisher;
             }
 
-            protected override Result Handle(Command command)
+            protected override async UniTask<Result> Handle(Command command, CancellationToken ct)
             {
                 var gameSession = _gameSessionRepository.GetCurrentSession();
                 var maybeAsteroid = gameSession.LevelAttempt.Asteroids
@@ -67,8 +75,8 @@ namespace AsteraX.Application.Game.Player
                 {
                     Id = command.AsteroidId
                 };
-                _applicationTaskPublisher.Publish(destroyAsteroidTask);
-                _applicationTaskPublisher.Publish(new DestroyPlayerShip());
+                _taskPublisher.PublishTask(destroyAsteroidTask);
+                _taskPublisher.PublishTask(new DestroyPlayerShip());
 
                 if (!gameSession.IsOver)
                 {
@@ -77,7 +85,9 @@ namespace AsteraX.Application.Game.Player
                     {
                         Delay = respawnDelay
                     };
-                    _applicationTaskPublisher.PublishAsync(respawnPlayerShipTask).Forget();
+                    await _taskPublisher.PublishAsyncTask(respawnPlayerShipTask, ct);
+                    gameSession.RespawnPlayer();
+                    _gameSessionRepository.Commit();
                 }
 
                 return Result.Success();

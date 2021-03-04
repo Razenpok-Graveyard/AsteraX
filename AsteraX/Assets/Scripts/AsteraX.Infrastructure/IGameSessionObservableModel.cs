@@ -6,5 +6,6 @@ namespace AsteraX.Infrastructure
     {
         IObservable<int> Jumps { get; }
         IObservable<int> Score { get; }
+        IObservable<bool> IsPlayerAlive { get; }
     }
 }

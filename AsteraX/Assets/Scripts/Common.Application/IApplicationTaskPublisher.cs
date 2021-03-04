@@ -5,7 +5,7 @@ namespace Common.Application
 {
     public interface IApplicationTaskPublisher
     {
-        void Publish<T>(T task) where T : IApplicationTask;
-        UniTask PublishAsync<T>(T task, CancellationToken ct = default) where T : IAsyncApplicationTask;
+        void PublishTask<T>(T task) where T : IApplicationTask;
+        UniTask PublishAsyncTask<T>(T task, CancellationToken ct = default) where T : IAsyncApplicationTask;
     }
 }

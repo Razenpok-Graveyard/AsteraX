@@ -29,7 +29,7 @@ namespace AsteraX.Application.Game.Level
             {
                 Asteroids = model.Asteroids.Select(AsteroidDto.ToSpawnAsteroidsDto).ToList()
             };
-            _applicationTaskPublisher.Publish(spawnTask);
+            _applicationTaskPublisher.PublishTask(spawnTask);
         }
 
         public class Model

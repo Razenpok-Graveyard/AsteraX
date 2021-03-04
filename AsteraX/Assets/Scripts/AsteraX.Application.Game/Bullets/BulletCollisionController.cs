@@ -35,14 +35,14 @@ namespace AsteraX.Application.Game.Bullets
         public class CommandHandler : RequestHandler<Command, Result>
         {
             private readonly IGameSessionRepository _gameSessionRepository;
-            private readonly IApplicationTaskPublisher _applicationTaskPublisher;
+            private readonly IApplicationTaskPublisher _taskPublisher;
 
             public CommandHandler(
                 IGameSessionRepository gameSessionRepository,
-                IApplicationTaskPublisher applicationTaskPublisher)
+                IApplicationTaskPublisher taskPublisher)
             {
                 _gameSessionRepository = gameSessionRepository;
-                _applicationTaskPublisher = applicationTaskPublisher;
+                _taskPublisher = taskPublisher;
             }
 
             protected override Result Handle(Command command)
@@ -58,7 +58,7 @@ namespace AsteraX.Application.Game.Bullets
                 gameSession.CollideAsteroidWithBullet(maybeAsteroid.Value);
                 _gameSessionRepository.Commit();
 
-                _applicationTaskPublisher.Publish(new DestroyAsteroid
+                _taskPublisher.PublishTask(new DestroyAsteroid
                 {
                     Id = command.AsteroidId
                 });

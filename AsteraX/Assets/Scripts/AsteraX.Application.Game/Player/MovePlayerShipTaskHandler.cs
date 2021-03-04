@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using AsteraX.Infrastructure;
+using Common.Application;
+using UniRx;
+using UnityEngine;
+using VContainer;
 
 namespace AsteraX.Application.Game.Player
 {
@@ -8,9 +13,27 @@ namespace AsteraX.Application.Game.Player
         [SerializeField] private PlayerShipSettings _settings;
         [SerializeField] private PlayerShipTrail _playerShipTrail;
 
+        private IRequestHandler<Query, Model> _requestHandler;
+
+        private bool _isPlayerAlive;
+
+        [Inject]
+        public void Construct(IRequestHandler<Query, Model> requestHandler)
+        {
+            _requestHandler = requestHandler;
+        }
+
+        private void Start()
+        {
+            var model = _requestHandler.Handle(new Query());
+            model.IsPlayerAlive
+                .Subscribe(value => _isPlayerAlive = value)
+                .AddTo(this);
+        }
+
         protected override void Handle(MovePlayerShip task)
         {
-            if (!isActiveAndEnabled)
+            if (!_isPlayerAlive)
             {
                 return;
             }
@@ -25,6 +48,34 @@ namespace AsteraX.Application.Game.Player
             _ship.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
             
             _playerShipTrail.UpdateDirection(task.Movement);
+        }
+
+        public class Model
+        {
+            public IObservable<bool> IsPlayerAlive { get; set; }
+        }
+
+        public class Query : IRequest<Model>
+        {
+        }
+
+        public class QueryHandler : RequestHandler<Query, Model>
+        {
+            private readonly IGameSessionObservableModelRepository _modelRepository;
+
+            public QueryHandler(IGameSessionObservableModelRepository modelRepository)
+            {
+                _modelRepository = modelRepository;
+            }
+
+            protected override Model Handle(Query request)
+            {
+                var observableModel = _modelRepository.GetObservableModel();
+                return new Model
+                {
+                    IsPlayerAlive = observableModel.IsPlayerAlive
+                };
+            }
         }
     }
 }

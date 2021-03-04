@@ -1,70 +1,74 @@
+using System.Collections;
 using System.Linq;
 using AsteraX.Application.Game;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
 using Common.Functional;
+using Cysharp.Threading.Tasks;
 using FluentAssertions;
-using NUnit.Framework;
+using UnityEngine.TestTools;
 using static AsteraX.Application.Game.Player.PlayerShipCollisionController;
 
 namespace AsteraX.Application.Tests
 {
     public class PlayerShipCollisionControllerTests
     {
-        [Test]
-        public void Colliding_asteroid_with_player_when_there_are_jumps_remaining()
-        {
-            var observableModelRepository = new GameSessionObservableModelRepository();
-            var repository = new GameSessionRepository(observableModelRepository);
-            var gameSession = repository.GetCurrentSession();
-            var level = new Level(1, 1, 0);
-            gameSession.StartLevel(level);
-            var asteroidId = gameSession.LevelAttempt.Asteroids.First().Id;
-
-            var taskPublisher = new FakeApplicationTaskPublisher();
-
-            IRequestHandler<Command, Result> sut = new CommandHandler(repository, taskPublisher);
-            var command = new Command
+        [UnityTest]
+        public IEnumerator Colliding_asteroid_with_player_when_there_are_jumps_remaining() => UniTask.ToCoroutine(
+            async () =>
             {
-                AsteroidId = asteroidId
-            };
-            var result = sut.Handle(command);
+                var observableModelRepository = new GameSessionObservableModelRepository();
+                var repository = new GameSessionRepository(observableModelRepository);
+                var gameSession = repository.GetCurrentSession();
+                var level = new Level(1, 1, 0);
+                gameSession.StartLevel(level);
+                var asteroidId = gameSession.LevelAttempt.Asteroids.First().Id;
 
-            result.IsSuccess.Should().BeTrue();
-            taskPublisher
-                .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                .ShouldContainSingle<DestroyPlayerShip>()
-                .ShouldContainSingle<RespawnPlayerShip>();
-        }
+                var taskPublisher = new FakeApplicationTaskPublisher();
 
-        [Test]
-        public void Colliding_asteroid_with_player_when_there_are_no_jumps_remaining()
-        {
-            var observableModelRepository = new GameSessionObservableModelRepository();
-            var gameSessionSettings = new GameSessionSettings
+                IAsyncRequestHandler<Command, Result> sut = new CommandHandler(repository, taskPublisher);
+                var command = new Command
+                {
+                    AsteroidId = asteroidId
+                };
+                var result = await sut.Handle(command);
+
+                result.IsSuccess.Should().BeTrue();
+                taskPublisher
+                    .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .ShouldContainSingle<DestroyPlayerShip>()
+                    .ShouldContainSingle<RespawnPlayerShip>();
+            });
+
+        [UnityTest]
+        public IEnumerator Colliding_asteroid_with_player_when_there_are_no_jumps_remaining() => UniTask.ToCoroutine(
+            async () =>
             {
-                InitialJumps = 0
-            };
-            var repository = new GameSessionRepository(observableModelRepository, gameSessionSettings);
-            var gameSession = repository.GetCurrentSession();
-            var level = new Level(1, 1, 0);
-            gameSession.StartLevel(level);
-            var asteroidId = gameSession.LevelAttempt.Asteroids.First().Id;
+                var observableModelRepository = new GameSessionObservableModelRepository();
+                var gameSessionSettings = new GameSessionSettings
+                {
+                    InitialJumps = 0
+                };
+                var repository = new GameSessionRepository(observableModelRepository, gameSessionSettings);
+                var gameSession = repository.GetCurrentSession();
+                var level = new Level(1, 1, 0);
+                gameSession.StartLevel(level);
+                var asteroidId = gameSession.LevelAttempt.Asteroids.First().Id;
 
-            var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new FakeApplicationTaskPublisher();
 
-            IRequestHandler<Command, Result> sut = new CommandHandler(repository, taskPublisher);
-            var command = new Command
-            {
-                AsteroidId = asteroidId
-            };
-            var result = sut.Handle(command);
+                IAsyncRequestHandler<Command, Result> sut = new CommandHandler(repository, taskPublisher);
+                var command = new Command
+                {
+                    AsteroidId = asteroidId
+                };
+                var result = await sut.Handle(command);
 
-            result.IsSuccess.Should().BeTrue();
-            taskPublisher
-                .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                .ShouldContainSingle<DestroyPlayerShip>();
-        }
+                result.IsSuccess.Should().BeTrue();
+                taskPublisher
+                    .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .ShouldContainSingle<DestroyPlayerShip>();
+            });
     }
 }

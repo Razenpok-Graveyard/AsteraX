@@ -14,6 +14,7 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithPlayerShip(asteroid);
 
+            session.IsPlayerAlive.Should().BeFalse();
             session.DomainEvents.Should().ContainSingle(e => e is PlayerShipDestroyedEvent);
         }
 
@@ -105,6 +106,17 @@ namespace AsteraX.Domain.Tests
 
             var expectedScore = asteroid.Score;
             session.Score.Should().Be(expectedScore);
+        }
+
+        [Test]
+        public void Player_is_alive_after_respawn()
+        {
+            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            session.CollideAsteroidWithPlayerShip(asteroid);
+
+            session.RespawnPlayer();
+
+            session.IsPlayerAlive.Should().BeTrue();
         }
 
         private static (GameSession, Asteroid) CreateGameSessionWithOneAsteroid()

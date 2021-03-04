@@ -32,16 +32,16 @@ namespace AsteraX.Application.Game.Player
         {
             var movement = GetMovement();
             _movePlayerShipMessage.Movement = movement;
-            _applicationTaskPublisher.Publish(_movePlayerShipMessage);
+            _applicationTaskPublisher.PublishTask(_movePlayerShipMessage);
 
             var mouseScreenPosition = (Vector2) _mainCamera.ScreenToViewportPoint(Input.mousePosition);
             _rotatePlayerShipTurretMessage.ScreenPosition = mouseScreenPosition;
-            _applicationTaskPublisher.Publish(_rotatePlayerShipTurretMessage);
+            _applicationTaskPublisher.PublishTask(_rotatePlayerShipTurretMessage);
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
                 _firePlayerShipTurret.ScreenPosition = mouseScreenPosition;
-                _applicationTaskPublisher.Publish(_firePlayerShipTurret);
+                _applicationTaskPublisher.PublishTask(_firePlayerShipTurret);
             }
         }
 
