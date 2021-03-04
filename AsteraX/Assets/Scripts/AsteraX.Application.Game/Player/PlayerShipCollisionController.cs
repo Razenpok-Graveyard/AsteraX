@@ -61,14 +61,14 @@ namespace AsteraX.Application.Game.Player
             protected override async UniTask<Result> Handle(Command command, CancellationToken ct)
             {
                 var gameSession = _gameSessionRepository.Get();
-                var maybeAsteroid = gameSession.LevelAttempt.Asteroids
-                    .TryFirst(a => a.Id == command.AsteroidId);
-                if (maybeAsteroid.HasNoValue)
+                var isAsteroidAlive = gameSession.LevelAttempt.IsAsteroidAlive(command.AsteroidId);
+                if (isAsteroidAlive)
                 {
                     return Result.Failure($"Cannot destroy dead asteroid {command.AsteroidId}");
                 }
 
-                gameSession.CollideAsteroidWithPlayerShip(maybeAsteroid.Value);
+                var asteroid = gameSession.LevelAttempt.GetAsteroid(command.AsteroidId);
+                gameSession.CollideAsteroidWithPlayerShip(asteroid);
                 _gameSessionRepository.Save();
 
                 var destroyAsteroidTask = new DestroyAsteroid

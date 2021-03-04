@@ -9,7 +9,6 @@ namespace AsteraX.Domain.Game
         private static long _lastAsteroidId;
 
         private readonly Collection<Asteroid> _asteroids;
-        private readonly Collection<Asteroid> _destroyedAsteroids = new Collection<Asteroid>();
 
         public LevelAttempt(Level level)
         {
@@ -22,8 +21,6 @@ namespace AsteraX.Domain.Game
         public Level Level { get; }
 
         public IReadOnlyCollection<Asteroid> Asteroids => _asteroids;
-
-        public IReadOnlyCollection<Asteroid> DestroyedAsteroids => _destroyedAsteroids;
 
         public bool IsAsteroidAlive(Asteroid asteroid) => Asteroids.Contains(asteroid);
 
@@ -41,7 +38,6 @@ namespace AsteraX.Domain.Game
             Contract.Requires(IsAsteroidAlive(asteroid), "IsAsteroidAlive(asteroid)");
 
             _asteroids.Remove(asteroid);
-            _destroyedAsteroids.Add(asteroid);
             foreach (var child in asteroid.Children)
             {
                 _asteroids.Add(child);

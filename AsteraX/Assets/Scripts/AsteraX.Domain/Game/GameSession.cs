@@ -18,7 +18,7 @@ namespace AsteraX.Domain.Game
 
         public bool IsOver { get; private set; }
 
-        public int Score { get; set; }
+        public int Score { get; private set; }
 
         public LevelAttempt LevelAttempt { get; private set; }
 
