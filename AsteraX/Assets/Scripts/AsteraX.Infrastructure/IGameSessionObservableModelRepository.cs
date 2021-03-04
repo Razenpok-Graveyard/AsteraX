@@ -1,4 +1,4 @@
-namespace AsteraX.Infrastructure
+﻿namespace AsteraX.Infrastructure
 {
     public interface IGameSessionObservableModelRepository
     {

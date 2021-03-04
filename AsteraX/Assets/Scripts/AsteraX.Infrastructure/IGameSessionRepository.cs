@@ -4,7 +4,7 @@ namespace AsteraX.Infrastructure
 {
     public interface IGameSessionRepository
     {
-        GameSession GetCurrentSession();
-        void Commit();
+        GameSession Get();
+        void Save();
     }
 }

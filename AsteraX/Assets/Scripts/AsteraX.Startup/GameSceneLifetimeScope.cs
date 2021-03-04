@@ -1,4 +1,3 @@
-using AsteraX.Infrastructure;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
 using JetBrains.Annotations;
@@ -26,11 +25,8 @@ namespace AsteraX.Startup
             ApplicationTaskDispatcher.Subscriber = subscriber;
 
             builder.Register<GameSessionSettings>(Lifetime.Singleton);
-            builder.Register<ILevelRepository, LevelRepository>(Lifetime.Singleton);
-            builder.Register<IGameSessionRepository, GameSessionRepository>(Lifetime.Singleton);
-            builder.Register<GameSessionObservableModelRepository>(Lifetime.Singleton)
-                .AsSelf()
-                .As<IGameSessionObservableModelRepository>();
+            builder.Register<LevelRepository>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<GameSessionRepository>(Lifetime.Singleton).AsImplementedInterfaces();
             
             builder.RegisterBuildCallback(InjectAllMonoBehaviours);
         }

@@ -15,9 +15,8 @@ namespace AsteraX.Application.Tests
         [Test]
         public void Colliding_asteroid_with_bullet()
         {
-            var observableModelRepository = new GameSessionObservableModelRepository();
-            var repository = new GameSessionRepository(observableModelRepository);
-            var gameSession = repository.GetCurrentSession();
+            var repository = new GameSessionRepository();
+            var gameSession = repository.Get();
             var level = new Level(1, 1, 0);
             gameSession.StartLevel(level);
             var asteroidId = gameSession.LevelAttempt.Asteroids.First().Id;

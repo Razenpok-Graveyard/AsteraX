@@ -60,7 +60,7 @@ namespace AsteraX.Application.Game.Player
 
             protected override async UniTask<Result> Handle(Command command, CancellationToken ct)
             {
-                var gameSession = _gameSessionRepository.GetCurrentSession();
+                var gameSession = _gameSessionRepository.Get();
                 var maybeAsteroid = gameSession.LevelAttempt.Asteroids
                     .TryFirst(a => a.Id == command.AsteroidId);
                 if (maybeAsteroid.HasNoValue)
@@ -69,7 +69,7 @@ namespace AsteraX.Application.Game.Player
                 }
 
                 gameSession.CollideAsteroidWithPlayerShip(maybeAsteroid.Value);
-                _gameSessionRepository.Commit();
+                _gameSessionRepository.Save();
 
                 var destroyAsteroidTask = new DestroyAsteroid
                 {
@@ -87,7 +87,7 @@ namespace AsteraX.Application.Game.Player
                     };
                     await _taskPublisher.PublishAsyncTask(respawnPlayerShipTask, ct);
                     gameSession.RespawnPlayer();
-                    _gameSessionRepository.Commit();
+                    _gameSessionRepository.Save();
                 }
 
                 return Result.Success();

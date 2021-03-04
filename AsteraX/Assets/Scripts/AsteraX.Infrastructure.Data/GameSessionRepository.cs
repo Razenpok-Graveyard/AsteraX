@@ -2,34 +2,35 @@ using AsteraX.Domain.Game;
 
 namespace AsteraX.Infrastructure.Data
 {
-    public class GameSessionRepository : IGameSessionRepository
+    public class GameSessionRepository : IGameSessionRepository, IGameSessionObservableModelRepository
     {
         private readonly GameSession _gameSession;
-        private readonly GameSessionObservableModelRepository _observableModelRepository;
+        private readonly GameSessionObservableModel _observableModel = new GameSessionObservableModel();
 
-        public GameSessionRepository(
-            GameSessionObservableModelRepository observableModelRepository,
-            GameSessionSettings settings)
+        public GameSessionRepository(GameSessionSettings settings)
         {
-            _observableModelRepository = observableModelRepository;
             _gameSession = new GameSession(settings.InitialJumps);
-            _observableModelRepository.Update(_gameSession);
+            _observableModel.Update(_gameSession);
         }
 
-        public GameSessionRepository(GameSessionObservableModelRepository observableModelRepository)
-            : this(observableModelRepository, new GameSessionSettings())
+        public GameSessionRepository()
+            : this(new GameSessionSettings())
         {
         }
 
-        public GameSession GetCurrentSession()
+        public GameSession Get()
         {
             return _gameSession;
         }
 
-        public void Commit()
+        public IGameSessionObservableModel GetObservableModel()
+        {
+            return _observableModel;
+        }
+
+        public void Save()
         {
             DomainEventBus.DispatchEvents(_gameSession);
-            _observableModelRepository.Update(_gameSession);
         }
     }
 }

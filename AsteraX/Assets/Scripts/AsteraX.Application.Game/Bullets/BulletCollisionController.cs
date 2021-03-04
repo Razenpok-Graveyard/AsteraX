@@ -47,7 +47,7 @@ namespace AsteraX.Application.Game.Bullets
 
             protected override Result Handle(Command command)
             {
-                var gameSession = _gameSessionRepository.GetCurrentSession();
+                var gameSession = _gameSessionRepository.Get();
                 var maybeAsteroid = gameSession.LevelAttempt.Asteroids
                     .TryFirst(a => a.Id == command.AsteroidId);
                 if (maybeAsteroid.HasNoValue)
@@ -56,7 +56,7 @@ namespace AsteraX.Application.Game.Bullets
                 }
 
                 gameSession.CollideAsteroidWithBullet(maybeAsteroid.Value);
-                _gameSessionRepository.Commit();
+                _gameSessionRepository.Save();
 
                 _taskPublisher.PublishTask(new DestroyAsteroid
                 {

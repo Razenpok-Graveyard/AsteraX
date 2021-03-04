@@ -84,7 +84,7 @@ namespace AsteraX.Application.Game.Level
             protected override Model Handle(Command request)
             {
                 var level = _levelRepository.GetLevel();
-                var gameSession = _gameSessionRepository.GetCurrentSession();
+                var gameSession = _gameSessionRepository.Get();
                 gameSession.StartLevel(level);
 
                 var levelAttempt = gameSession.LevelAttempt;

@@ -54,7 +54,7 @@ namespace AsteraX.Application.UI
 
             protected override Model Handle(Query query)
             {
-                var gameSession = _gameSessionRepository.GetCurrentSession();
+                var gameSession = _gameSessionRepository.Get();
                 return new Model
                 {
                     Level = 0,
