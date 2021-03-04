@@ -9,7 +9,6 @@ using VContainer;
 
 namespace AsteraX.Application.Game.Player
 {
-    
     public class PlayerShipCollisionController : MonoBehaviour
     {
         private IAsyncRequestHandler<Command, Result> _commandHandler;
@@ -62,7 +61,7 @@ namespace AsteraX.Application.Game.Player
             {
                 var gameSession = _gameSessionRepository.Get();
                 var isAsteroidAlive = gameSession.LevelAttempt.IsAsteroidAlive(command.AsteroidId);
-                if (isAsteroidAlive)
+                if (!isAsteroidAlive)
                 {
                     return Result.Failure($"Cannot destroy dead asteroid {command.AsteroidId}");
                 }

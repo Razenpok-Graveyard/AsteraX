@@ -49,7 +49,7 @@ namespace AsteraX.Application.Game.Bullets
             {
                 var gameSession = _gameSessionRepository.Get();
                 var isAsteroidAlive = gameSession.LevelAttempt.IsAsteroidAlive(command.AsteroidId);
-                if (isAsteroidAlive)
+                if (!isAsteroidAlive)
                 {
                     return Result.Failure($"Cannot destroy dead asteroid {command.AsteroidId}");
                 }
