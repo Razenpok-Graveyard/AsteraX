@@ -3,7 +3,8 @@
     "rootNamespace": "AsteraX.Domain",
     "references": [
         "GUID:ca0a9c614bf34ea8a2d8c4170ec0b2db",
-        "GUID:58a6fe6b1b8d4360ae5f8ce35331b7a2"
+        "GUID:58a6fe6b1b8d4360ae5f8ce35331b7a2",
+        "GUID:c0cfae737df841aebbcdb39a75598a35"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

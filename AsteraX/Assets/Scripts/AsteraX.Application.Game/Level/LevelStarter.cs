@@ -22,7 +22,7 @@ namespace AsteraX.Application.Game.Level
             _applicationTaskPublisher = applicationTaskPublisher;
         }
 
-        private void Start()
+        public void StartLevel()
         {
             var model = _commandHandler.Handle(new Command());
             var spawnTask = new SpawnAsteroids
