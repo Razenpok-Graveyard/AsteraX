@@ -4,7 +4,7 @@ using AsteraX.Application.Game;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
-using Common.Functional;
+using Razensoft.Functional;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;

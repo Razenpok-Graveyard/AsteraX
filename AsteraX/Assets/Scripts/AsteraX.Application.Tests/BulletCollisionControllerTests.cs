@@ -3,7 +3,7 @@ using AsteraX.Application.Game;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
-using Common.Functional;
+using Razensoft.Functional;
 using FluentAssertions;
 using NUnit.Framework;
 using static AsteraX.Application.Game.Bullets.BulletCollisionController;

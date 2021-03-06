@@ -2,7 +2,7 @@
 using AsteraX.Application.Game.Asteroids;
 using AsteraX.Infrastructure;
 using Common.Application;
-using Common.Functional;
+using Razensoft.Functional;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
@@ -31,11 +31,7 @@ namespace AsteraX.Application.Game.Player
         {
             enabled = false;
             var command = new Command {AsteroidId = asteroidId};
-            var (_, isFailure, error) = await _commandHandler.Handle(command);
-            if (isFailure)
-            {
-                Debug.LogError(error);
-            }
+            await _commandHandler.Handle(command).OnFailure(Debug.LogError);
             enabled = true;
         }
 
