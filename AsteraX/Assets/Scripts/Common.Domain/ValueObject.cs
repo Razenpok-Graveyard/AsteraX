@@ -4,59 +4,6 @@ using System.Linq;
 
 namespace Common.Domain
 {
-    /// <summary>
-    /// Use non-generic ValueObject whenever possible: http://bit.ly/vo-new
-    /// </summary>
-    [Serializable]
-    public abstract class ValueObject<T>
-        where T : ValueObject<T>
-    {
-        private int? _cachedHashCode;
-
-        public override bool Equals(object obj)
-        {
-            var valueObject = obj as T;
-
-            if (valueObject is null)
-                return false;
-
-            if (ValueObject.GetUnproxiedType(this) != ValueObject.GetUnproxiedType(obj))
-                return false;
-
-            return EqualsCore(valueObject);
-        }
-
-        protected abstract bool EqualsCore(T other);
-
-        public override int GetHashCode()
-        {
-            if (!_cachedHashCode.HasValue)
-            {
-                _cachedHashCode = GetHashCodeCore();
-            }
-
-            return _cachedHashCode.Value;
-        }
-
-        protected abstract int GetHashCodeCore();
-
-        public static bool operator ==(ValueObject<T> a, ValueObject<T> b)
-        {
-            if (a is null && b is null)
-                return true;
-
-            if (a is null || b is null)
-                return false;
-
-            return a.Equals(b);
-        }
-
-        public static bool operator !=(ValueObject<T> a, ValueObject<T> b)
-        {
-            return !(a == b);
-        }
-    }
-
     [Serializable]
     public abstract class ValueObject : IComparable, IComparable<ValueObject>
     {
@@ -134,7 +81,7 @@ namespace Common.Domain
             return object1.Equals(object2) ? 0 : -1;
         }
 
-        public int CompareTo(ValueObject other)
+        public virtual int CompareTo(ValueObject other)
         {
             return CompareTo(other as object);
         }
@@ -168,5 +115,29 @@ namespace Common.Domain
 
             return type;
         }
+    }
+
+    
+    [Serializable]
+    public abstract class ValueObject<T> : ValueObject
+    {
+        public T Value { get; }
+
+        protected ValueObject(T value)
+        {
+            Value = value;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Value;
+        }
+
+        public override string ToString()
+        {
+            return Value?.ToString();
+        }
+
+        public static implicit operator T(ValueObject<T> valueObject) => valueObject.Value;
     }
 }
