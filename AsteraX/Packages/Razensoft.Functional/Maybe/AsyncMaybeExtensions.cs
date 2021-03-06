@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Razensoft.Functional
 {
-    public static partial class AsyncMaybeExtensions
+    public static class AsyncMaybeExtensions
     {
         public static async Task<Result<T>> ToResult<T>(this Task<Maybe<T>> maybeTask, string errorMessage)
         {

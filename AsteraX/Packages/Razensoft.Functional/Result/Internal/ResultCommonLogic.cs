@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Razensoft.Functional
+namespace Razensoft.Functional.Internal
 {
     internal readonly struct ResultCommonLogic<E>
     {

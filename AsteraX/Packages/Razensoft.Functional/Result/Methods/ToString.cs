@@ -1,4 +1,8 @@
-﻿namespace Razensoft.Functional
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Razensoft.Functional
 {
     public partial struct Result
     {

@@ -1,11 +1,12 @@
-﻿#if NET40
+﻿using System.Threading.Tasks;
+
+#if NET40
 using Task = System.Threading.Tasks.TaskEx;
 using Microsoft.Runtime.CompilerServices;
 #else
 using Task = System.Threading.Tasks.Task;
-#endif
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+#endif
 
 namespace Razensoft.Functional
 {

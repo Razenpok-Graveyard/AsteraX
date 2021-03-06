@@ -1,5 +1,5 @@
 #if RAZENSOFT_FUNCTIONAL_UNITASK_SUPPORT
-#if NETSTANDARD2_0 || NET50
+#if NETSTANDARD2_0 || NET5_0
 using System;
 using System.Transactions;
 using Cysharp.Threading.Tasks;

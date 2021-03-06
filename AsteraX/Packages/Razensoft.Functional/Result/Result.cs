@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Razensoft.Functional.Internal;
+using System;
 using System.Runtime.Serialization;
 
 namespace Razensoft.Functional
@@ -23,7 +24,5 @@ namespace Razensoft.Functional
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
             => _logic.GetObjectData(info);
-        
-        
     }
 }

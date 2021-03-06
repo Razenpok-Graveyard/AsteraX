@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Razensoft.Functional
 {
-    public static partial class AsyncMaybeExtensions
+    public static class UniTaskMaybeExtensions
     {
         public static async UniTask<Result<T>> ToResult<T>(this UniTask<Maybe<T>> maybeUniTask, string errorMessage)
         {
