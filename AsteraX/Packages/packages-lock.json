@@ -22,10 +22,11 @@
       "hash": "284d5c50d3f1ddd9fa7df3d382ea904732a9c2ff"
     },
     "com.razensoft.functional": {
-      "version": "file:Razensoft.Functional",
+      "version": "https://github.com/Razenpok/Razensoft.Functional.git#1.0.1",
       "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "7e03d415f3769327273a42b24d1e842cb78312fa"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
