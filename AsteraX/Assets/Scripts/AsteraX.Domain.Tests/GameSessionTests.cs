@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AsteraX.Domain.Game;
 using FluentAssertions;
 using NUnit.Framework;
@@ -8,11 +9,21 @@ namespace AsteraX.Domain.Tests
     public class GameSessionTests
     {
         [Test]
+        public void Game_session_cannot_be_created_with_negative_jumps()
+        {
+            const int initialJumps = -1;
+
+            Func<GameSession> act = () => new GameSession(initialJumps);
+
+            act.Should().Throw("Number of jumps is negative");
+        }
+
+        [Test]
         public void Collision_of_asteroid_and_player_ship_destroys_player_ship()
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
 
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.IsPlayerAlive.Should().BeFalse();
             session.DomainEvents.Should().ContainSingle(e => e is PlayerShipDestroyedEvent);
@@ -23,9 +34,9 @@ namespace AsteraX.Domain.Tests
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
 
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
-            session.LevelAttempt.Asteroids.Should().NotContain(asteroid);
+            session.GetAsteroids().Should().NotContain(asteroid);
         }
 
         [Test]
@@ -34,7 +45,7 @@ namespace AsteraX.Domain.Tests
             const int initialJumps = 3;
             var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
 
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             const int expectedJumps = 2;
             session.Jumps.Should().Be(expectedJumps);
@@ -46,7 +57,7 @@ namespace AsteraX.Domain.Tests
             const int initialJumps = 0;
             var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
 
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             const int expectedJumps = 0;
             session.Jumps.Should().Be(expectedJumps);
@@ -58,7 +69,7 @@ namespace AsteraX.Domain.Tests
             const int initialJumps = 0;
             var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
 
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.IsOver.Should().BeTrue();
             session.DomainEvents.Should().ContainSingle(e => e is GameOverEvent);
@@ -70,7 +81,7 @@ namespace AsteraX.Domain.Tests
             const int initialJumps = 3;
             var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
 
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.IsOver.Should().BeFalse();
             session.DomainEvents.Should().NotContain(e => e is GameOverEvent);
@@ -81,7 +92,7 @@ namespace AsteraX.Domain.Tests
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
 
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             const int expectedScore = 0;
             session.Score.Should().Be(expectedScore);
@@ -92,9 +103,9 @@ namespace AsteraX.Domain.Tests
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
 
-            session.CollideAsteroidWithBullet(asteroid);
+            session.CollideAsteroidWithBullet(asteroid.Id);
 
-            session.LevelAttempt.Asteroids.Should().NotContain(asteroid);
+            session.GetAsteroids().Should().NotContain(asteroid);
         }
 
         [Test]
@@ -102,7 +113,7 @@ namespace AsteraX.Domain.Tests
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
 
-            session.CollideAsteroidWithBullet(asteroid);
+            session.CollideAsteroidWithBullet(asteroid.Id);
 
             var expectedScore = asteroid.Score;
             session.Score.Should().Be(expectedScore);
@@ -112,7 +123,7 @@ namespace AsteraX.Domain.Tests
         public void Player_is_alive_after_respawn()
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
-            session.CollideAsteroidWithPlayerShip(asteroid);
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.RespawnPlayer();
 
@@ -130,7 +141,7 @@ namespace AsteraX.Domain.Tests
             var session = new GameSession(jumps);
             var level = CreateLevelWithOneAsteroid();
             session.StartLevel(level);
-            var asteroid = session.LevelAttempt.Asteroids.First();
+            var asteroid = session.GetAsteroids().First();
             return (session, asteroid);
         }
 

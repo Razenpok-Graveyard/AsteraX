@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AsteraX.Domain.Game
 {
-    public class LevelAttempt
+    internal class LevelAttempt
     {
         private static long _lastAsteroidId;
 
@@ -13,16 +13,11 @@ namespace AsteraX.Domain.Game
         public LevelAttempt(Level level)
         {
             Contract.Requires(level != null, "level != null");
-            
-            Level = level;
+
             _asteroids = GenerateAsteroids(level);
         }
 
-        public Level Level { get; }
-
         public IReadOnlyCollection<Asteroid> Asteroids => _asteroids;
-
-        public bool IsAsteroidAlive(Asteroid asteroid) => Asteroids.Contains(asteroid);
 
         public bool IsAsteroidAlive(long asteroidId) => Asteroids.Any(a => a.Id == asteroidId);
 
@@ -33,10 +28,11 @@ namespace AsteraX.Domain.Game
             return _asteroids.First(a => a.Id == asteroidId);
         }
 
-        public void Destroy(Asteroid asteroid)
+        public void Destroy(long asteroidId)
         {
-            Contract.Requires(IsAsteroidAlive(asteroid), "IsAsteroidAlive(asteroid)");
+            Contract.Requires(IsAsteroidAlive(asteroidId), "IsAsteroidAlive(asteroid)");
 
+            var asteroid = GetAsteroid(asteroidId);
             _asteroids.Remove(asteroid);
             foreach (var child in asteroid.Children)
             {

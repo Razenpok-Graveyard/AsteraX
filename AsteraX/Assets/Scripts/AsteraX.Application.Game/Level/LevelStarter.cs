@@ -87,10 +87,9 @@ namespace AsteraX.Application.Game.Level
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.StartLevel(level);
 
-                var levelAttempt = gameSession.LevelAttempt;
                 return new Model
                 {
-                    Asteroids = levelAttempt.Asteroids.Select(AsteroidDto.FromAsteroid).ToList()
+                    Asteroids = gameSession.GetAsteroids().Select(AsteroidDto.FromAsteroid).ToList()
                 };
             }
         }

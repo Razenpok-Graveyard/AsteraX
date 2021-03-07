@@ -48,21 +48,12 @@ namespace AsteraX.Application.Game.Bullets
             protected override Result Handle(Command command)
             {
                 var gameSession = _gameSessionRepository.Get();
-                var isAsteroidAlive = gameSession.LevelAttempt.IsAsteroidAlive(command.AsteroidId);
-                if (!isAsteroidAlive)
-                {
-                    return Result.Failure($"Cannot destroy dead asteroid {command.AsteroidId}");
-                }
-
-                var asteroid = gameSession.LevelAttempt.GetAsteroid(command.AsteroidId);
-                gameSession.CollideAsteroidWithBullet(asteroid);
+                gameSession.CollideAsteroidWithBullet(command.AsteroidId);
                 _gameSessionRepository.Save();
-
                 _taskPublisher.PublishTask(new DestroyAsteroid
                 {
                     Id = command.AsteroidId
                 });
-
                 return Result.Success();
             }
         }

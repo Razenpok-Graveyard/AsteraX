@@ -22,7 +22,7 @@ namespace AsteraX.Application.Tests
                 var gameSession = repository.Get();
                 var level = new Level(1, 1, 0);
                 gameSession.StartLevel(level);
-                var asteroidId = gameSession.LevelAttempt.Asteroids.First().Id;
+                var asteroidId = gameSession.GetAsteroids().First().Id;
 
                 var taskPublisher = new FakeApplicationTaskPublisher();
 
@@ -52,7 +52,7 @@ namespace AsteraX.Application.Tests
                 var gameSession = repository.Get();
                 var level = new Level(1, 1, 0);
                 gameSession.StartLevel(level);
-                var asteroidId = gameSession.LevelAttempt.Asteroids.First().Id;
+                var asteroidId = gameSession.GetAsteroids().First().Id;
 
                 var taskPublisher = new FakeApplicationTaskPublisher();
 
