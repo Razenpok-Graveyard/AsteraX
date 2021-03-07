@@ -12,8 +12,13 @@ namespace AsteraX.Domain
         {
             if (!condition)
             {
-                throw new Exception($"Contract failed: {failMessage}");
+                throw new ContractException($"Contract failed: {failMessage}");
             }
         }
+    }
+
+    public class ContractException : Exception
+    {    
+        public ContractException(string message) : base(message) { }
     }
 }
