@@ -69,12 +69,12 @@ namespace Common.Application
     public abstract class RequestHandler<TRequest> : IRequestHandler<TRequest>
         where TRequest : IRequest
     {
-        Unit IRequestHandler<TRequest, Unit>.Handle(TRequest request)
+        Unit IRequestHandler<TRequest, Unit>.Handle(TRequest command)
         {
-            Handle(request);
+            Handle(command);
             return Unit.Default;
         }
 
-        protected abstract void Handle(TRequest request);
+        protected abstract void Handle(TRequest command);
     }
 }

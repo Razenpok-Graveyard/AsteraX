@@ -1,14 +1,12 @@
 using System.Linq;
-using AsteraX.Application.Game;
-using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
-using Razensoft.Functional;
 using FluentAssertions;
 using NUnit.Framework;
+using Razensoft.Functional;
 using static AsteraX.Application.Game.Bullets.BulletCollisionController;
 
-namespace AsteraX.Application.Tests
+namespace AsteraX.Application.Game.Tests
 {
     public class BulletCollisionControllerTests
     {
@@ -17,7 +15,7 @@ namespace AsteraX.Application.Tests
         {
             var repository = new GameSessionRepository();
             var gameSession = repository.Get();
-            var level = new Level(1, 1, 0);
+            var level = new Domain.Game.Level(1, 1, 0);
             gameSession.StartLevel(level);
             var asteroidId = gameSession.GetAsteroids().First().Id;
 

@@ -19,6 +19,8 @@ namespace AsteraX.Domain.Game
 
         public bool IsPlayerAlive { get; private set; }
 
+        public bool CanShoot => IsPlayerAlive;
+
         public bool IsOver { get; private set; }
 
         public int Score { get; private set; }

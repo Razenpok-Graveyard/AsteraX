@@ -6,7 +6,7 @@ using Common.Application;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 
-namespace AsteraX.Application.Tests
+namespace AsteraX.Application.Game.Tests
 {
     public class FakeApplicationTaskPublisher : IApplicationTaskPublisher
     {

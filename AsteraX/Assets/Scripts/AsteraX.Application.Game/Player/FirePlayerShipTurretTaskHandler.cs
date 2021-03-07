@@ -1,7 +1,5 @@
-﻿using System;
-using AsteraX.Infrastructure;
+﻿using AsteraX.Infrastructure;
 using Common.Application;
-using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -12,71 +10,60 @@ namespace AsteraX.Application.Game.Player
         [SerializeField] private Transform _turret;
         [SerializeField] private Transform _shootingPoint;
 
-        private IApplicationTaskPublisher _applicationTaskPublisher;
-        private IRequestHandler<Query, Model> _requestHandler;
-
-        private bool _isPlayerAlive;
+        private IRequestHandler<Command> _requestHandler;
 
         [Inject]
-        public void Construct(
-            IApplicationTaskPublisher applicationTaskPublisher,
-            IRequestHandler<Query, Model> requestHandler)
+        public void Construct(IRequestHandler<Command> requestHandler)
         {
-            _applicationTaskPublisher = applicationTaskPublisher;
             _requestHandler = requestHandler;
-        }
-
-        private void Start()
-        {
-            var model = _requestHandler.Handle(new Query());
-            model.IsPlayerAlive
-                .Subscribe(value => _isPlayerAlive = value)
-                .AddTo(this);
         }
 
         protected override void Handle(FirePlayerShipTurret message)
         {
-            if (!_isPlayerAlive)
-            {
-                return;
-            }
-
             var bulletPosition = _shootingPoint.position;
             var turretPosition = _turret.position;
             var direction = (bulletPosition - turretPosition).normalized;
-            var spawnBulletMessage = new SpawnBullet
+            var command = new Command
             {
                 WorldPosition = turretPosition,
                 Direction = direction
             };
-            _applicationTaskPublisher.PublishTask(spawnBulletMessage);
+            _requestHandler.Handle(command);
         }
 
-        public class Model
+        public class Command : IRequest
         {
-            public IObservable<bool> IsPlayerAlive { get; set; }
+            public Vector3 WorldPosition { get; set; }
+            public Vector3 Direction { get; set; }
         }
 
-        public class Query : IRequest<Model>
+        public class QueryHandler : RequestHandler<Command>
         {
-        }
+            private readonly IGameSessionRepository _gameSessionRepository;
+            private readonly IApplicationTaskPublisher _taskPublisher;
 
-        public class QueryHandler : RequestHandler<Query, Model>
-        {
-            private readonly IGameSessionObservableModelRepository _modelRepository;
-
-            public QueryHandler(IGameSessionObservableModelRepository modelRepository)
+            public QueryHandler(
+                IGameSessionRepository gameSessionRepository,
+                IApplicationTaskPublisher taskPublisher)
             {
-                _modelRepository = modelRepository;
+                _gameSessionRepository = gameSessionRepository;
+                _taskPublisher = taskPublisher;
             }
 
-            protected override Model Handle(Query request)
+            protected override void Handle(Command command)
             {
-                var observableModel = _modelRepository.GetObservableModel();
-                return new Model
+                var gameSession = _gameSessionRepository.Get();
+                if (!gameSession.CanShoot)
                 {
-                    IsPlayerAlive = observableModel.IsPlayerAlive
+                    return;
+                }
+
+                var spawnBulletMessage = new SpawnBullet
+                {
+                    WorldPosition = command.WorldPosition,
+                    Direction = command.Direction
                 };
+                _taskPublisher.PublishTask(spawnBulletMessage);
             }
         }
     }

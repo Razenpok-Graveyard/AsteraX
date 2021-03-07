@@ -8,19 +8,19 @@ namespace AsteraX.Application.Game.Player
     public class PlayerInputController : MonoBehaviour
     {
         private Camera _mainCamera;
-        private readonly MovePlayerShip _movePlayerShipMessage
+        private readonly MovePlayerShip _movePlayerShipTask
             = new MovePlayerShip();
-        private readonly RotatePlayerShipTurret _rotatePlayerShipTurretMessage
+        private readonly RotatePlayerShipTurret _rotatePlayerShipTurretTask
             = new RotatePlayerShipTurret();
-        private readonly FirePlayerShipTurret _firePlayerShipTurret
+        private readonly FirePlayerShipTurret _firePlayerShipTurretTask
             = new FirePlayerShipTurret();
 
-        private IApplicationTaskPublisher _applicationTaskPublisher;
+        private IApplicationTaskPublisher _taskPublisher;
 
         [Inject]
         public void Construct(IApplicationTaskPublisher applicationTaskPublisher)
         {
-            _applicationTaskPublisher = applicationTaskPublisher;
+            _taskPublisher = applicationTaskPublisher;
         }
 
         private void Awake()
@@ -31,17 +31,17 @@ namespace AsteraX.Application.Game.Player
         private void Update()
         {
             var movement = GetMovement();
-            _movePlayerShipMessage.Movement = movement;
-            _applicationTaskPublisher.PublishTask(_movePlayerShipMessage);
+            _movePlayerShipTask.Movement = movement;
+            _taskPublisher.PublishTask(_movePlayerShipTask);
 
             var mouseScreenPosition = (Vector2) _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-            _rotatePlayerShipTurretMessage.ScreenPosition = mouseScreenPosition;
-            _applicationTaskPublisher.PublishTask(_rotatePlayerShipTurretMessage);
+            _rotatePlayerShipTurretTask.ScreenPosition = mouseScreenPosition;
+            _taskPublisher.PublishTask(_rotatePlayerShipTurretTask);
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
-                _firePlayerShipTurret.ScreenPosition = mouseScreenPosition;
-                _applicationTaskPublisher.PublishTask(_firePlayerShipTurret);
+                _firePlayerShipTurretTask.ScreenPosition = mouseScreenPosition;
+                _taskPublisher.PublishTask(_firePlayerShipTurretTask);
             }
         }
 

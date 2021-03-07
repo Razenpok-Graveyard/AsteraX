@@ -42,7 +42,7 @@ namespace AsteraX.Application.UI
                 _taskPublisher = taskPublisher;
             }
             
-            protected override void Handle(Command request)
+            protected override void Handle(Command command)
             {
                 _taskPublisher.PublishTask(new CloseMainMenu());
                 _taskPublisher.PublishTask(new StartNextLevel());

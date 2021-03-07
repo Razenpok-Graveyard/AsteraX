@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Linq;
-using AsteraX.Application.Game;
-using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
-using Razensoft.Functional;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
+using Razensoft.Functional;
 using UnityEngine.TestTools;
 using static AsteraX.Application.Game.Player.PlayerShipCollisionController;
 
-namespace AsteraX.Application.Tests
+namespace AsteraX.Application.Game.Tests
 {
     public class PlayerShipCollisionControllerTests
     {
@@ -20,7 +18,7 @@ namespace AsteraX.Application.Tests
             {
                 var repository = new GameSessionRepository();
                 var gameSession = repository.Get();
-                var level = new Level(1, 1, 0);
+                var level = new Domain.Game.Level(1, 1, 0);
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
 
@@ -50,7 +48,7 @@ namespace AsteraX.Application.Tests
                 };
                 var repository = new GameSessionRepository(gameSessionSettings);
                 var gameSession = repository.Get();
-                var level = new Level(1, 1, 0);
+                var level = new Domain.Game.Level(1, 1, 0);
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
 

@@ -41,7 +41,7 @@ namespace AsteraX.Application.Game.Level
                 _taskPublisher = taskPublisher;
             }
 
-            protected override void Handle(Command request)
+            protected override void Handle(Command command)
             {
                 var level = _levelRepository.GetLevel();
                 var gameSession = _gameSessionRepository.Get();
