@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AsteraX.Application.Game.Level
+namespace AsteraX.Application.Game.Levels
 {
     public class EmitWhenInBounds : MonoBehaviour
     {

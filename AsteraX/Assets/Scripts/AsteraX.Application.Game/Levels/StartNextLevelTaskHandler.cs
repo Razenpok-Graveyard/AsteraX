@@ -6,7 +6,7 @@ using Common.Application;
 using VContainer;
 using static AsteraX.Application.Game.SpawnAsteroids;
 
-namespace AsteraX.Application.Game.Level
+namespace AsteraX.Application.Game.Levels
 {
     public class StartNextLevelTaskHandler : ApplicationTaskHandler<StartNextLevel>
     {

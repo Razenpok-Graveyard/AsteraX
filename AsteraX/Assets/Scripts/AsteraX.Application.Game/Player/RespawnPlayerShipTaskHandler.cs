@@ -1,5 +1,5 @@
 using System.Threading;
-using AsteraX.Application.Game.Level;
+using AsteraX.Application.Game.Levels;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 

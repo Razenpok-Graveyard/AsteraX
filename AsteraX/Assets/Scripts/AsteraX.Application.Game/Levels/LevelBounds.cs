@@ -2,7 +2,7 @@
 using AsteraX.Application.Game.Asteroids;
 using UnityEngine;
 
-namespace AsteraX.Application.Game.Level
+namespace AsteraX.Application.Game.Levels
 {
     public class LevelBounds : MonoBehaviour
     {

@@ -1,4 +1,4 @@
-﻿using AsteraX.Application.Game.Level;
+﻿using AsteraX.Application.Game.Levels;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Asteroids
