@@ -1,4 +1,5 @@
 using AsteraX.Domain.Game;
+using Common.Domain;
 
 namespace AsteraX.Infrastructure.Data
 {

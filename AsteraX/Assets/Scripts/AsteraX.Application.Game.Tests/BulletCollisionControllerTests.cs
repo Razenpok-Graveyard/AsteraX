@@ -1,4 +1,5 @@
 using System.Linq;
+using AsteraX.Application.Tasks.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
 using FluentAssertions;

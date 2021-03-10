@@ -1,4 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using AsteraX.Application.Tasks.Game;
+using Common.Application.Unity;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Player

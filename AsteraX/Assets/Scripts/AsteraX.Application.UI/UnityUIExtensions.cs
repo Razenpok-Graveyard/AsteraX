@@ -1,7 +1,8 @@
 using System;
 using TMPro;
+using UniRx;
 
-namespace UniRx
+namespace AsteraX.Application.UI
 {
     public static class UnityUIExtensions
     {

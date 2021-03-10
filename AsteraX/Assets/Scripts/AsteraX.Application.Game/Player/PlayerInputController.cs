@@ -1,4 +1,5 @@
-﻿using Common.Application;
+﻿using AsteraX.Application.Tasks.Game;
+using Common.Application;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using VContainer;
