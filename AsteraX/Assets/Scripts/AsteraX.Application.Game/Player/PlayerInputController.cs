@@ -1,5 +1,6 @@
 ﻿using AsteraX.Application.Tasks.Game;
 using Common.Application;
+using Common.Application.Unity;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using VContainer;
@@ -28,6 +29,7 @@ namespace AsteraX.Application.Game.Player
         {
             _mainCamera = Camera.main;
             enabled = false;
+            this.Subscribe<EnablePlayerInput>(_ => enabled = true);
         }
 
         private void Update()

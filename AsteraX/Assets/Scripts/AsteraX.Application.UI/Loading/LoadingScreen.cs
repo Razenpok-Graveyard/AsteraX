@@ -1,4 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using AsteraX.Application.Tasks.UI;
+using Common.Application.Unity;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -14,35 +17,49 @@ namespace AsteraX.Application.UI.Loading
         [SerializeField] private TextMeshProUGUI _asteroidsLabel;
         [SerializeField] private TextMeshProUGUI _childrenLabel;
 
-        public UniTask Show(int id, int asteroids, int children)
+        private void Awake()
         {
-            _idLabel.text = $"Level {id}";
-            _asteroidsLabel.text = $"Asteroids: {asteroids}";
-            _childrenLabel.text = $"Children: {children}";
-            return FadeIn();
+            this.Subscribe<ShowLoadingScreen>(Handle);
+            this.Subscribe<HideLoadingScreen>(Handle);
         }
-        
-        private async UniTask FadeIn() {
 
+        private UniTask Handle(ShowLoadingScreen task, CancellationToken ct)
+        {
+            _idLabel.text = $"Level {task.Id}";
+            _asteroidsLabel.text = $"Asteroids: {task.Asteroids}";
+            _childrenLabel.text = $"Children: {task.Children}";
+            return FadeIn(ct);
+        }
+
+        private UniTask Handle(HideLoadingScreen task, CancellationToken ct)
+        {
+            return FadeOut(ct);
+        }
+
+        private async UniTask FadeIn(CancellationToken ct)
+        {
             _footerCanvasGroup.alpha = 0;
             _screenCanvasGroup.alpha = 0;
             _screenCanvasGroup.blocksRaycasts = true;
-            await _screenCanvasGroup.DOFade(1, 0.5f).SetUpdate(true);
-            await _footerCanvasGroup.DOFade(1, 0.5f).SetUpdate(true);
+            await _screenCanvasGroup.DOFade(1, 0.5f)
+                .SetUpdate(true)
+                .WithCancellation(ct);
+            await _footerCanvasGroup.DOFade(1, 0.5f)
+                .SetUpdate(true)
+                .WithCancellation(ct);
         }
 
-        public UniTask Hide()
+        private async UniTask FadeOut(CancellationToken ct)
         {
-            return FadeOut();
-        }
-        
-        private async UniTask FadeOut()
-        {
-            await UniTask.Delay(1000, DelayType.UnscaledDeltaTime);
+            await UniTask.Delay(1000, DelayType.UnscaledDeltaTime, cancellationToken: ct);
             _footerCanvasGroup.alpha = 1;
             _screenCanvasGroup.alpha = 1;
-            await _footerCanvasGroup.DOFade(0, 0.5f).SetUpdate(true);
-            await _screenCanvasGroup.DOFade(0, 0.5f).SetUpdate(true);
+            await _footerCanvasGroup.DOFade(0, 0.5f)
+                .SetUpdate(true)
+                .WithCancellation(ct);
+            await _screenCanvasGroup.DOFade(0, 0.5f)
+                .SetUpdate(true)
+                .WithCancellation(ct);
             _screenCanvasGroup.blocksRaycasts = false;
         }
     }

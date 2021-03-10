@@ -2528,8 +2528,6 @@ GameObject:
   - component: {fileID: 1694526954}
   - component: {fileID: 1694526958}
   - component: {fileID: 1694526957}
-  - component: {fileID: 1694526956}
-  - component: {fileID: 1694526955}
   m_Layer: 5
   m_Name: LoadingScreen
   m_TagString: Untagged
@@ -2559,32 +2557,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1694526955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694526953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd5625e62377472da7330620c061d969, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadingScreen: {fileID: 1694526957}
---- !u!114 &1694526956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694526953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c41dab5232724fed9c24bae48bed4cf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadingScreen: {fileID: 1694526957}
 --- !u!114 &1694526957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2625,7 +2597,6 @@ GameObject:
   - component: {fileID: 1819826370}
   - component: {fileID: 1819826372}
   - component: {fileID: 1819826371}
-  - component: {fileID: 1819826373}
   m_Layer: 5
   m_Name: GameOverScreen
   m_TagString: Untagged
@@ -2682,19 +2653,6 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &1819826373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1819826369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fab4fbc9a764e469a155372abe6ebb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameOverScreen: {fileID: 1819826371}
 --- !u!1 &1851683794
 GameObject:
   m_ObjectHideFlags: 0
