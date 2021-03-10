@@ -44,7 +44,8 @@ namespace AsteraX.Application.UI.Tests
                         task.Asteroids.Count.Should().Be(asteroidCount);
                     })
                     .ShouldContainSingle<HideLoadingScreen>()
-                    .ShouldContainSingle<ShowPauseButton>();
+                    .ShouldContainSingle<ShowPauseButton>()
+                    .ShouldContainSingle<UnpauseGame>();
             });
     }
 }
