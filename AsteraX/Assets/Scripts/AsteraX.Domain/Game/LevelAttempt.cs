@@ -17,7 +17,7 @@ namespace AsteraX.Domain.Game
             _asteroids = GenerateAsteroids(level);
         }
 
-        public IReadOnlyCollection<Asteroid> Asteroids => _asteroids;
+        public IReadOnlyList<Asteroid> Asteroids => _asteroids;
 
         public bool IsAsteroidAlive(long asteroidId) => Asteroids.Any(a => a.Id == asteroidId);
 

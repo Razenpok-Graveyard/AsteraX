@@ -29,7 +29,7 @@ namespace AsteraX.Domain.Game
 
         public bool IsPlayingLevel => _levelAttempt != null;
 
-        public IReadOnlyCollection<Asteroid> GetAsteroids()
+        public IReadOnlyList<Asteroid> GetAsteroids()
         {
             Contract.Requires(IsPlayingLevel, "IsPlayingLevel");
             return _levelAttempt.Asteroids;

@@ -4,7 +4,6 @@ using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure;
 using Common.Application;
-using Razensoft.Functional;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
@@ -13,10 +12,10 @@ namespace AsteraX.Application.Game.Player
 {
     public class PlayerShipCollisionController : MonoBehaviour
     {
-        private IAsyncRequestHandler<Command, Result> _commandHandler;
+        private IAsyncRequestHandler<Command> _commandHandler;
 
         [Inject]
-        public void Construct(IAsyncRequestHandler<Command, Result> commandHandler)
+        public void Construct(IAsyncRequestHandler<Command> commandHandler)
         {
             _commandHandler = commandHandler;
         }
@@ -33,16 +32,16 @@ namespace AsteraX.Application.Game.Player
         {
             enabled = false;
             var command = new Command {AsteroidId = asteroidId};
-            await _commandHandler.Handle(command).OnFailure(Debug.LogError);
+            await _commandHandler.Handle(command);
             enabled = true;
         }
 
-        public class Command : IAsyncRequest<Result>
+        public class Command : IAsyncRequest
         {
             public long AsteroidId { get; set; }
         }
 
-        public class CommandHandler : AsyncRequestHandler<Command, Result>
+        public class CommandHandler : AsyncRequestHandler<Command>
         {
             private readonly IGameSessionRepository _gameSessionRepository;
             private readonly IApplicationTaskPublisher _taskPublisher;
@@ -55,7 +54,7 @@ namespace AsteraX.Application.Game.Player
                 _taskPublisher = taskPublisher;
             }
 
-            protected override async UniTask<Result> Handle(Command command, CancellationToken ct)
+            protected override async UniTask Handle(Command command, CancellationToken ct)
             {
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.CollideAsteroidWithPlayerShip(command.AsteroidId);
@@ -88,8 +87,6 @@ namespace AsteraX.Application.Game.Player
                     gameSession.RespawnPlayer();
                     _gameSessionRepository.Save();
                 }
-
-                return Result.Success();
             }
         }
     }

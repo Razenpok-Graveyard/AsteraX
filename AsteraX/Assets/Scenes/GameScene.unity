@@ -2402,7 +2402,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1666005256}
   - component: {fileID: 1666005258}
-  - component: {fileID: 1666005262}
   - component: {fileID: 1666005261}
   - component: {fileID: 1666005260}
   - component: {fileID: 1666005257}
@@ -2504,19 +2503,6 @@ MonoBehaviour:
   _exhaustTrail: {fileID: 991271767}
   _disappearEffect: {fileID: 2884558111660424880, guid: 85502e8edf091254fa6608eab8b37830,
     type: 3}
---- !u!114 &1666005262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666005255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bfdd41e464348028f8e240edbbc6704, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerInputController: {fileID: 1666005258}
 --- !u!1 &1694526953
 GameObject:
   m_ObjectHideFlags: 0
