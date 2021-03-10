@@ -31,6 +31,7 @@ namespace AsteraX.Infrastructure.Data
 
         public void Save()
         {
+            _observableModel.Update(_gameSession);
             DomainEventBus.DispatchEvents(_gameSession);
         }
     }

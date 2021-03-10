@@ -1,67 +1,23 @@
-﻿using AsteraX.Domain.Game;
-using AsteraX.Infrastructure;
-using Common.Application;
-using Common.Application.Unity;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using VContainer;
 
 namespace AsteraX.Application.UI.GameOver
 {
-    public class GameOverScreen : MonoBehaviour 
+    public class GameOverScreen : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private TextMeshProUGUI _level;
         [SerializeField] private TextMeshProUGUI _score;
 
-        private IRequestHandler<Query, Model> _queryHandler;
-
-        [Inject]
-        public void Construct(IRequestHandler<Query, Model> queryHandler)
+        public async UniTask ShowAsync(int level, int score)
         {
-            _queryHandler = queryHandler;
-        }
-        
-        private void Start()
-        {
-            this.SubscribeToDomain<GameOverEvent>(_ => FadeIn());
-        }
-
-        private void FadeIn()
-        {
-            _canvasGroup.alpha = 1;
+            _level.text = $"Final level: {level}";
+            _score.text = $"Final score: {score}";
             _canvasGroup.blocksRaycasts = true;
-            var model = _queryHandler.Handle(new Query());
-            _level.text = $"Final level: {model.Level}";
-            _score.text = $"Final score: {model.Score}";
-        }
-
-        public class Model
-        {
-            public int Level { get; set; }
-            public int Score { get; set; }
-        }
-        
-        public class Query : IRequest<Model> { }
-
-        public class QueryHandler : RequestHandler<Query, Model>
-        {
-            private readonly IGameSessionRepository _gameSessionRepository;
-
-            public QueryHandler(IGameSessionRepository gameSessionRepository)
-            {
-                _gameSessionRepository = gameSessionRepository;
-            }
-
-            protected override Model Handle(Query query)
-            {
-                var gameSession = _gameSessionRepository.Get();
-                return new Model
-                {
-                    Level = 0,
-                    Score = gameSession.Score
-                };
-            }
+            _canvasGroup.alpha = 0;
+            await _canvasGroup.DOFade(1, 0.5f).SetUpdate(true);
         }
     }
 }

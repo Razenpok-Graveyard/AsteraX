@@ -2,5 +2,5 @@
 
 namespace AsteraX.Application.Tasks.Game
 {
-    public class EnablePlayerControls : IApplicationTask { }
+    public class EnablePlayerInput : IApplicationTask { }
 }

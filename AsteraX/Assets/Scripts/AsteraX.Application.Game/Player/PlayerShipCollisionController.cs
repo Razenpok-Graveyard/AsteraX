@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using AsteraX.Application.Game.Asteroids;
 using AsteraX.Application.Tasks.Game;
+using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Razensoft.Functional;
@@ -24,11 +25,11 @@ namespace AsteraX.Application.Game.Player
         {
             if (other.TryGetComponent<AsteroidInstance>(out var asteroid))
             {
-                HandleCollision(asteroid.Id).Forget();
+                HandleCollisionAsync(asteroid.Id).Forget();
             }
         }
 
-        private async UniTask HandleCollision(long asteroidId)
+        private async UniTask HandleCollisionAsync(long asteroidId)
         {
             enabled = false;
             var command = new Command {AsteroidId = asteroidId};
@@ -67,7 +68,16 @@ namespace AsteraX.Application.Game.Player
                 _taskPublisher.PublishTask(destroyAsteroidTask);
                 _taskPublisher.PublishTask(new DestroyPlayerShip());
 
-                if (!gameSession.IsOver)
+                if (gameSession.IsOver)
+                {
+                    var showGameOverScreen = new ShowGameOverScreen
+                    {
+                        Level = (int) gameSession.Level.Id,
+                        Score = gameSession.Score
+                    };
+                    await _taskPublisher.PublishAsyncTask(showGameOverScreen, ct);
+                }
+                else
                 {
                     const float respawnDelay = 2;
                     var respawnPlayerShipTask = new RespawnPlayerShip

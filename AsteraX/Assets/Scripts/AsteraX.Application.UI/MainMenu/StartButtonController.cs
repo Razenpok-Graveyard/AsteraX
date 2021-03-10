@@ -77,13 +77,13 @@ namespace AsteraX.Application.UI.MainMenu
                     Asteroids = ToSpawnAsteroidsDto(asteroids)
                 };
 
-                _taskPublisher.PublishTask(new CloseMainMenu());
+                _taskPublisher.PublishTask(new HideMainMenuScreen());
                 await _taskPublisher.PublishAsyncTask(showLoadingScreen, ct);
                 _taskPublisher.PublishTask(spawnAsteroids);
                 await _taskPublisher.PublishAsyncTask(new HideLoadingScreen(), ct);
                 _taskPublisher.PublishTask(new ShowPauseButton());
                 _taskPublisher.PublishTask(new UnpauseGame());
-                _taskPublisher.PublishTask(new EnablePlayerControls());
+                _taskPublisher.PublishTask(new EnablePlayerInput());
             }
 
             private static List<AsteroidDto> ToSpawnAsteroidsDto(IEnumerable<Asteroid> asteroids)

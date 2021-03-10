@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using AsteraX.Application.Tasks.Game;
+using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
 using Cysharp.Threading.Tasks;
@@ -65,7 +66,8 @@ namespace AsteraX.Application.Game.Tests
                 result.IsSuccess.Should().BeTrue();
                 taskPublisher
                     .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .ShouldContainSingle<DestroyPlayerShip>();
+                    .ShouldContainSingle<DestroyPlayerShip>()
+                    .ShouldContainSingle<ShowGameOverScreen>(task => task.Level.Should().Be(1));
             });
     }
 }

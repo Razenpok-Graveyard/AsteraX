@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class EnablePlayerControlsTaskHandler : ApplicationTaskHandler<EnablePlayerControls>
+    public class EnablePlayerInputTaskHandler : ApplicationTaskHandler<EnablePlayerInput>
     {
         [SerializeField] private PlayerInputController _playerInputController;
         
-        protected override void Handle(EnablePlayerControls task)
+        protected override void Handle(EnablePlayerInput task)
         {
             _playerInputController.enabled = true;
         }

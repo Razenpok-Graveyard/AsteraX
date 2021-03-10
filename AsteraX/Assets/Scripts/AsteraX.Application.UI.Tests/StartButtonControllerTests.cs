@@ -32,7 +32,7 @@ namespace AsteraX.Application.UI.Tests
                 await sut.Handle(command);
 
                 taskPublisher
-                    .ShouldContainSingle<CloseMainMenu>()
+                    .ShouldContainSingle<HideMainMenuScreen>()
                     .ShouldContainSingle<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(1);
@@ -46,7 +46,7 @@ namespace AsteraX.Application.UI.Tests
                     .ShouldContainSingle<HideLoadingScreen>()
                     .ShouldContainSingle<ShowPauseButton>()
                     .ShouldContainSingle<UnpauseGame>()
-                    .ShouldContainSingle<EnablePlayerControls>();
+                    .ShouldContainSingle<EnablePlayerInput>();
             });
     }
 }

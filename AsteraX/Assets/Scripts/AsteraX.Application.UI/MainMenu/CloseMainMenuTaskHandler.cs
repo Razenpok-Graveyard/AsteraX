@@ -3,9 +3,9 @@ using Common.Application.Unity;
 
 namespace AsteraX.Application.UI.MainMenu
 {
-    public class CloseMainMenuTaskHandler : ApplicationTaskHandler<CloseMainMenu>
+    public class CloseMainMenuTaskHandler : ApplicationTaskHandler<HideMainMenuScreen>
     {
-        protected override void Handle(CloseMainMenu task)
+        protected override void Handle(HideMainMenuScreen task)
         {
             gameObject.SetActive(false);
         }
