@@ -2,8 +2,5 @@
 
 namespace AsteraX.Application.Game
 {
-    public class StartNextLevel : IApplicationTask
-    {
-        
-    }
+    public class StartNextLevel : IAsyncApplicationTask { }
 }

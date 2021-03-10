@@ -1,31 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using AsteraX.Application.UI;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
 using Common.Application;
+using Cysharp.Threading.Tasks;
 using VContainer;
 using static AsteraX.Application.Game.SpawnAsteroids;
 
 namespace AsteraX.Application.Game.Levels
 {
-    public class StartNextLevelTaskHandler : ApplicationTaskHandler<StartNextLevel>
+    public class StartNextLevelTaskHandler : AsyncApplicationTaskHandler<StartNextLevel>
     {
-        private IRequestHandler<Command> _commandHandler;
+        private IAsyncRequestHandler<Command> _commandHandler;
 
         [Inject]
-        public void Construct(IRequestHandler<Command> commandHandler)
+        public void Construct(IAsyncRequestHandler<Command> commandHandler)
         {
             _commandHandler = commandHandler;
         }
 
-        protected override void Handle(StartNextLevel task)
+        protected override async UniTask Handle(StartNextLevel task, CancellationToken ct)
         {
-            _commandHandler.Handle(new Command());
+            await _commandHandler.Handle(new Command(), ct);
         }
 
         public class Command : IRequest { }
 
-        public class CommandHandler : RequestHandler<Command>
+        public class CommandHandler : AsyncRequestHandler<Command>
         {
             private readonly ILevelRepository _levelRepository;
             private readonly IGameSessionRepository _gameSessionRepository;
@@ -41,18 +44,28 @@ namespace AsteraX.Application.Game.Levels
                 _taskPublisher = taskPublisher;
             }
 
-            protected override void Handle(Command command)
+            protected override async UniTask Handle(Command command, CancellationToken ct)
             {
                 var level = _levelRepository.GetLevel();
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 var asteroids = gameSession.GetAsteroids();
+
+                var startTask = new ShowLoadingScreen
+                {
+                    Id = (int) level.Id,
+                    Asteroids = level.AsteroidCount,
+                    Children = level.AsteroidChildCount
+                };
+                await _taskPublisher.PublishAsyncTask(startTask, ct);
+                
                 var spawnTask = new SpawnAsteroids
                 {
                     Asteroids = ToSpawnAsteroidsDto(asteroids)
                 };
-
                 _taskPublisher.PublishTask(spawnTask);
+
+                await _taskPublisher.PublishAsyncTask(new HideLoadingScreen(), ct);
             }
 
             private static List<AsteroidDto> ToSpawnAsteroidsDto(IEnumerable<Asteroid> asteroids)

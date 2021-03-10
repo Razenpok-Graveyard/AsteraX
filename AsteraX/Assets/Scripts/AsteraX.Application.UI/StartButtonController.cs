@@ -1,5 +1,6 @@
 ﻿using AsteraX.Application.Game;
 using Common.Application;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -45,7 +46,7 @@ namespace AsteraX.Application.UI
             protected override void Handle(Command command)
             {
                 _taskPublisher.PublishTask(new CloseMainMenu());
-                _taskPublisher.PublishTask(new StartNextLevel());
+                _taskPublisher.PublishAsyncTask(new StartNextLevel()).Forget();
             }
         }
     }

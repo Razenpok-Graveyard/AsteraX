@@ -552,13 +552,14 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: CROSS_PLATFORM_INPUT;NETSTANDARD2_0
+    1: CROSS_PLATFORM_INPUT;NETSTANDARD2_0;UNITASK_DOTWEEN_SUPPORT
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     7: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     14: MOBILE_INPUT
     17: MOBILE_INPUT
     20: MOBILE_INPUT
-  additionalCompilerArguments: {}
+  additionalCompilerArguments:
+    1: []
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
