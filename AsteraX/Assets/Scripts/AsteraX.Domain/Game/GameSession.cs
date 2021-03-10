@@ -19,6 +19,8 @@ namespace AsteraX.Domain.Game
 
         public bool IsPlayerAlive { get; private set; }
 
+        public Level Level { get; private set; }
+
         public bool CanShoot => IsPlayerAlive;
 
         public bool IsOver { get; private set; }
@@ -35,6 +37,7 @@ namespace AsteraX.Domain.Game
 
         public void StartLevel(Level level)
         {
+            Level = level;
             _levelAttempt = new LevelAttempt(level);
         }
 

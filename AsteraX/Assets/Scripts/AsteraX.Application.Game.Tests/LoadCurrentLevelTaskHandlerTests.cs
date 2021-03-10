@@ -5,22 +5,20 @@ using Common.Application;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;
-using static AsteraX.Application.Game.Levels.StartNextLevelTaskHandler;
+using static AsteraX.Application.Game.Levels.LoadCurrentLevelTaskHandler;
 
 namespace AsteraX.Application.Game.Tests
 {
-    public class StartNextLevelTaskHandlerTests
+    public class LoadCurrentLevelTaskHandlerTests
     {
         [UnityTest]
         public IEnumerator Starting_new_game() => UniTask.ToCoroutine(
             async () =>
             {
                 const int asteroidCount = 3;
-                var levelRepository = new LevelRepository();
                 var gameSessionRepository = new GameSessionRepository();
                 var taskPublisher = new FakeApplicationTaskPublisher();
                 IAsyncRequestHandler<Command> sut = new CommandHandler(
-                    levelRepository,
                     gameSessionRepository,
                     taskPublisher
                 );

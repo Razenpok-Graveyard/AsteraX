@@ -1,4 +1,6 @@
-﻿using AsteraX.Application.Game;
+﻿using System.Threading;
+using AsteraX.Application.Game;
+using AsteraX.Infrastructure;
 using Common.Application;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -13,10 +15,10 @@ namespace AsteraX.Application.UI
     {
         [SerializeField] private Button _button;
 
-        private IRequestHandler<Command> _commandHandler;
+        private IAsyncRequestHandler<Command> _commandHandler;
 
         [Inject]
-        public void Construct(IRequestHandler<Command> commandHandler)
+        public void Construct(IAsyncRequestHandler<Command> commandHandler)
         {
             _commandHandler = commandHandler;
         }
@@ -34,19 +36,32 @@ namespace AsteraX.Application.UI
 
         public class Command : IRequest { }
 
-        public class CommandHandler : RequestHandler<Command>
+        public class CommandHandler : AsyncRequestHandler<Command>
         {
+            private readonly ILevelRepository _levelRepository;
+            private readonly IGameSessionRepository _gameSessionRepository;
             private readonly IApplicationTaskPublisher _taskPublisher;
 
-            public CommandHandler(IApplicationTaskPublisher taskPublisher)
+            public CommandHandler(
+                ILevelRepository levelRepository,
+                IGameSessionRepository gameSessionRepository,
+                IApplicationTaskPublisher taskPublisher)
             {
+                _levelRepository = levelRepository;
+                _gameSessionRepository = gameSessionRepository;
                 _taskPublisher = taskPublisher;
             }
             
-            protected override void Handle(Command command)
+            protected override async UniTask Handle(Command command, CancellationToken ct)
             {
+                var level = _levelRepository.GetLevel();
+                var gameSession = _gameSessionRepository.Get();
+                gameSession.StartLevel(level);
+                _gameSessionRepository.Save();
+
                 _taskPublisher.PublishTask(new CloseMainMenu());
-                _taskPublisher.PublishAsyncTask(new StartNextLevel()).Forget();
+                await _taskPublisher.PublishAsyncTask(new LoadCurrentLevel(), ct);
+                _taskPublisher.PublishTask(new ShowPauseButton());
             }
         }
     }

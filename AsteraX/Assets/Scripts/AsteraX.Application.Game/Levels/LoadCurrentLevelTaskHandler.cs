@@ -11,7 +11,7 @@ using static AsteraX.Application.Game.SpawnAsteroids;
 
 namespace AsteraX.Application.Game.Levels
 {
-    public class StartNextLevelTaskHandler : AsyncApplicationTaskHandler<StartNextLevel>
+    public class LoadCurrentLevelTaskHandler : AsyncApplicationTaskHandler<LoadCurrentLevel>
     {
         private IAsyncRequestHandler<Command> _commandHandler;
 
@@ -21,7 +21,7 @@ namespace AsteraX.Application.Game.Levels
             _commandHandler = commandHandler;
         }
 
-        protected override async UniTask Handle(StartNextLevel task, CancellationToken ct)
+        protected override async UniTask Handle(LoadCurrentLevel task, CancellationToken ct)
         {
             await _commandHandler.Handle(new Command(), ct);
         }
@@ -30,25 +30,21 @@ namespace AsteraX.Application.Game.Levels
 
         public class CommandHandler : AsyncRequestHandler<Command>
         {
-            private readonly ILevelRepository _levelRepository;
             private readonly IGameSessionRepository _gameSessionRepository;
             private readonly IApplicationTaskPublisher _taskPublisher;
 
             public CommandHandler(
-                ILevelRepository levelRepository,
                 IGameSessionRepository gameSessionRepository,
                 IApplicationTaskPublisher taskPublisher)
             {
-                _levelRepository = levelRepository;
                 _gameSessionRepository = gameSessionRepository;
                 _taskPublisher = taskPublisher;
             }
 
             protected override async UniTask Handle(Command command, CancellationToken ct)
             {
-                var level = _levelRepository.GetLevel();
                 var gameSession = _gameSessionRepository.Get();
-                gameSession.StartLevel(level);
+                var level = gameSession.Level;
                 var asteroids = gameSession.GetAsteroids();
 
                 var startTask = new ShowLoadingScreen

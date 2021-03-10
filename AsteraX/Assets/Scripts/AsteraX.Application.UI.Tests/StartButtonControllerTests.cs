@@ -1,25 +1,38 @@
+using System.Collections;
 using AsteraX.Application.Game;
 using AsteraX.Application.Game.Tests;
+using AsteraX.Infrastructure.Data;
 using Common.Application;
-using NUnit.Framework;
+using Cysharp.Threading.Tasks;
+using UnityEngine.TestTools;
 using static AsteraX.Application.UI.StartButtonController;
 
 namespace AsteraX.Application.UI.Tests
 {
     public class StartButtonControllerTests
     {
-        [Test]
-        public void Pressing_start_button()
-        {
-            var taskPublisher = new FakeApplicationTaskPublisher();
-            IRequestHandler<Command> sut = new CommandHandler(taskPublisher);
-            var command = new Command();
+        [UnityTest]
+        public IEnumerator Pressing_start_button() => UniTask.ToCoroutine(
+            async () =>
+            {
+                var levelRepository = new LevelRepository();
+                var gameSessionRepository = new GameSessionRepository();
+                var taskPublisher = new FakeApplicationTaskPublisher();
+                IAsyncRequestHandler<Command> sut = new CommandHandler(
+                    levelRepository,
+                    gameSessionRepository,
+                    taskPublisher
+                );
+                var command = new Command();
 
-            sut.Handle(command);
+                await sut.Handle(command);
 
-            taskPublisher
-                .ShouldContainSingle<CloseMainMenu>()
-                .ShouldContainSingle<StartNextLevel>();
-        }
+                sut.Handle(command);
+
+                taskPublisher
+                    .ShouldContainSingle<CloseMainMenu>()
+                    .ShouldContainSingle<LoadCurrentLevel>()
+                    .ShouldContainSingle<ShowPauseButton>();
+            });
     }
 }
