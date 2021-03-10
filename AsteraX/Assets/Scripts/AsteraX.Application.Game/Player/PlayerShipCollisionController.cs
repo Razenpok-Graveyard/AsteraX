@@ -35,7 +35,7 @@ namespace AsteraX.Application.Game.Player
             enabled = true;
         }
 
-        public class Command : IRequest<Result>
+        public class Command : IAsyncRequest<Result>
         {
             public long AsteroidId { get; set; }
         }

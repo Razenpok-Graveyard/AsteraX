@@ -34,7 +34,7 @@ namespace AsteraX.Application.UI
                 .AddTo(this);
         }
 
-        public class Command : IRequest { }
+        public class Command : IAsyncRequest { }
 
         public class CommandHandler : AsyncRequestHandler<Command>
         {

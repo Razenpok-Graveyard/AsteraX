@@ -20,18 +20,18 @@ namespace Common.Application
     }
 
     public interface IAsyncRequestHandler<in TRequest, TResponse> : IBaseRequestHandler
-        where TRequest : IRequest<TResponse>
+        where TRequest : IAsyncRequest<TResponse>
     {
         UniTask<TResponse> Handle(TRequest request, CancellationToken cancellationToken = default);
     }
 
     public interface IAsyncRequestHandler<in TRequest> : IAsyncRequestHandler<TRequest, Unit>
-        where TRequest : IRequest<Unit>
+        where TRequest : IAsyncRequest<Unit>
     {
     }
 
     public abstract class AsyncRequestHandler<TRequest, TResponse> : IAsyncRequestHandler<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+        where TRequest : IAsyncRequest<TResponse>
     {
         UniTask<TResponse> IAsyncRequestHandler<TRequest, TResponse>.Handle(TRequest request,
             CancellationToken cancellationToken)
@@ -43,7 +43,7 @@ namespace Common.Application
     }
 
     public abstract class AsyncRequestHandler<TRequest> : IAsyncRequestHandler<TRequest>
-        where TRequest : IRequest
+        where TRequest : IAsyncRequest
     {
         async UniTask<Unit> IAsyncRequestHandler<TRequest, Unit>.Handle(TRequest request,
             CancellationToken cancellationToken)

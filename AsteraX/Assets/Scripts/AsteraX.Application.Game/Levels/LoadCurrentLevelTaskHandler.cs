@@ -26,7 +26,7 @@ namespace AsteraX.Application.Game.Levels
             await _commandHandler.Handle(new Command(), ct);
         }
 
-        public class Command : IRequest { }
+        public class Command : IAsyncRequest { }
 
         public class CommandHandler : AsyncRequestHandler<Command>
         {
