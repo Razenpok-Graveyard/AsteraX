@@ -45,7 +45,8 @@ namespace AsteraX.Application.UI.Tests
                     })
                     .ShouldContainSingle<HideLoadingScreen>()
                     .ShouldContainSingle<ShowPauseButton>()
-                    .ShouldContainSingle<UnpauseGame>();
+                    .ShouldContainSingle<UnpauseGame>()
+                    .ShouldContainSingle<EnablePlayerControls>();
             });
     }
 }

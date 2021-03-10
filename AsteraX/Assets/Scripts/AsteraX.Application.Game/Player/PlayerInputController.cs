@@ -27,6 +27,7 @@ namespace AsteraX.Application.Game.Player
         private void Awake()
         {
             _mainCamera = Camera.main;
+            enabled = false;
         }
 
         private void Update()

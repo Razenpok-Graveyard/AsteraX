@@ -35,7 +35,7 @@ namespace AsteraX.Application.UI.MainMenu
                 .AddTo(this);
 
             _button.OnClickAsObservable()
-                .Subscribe(_ => _commandHandler.Handle(new Command()))
+                .Subscribe(_ => _commandHandler.Handle(new Command()).Forget())
                 .AddTo(this);
         }
 
@@ -83,6 +83,7 @@ namespace AsteraX.Application.UI.MainMenu
                 await _taskPublisher.PublishAsyncTask(new HideLoadingScreen(), ct);
                 _taskPublisher.PublishTask(new ShowPauseButton());
                 _taskPublisher.PublishTask(new UnpauseGame());
+                _taskPublisher.PublishTask(new EnablePlayerControls());
             }
 
             private static List<AsteroidDto> ToSpawnAsteroidsDto(IEnumerable<Asteroid> asteroids)
