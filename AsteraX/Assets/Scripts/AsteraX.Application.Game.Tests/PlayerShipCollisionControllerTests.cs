@@ -33,9 +33,9 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 taskPublisher
-                    .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .ShouldContainSingle<DestroyPlayerShip>()
-                    .ShouldContainSingle<RespawnPlayerShip>();
+                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .Consume<DestroyPlayerShip>()
+                    .Consume<RespawnPlayerShip>();
             });
 
         [UnityTest]
@@ -67,9 +67,9 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 taskPublisher
-                    .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .ShouldContainSingle<DestroyPlayerShip>()
-                    .ShouldContainSingle<ShowGameOverScreen>(task =>
+                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .Consume<DestroyPlayerShip>()
+                    .Consume<ShowGameOverScreen>(task =>
                     {
                         task.Level.Should().Be(1);
                         task.Score.Should().Be(gameSession.Score);

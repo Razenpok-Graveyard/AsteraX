@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
@@ -6,16 +7,15 @@ using AsteraX.Infrastructure.Data;
 using Common.Application;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
-using NUnit.Framework;
-using Razensoft.Functional;
+using UnityEngine.TestTools;
 using static AsteraX.Application.Game.Bullets.BulletCollisionController;
 
 namespace AsteraX.Application.Game.Tests
 {
     public class BulletCollisionControllerTests
     {
-        [Test]
-        public void Colliding_asteroid_with_bullet() => UniTask.ToCoroutine(
+        [UnityTest]
+        public IEnumerator Colliding_asteroid_with_bullet() => UniTask.ToCoroutine(
             async () =>
             {
                 const int asteroidCount = 3;
@@ -41,17 +41,17 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 taskPublisher
-                    .ShouldContainSingle<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .ShouldContainSingle<ShowLoadingScreen>(task =>
+                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .Consume<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(1);
                         task.Asteroids.Should().Be(3);
                         task.Children.Should().Be(3);
                     })
-                    .ShouldContainSingle<SpawnAsteroids>(task => task.Asteroids.Count.Should().Be(asteroidCount))
-                    .ShouldContainSingle<HideLoadingScreen>()
-                    .ShouldContainSingle<UnpauseGame>()
-                    .ShouldContainSingle<EnablePlayerInput>();
+                    .Consume<SpawnAsteroids>(task => task.Asteroids.Count.Should().Be(asteroidCount))
+                    .Consume<HideLoadingScreen>()
+                    .Consume<EnablePlayerInput>()
+                    .Consume<UnpauseGame>();
             });
     }
 }

@@ -91,8 +91,8 @@ namespace AsteraX.Application.Game.Bullets
                 await _taskPublisher.PublishAsyncTask(showLoadingScreen, ct);
                 _taskPublisher.PublishTask(spawnAsteroids);
                 await _taskPublisher.PublishAsyncTask(new HideLoadingScreen(), ct);
-                _taskPublisher.PublishTask(new UnpauseGame());
                 _taskPublisher.PublishTask(new EnablePlayerInput());
+                _taskPublisher.PublishTask(new UnpauseGame());
             }
 
             private static List<AsteroidDto> ToSpawnAsteroidsDto(IEnumerable<Asteroid> asteroids)
