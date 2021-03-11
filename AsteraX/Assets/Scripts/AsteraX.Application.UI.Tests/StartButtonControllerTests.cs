@@ -30,21 +30,21 @@ namespace AsteraX.Application.UI.Tests
                 await sut.Handle(command);
 
                 taskPublisher
-                    .ShouldContainSingle<HideMainMenuScreen>()
-                    .ShouldContainSingle<ShowLoadingScreen>(task =>
+                    .Consume<HideMainMenuScreen>()
+                    .Consume<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(1);
                         task.Asteroids.Should().Be(3);
                         task.Children.Should().Be(3);
                     })
-                    .ShouldContainSingle<SpawnAsteroids>(task =>
+                    .Consume<SpawnAsteroids>(task =>
                     {
                         task.Asteroids.Count.Should().Be(asteroidCount);
                     })
-                    .ShouldContainSingle<HideLoadingScreen>()
-                    .ShouldContainSingle<ShowPauseButton>()
-                    .ShouldContainSingle<UnpauseGame>()
-                    .ShouldContainSingle<EnablePlayerInput>();
+                    .Consume<HideLoadingScreen>()
+                    .Consume<ShowPauseButton>()
+                    .Consume<UnpauseGame>()
+                    .Consume<EnablePlayerInput>();
             });
     }
 }
