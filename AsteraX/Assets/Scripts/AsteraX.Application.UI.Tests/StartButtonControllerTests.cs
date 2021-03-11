@@ -1,6 +1,4 @@
 using System.Collections;
-using AsteraX.Application.Game;
-using AsteraX.Application.Game.Tests;
 using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure.Data;
