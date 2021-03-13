@@ -2,7 +2,7 @@ using System;
 
 namespace AsteraX.Infrastructure
 {
-    public interface IGameSessionObservableModel
+    public interface IGameSessionObservable
     {
         IObservable<int> Jumps { get; }
         IObservable<int> Score { get; }

@@ -4,7 +4,7 @@ using UniRx;
 
 namespace AsteraX.Infrastructure.Data
 {
-    public class GameSessionObservableModel : IGameSessionObservableModel
+    public class GameSessionObservable : IGameSessionObservable
     {
         private readonly ReactiveProperty<int> _jumps = new ReactiveProperty<int>();
         public IObservable<int> Jumps => _jumps;

@@ -3,15 +3,15 @@ using Common.Domain;
 
 namespace AsteraX.Infrastructure.Data
 {
-    public class GameSessionRepository : IGameSessionRepository, IGameSessionObservableModelRepository
+    public class GameSessionRepository : IGameSessionRepository, IGameSessionObservableRepository
     {
         private readonly GameSession _gameSession;
-        private readonly GameSessionObservableModel _observableModel = new GameSessionObservableModel();
+        private readonly GameSessionObservable _observable = new GameSessionObservable();
 
         public GameSessionRepository(GameSessionSettings settings)
         {
             _gameSession = new GameSession(settings.InitialJumps);
-            _observableModel.Update(_gameSession);
+            _observable.Update(_gameSession);
         }
 
         public GameSessionRepository()
@@ -24,14 +24,14 @@ namespace AsteraX.Infrastructure.Data
             return _gameSession;
         }
 
-        public IGameSessionObservableModel GetObservableModel()
+        IGameSessionObservable IGameSessionObservableRepository.Get()
         {
-            return _observableModel;
+            return _observable;
         }
 
         public void Save()
         {
-            _observableModel.Update(_gameSession);
+            _observable.Update(_gameSession);
             DomainEventBus.DispatchEvents(_gameSession);
         }
     }
