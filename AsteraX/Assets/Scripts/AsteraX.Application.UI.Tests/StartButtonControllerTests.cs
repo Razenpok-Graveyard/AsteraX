@@ -3,6 +3,7 @@ using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
+using Common.Tests;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;
@@ -44,7 +45,8 @@ namespace AsteraX.Application.UI.Tests
                     .Consume<HideLoadingScreen>()
                     .Consume<ShowPauseButton>()
                     .Consume<UnpauseGame>()
-                    .Consume<EnablePlayerInput>();
+                    .Consume<EnablePlayerInput>()
+                    .Complete();
             });
     }
 }

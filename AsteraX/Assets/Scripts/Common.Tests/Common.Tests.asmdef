@@ -1,0 +1,18 @@
+{
+    "name": "Common.Tests",
+    "rootNamespace": "Common.Tests",
+    "references": [
+        "GUID:bbd63bd5221446758c037e17133dee63",
+        "GUID:e372c541aba5148868e12aa078ca7c20",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

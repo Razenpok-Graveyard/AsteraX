@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using Common.Application;
 using Cysharp.Threading.Tasks;
-using FluentAssertions;
+using FluentAssertions.Execution;
 
-namespace AsteraX.Application.Game.Tests
+namespace Common.Tests
 {
     public class FakeApplicationTaskPublisher : IApplicationTaskPublisher
     {
@@ -25,9 +25,18 @@ namespace AsteraX.Application.Game.Tests
         public FakeApplicationTaskPublisher Consume<T>(Action<T> validate = null)
         {
             var task = _publishedTasks.Dequeue();
-            task.Should().BeOfType<T>();
+            Execute.Assertion
+                .ForCondition(task is T)
+                .FailWith($"Expected task of type {typeof(T).FullName} to be published, but found {task.GetType().FullName}.");
             validate?.Invoke((T) task);
             return this;
+        }
+
+        public void Complete()
+        {
+            Execute.Assertion
+                .ForCondition(_publishedTasks.Count == 0)
+                .FailWith($"Expected task publisher to be empty, but found {_publishedTasks.Count} unverified tasks.");
         }
     }
 }

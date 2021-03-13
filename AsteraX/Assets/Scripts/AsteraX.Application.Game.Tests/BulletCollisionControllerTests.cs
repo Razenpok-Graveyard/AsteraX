@@ -5,6 +5,7 @@ using AsteraX.Application.Tasks.UI;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
+using Common.Tests;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;
@@ -51,7 +52,8 @@ namespace AsteraX.Application.Game.Tests
                     .Consume<SpawnAsteroids>(task => task.Asteroids.Count.Should().Be(asteroidCount))
                     .Consume<HideLoadingScreen>()
                     .Consume<EnablePlayerInput>()
-                    .Consume<UnpauseGame>();
+                    .Consume<UnpauseGame>()
+                    .Complete();
             });
     }
 }

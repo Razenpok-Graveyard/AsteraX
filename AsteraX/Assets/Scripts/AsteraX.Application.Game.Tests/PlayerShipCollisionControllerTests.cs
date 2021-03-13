@@ -4,6 +4,7 @@ using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
+using Common.Tests;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;
@@ -73,7 +74,8 @@ namespace AsteraX.Application.Game.Tests
                     {
                         task.Level.Should().Be(1);
                         task.Score.Should().Be(gameSession.Score);
-                    });
+                    })
+                    .Complete();
             });
     }
 }
