@@ -7,12 +7,12 @@ using FluentAssertions.Execution;
 
 namespace Common.Application.Tests
 {
-    public class FakeApplicationTaskPublisher : IApplicationTaskPublisher
+    public class ApplicationTaskPublisherSpy : IApplicationTaskPublisher
     {
         private readonly Queue<TaskBucket> _buckets = new Queue<TaskBucket>();
         private TaskBucket _currentBucket;
 
-        public FakeApplicationTaskPublisher()
+        public ApplicationTaskPublisherSpy()
         {
             _currentBucket = new TaskBucket();
             _buckets.Enqueue(_currentBucket);
@@ -36,7 +36,7 @@ namespace Common.Application.Tests
             _currentBucket.ForgetTasks.Add(task);
         }
 
-        public FakeApplicationTaskPublisher Consume<T>(Action<T> validate = null) where T : IApplicationTask
+        public ApplicationTaskPublisherSpy Consume<T>(Action<T> validate = null) where T : IApplicationTask
         {
             var nextBucket = _buckets.Peek();
             var task = nextBucket.Tasks.OfType<T>().FirstOrDefault();
@@ -48,7 +48,7 @@ namespace Common.Application.Tests
             return this;
         }
 
-        public FakeApplicationTaskPublisher ConsumeForget<T>(Action<T> validate = null) where T : IAsyncApplicationTask
+        public ApplicationTaskPublisherSpy ConsumeForget<T>(Action<T> validate = null) where T : IAsyncApplicationTask
         {
             var nextBucket = _buckets.Peek();
             var task = nextBucket.ForgetTasks.OfType<T>().FirstOrDefault();
@@ -60,7 +60,7 @@ namespace Common.Application.Tests
             return this;
         }
 
-        public FakeApplicationTaskPublisher ConsumeAsync<T>(Action<T> validate = null) where T : IAsyncApplicationTask
+        public ApplicationTaskPublisherSpy ConsumeAsync<T>(Action<T> validate = null) where T : IAsyncApplicationTask
         {
             var nextBucket = _buckets.Peek();
             var task = nextBucket.AsyncTask;

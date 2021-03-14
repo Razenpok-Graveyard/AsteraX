@@ -19,7 +19,7 @@ namespace AsteraX.Application.Game.Tests
         public IEnumerator Colliding_bullet_with_asteroid()
             => UniTask.ToCoroutine(async () =>
             {
-                var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new ApplicationTaskPublisherSpy();
                 var levelRepository = new LevelRepository();
                 var repository = new GameSessionRepository();
                 var gameSession = repository.Get();
@@ -48,7 +48,7 @@ namespace AsteraX.Application.Game.Tests
             => UniTask.ToCoroutine(async () =>
             {
                 const int asteroidCount = 3;
-                var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new ApplicationTaskPublisherSpy();
                 var levelRepository = new LevelRepository();
                 var repository = new GameSessionRepository();
                 var gameSession = repository.Get();

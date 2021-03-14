@@ -26,7 +26,7 @@ namespace AsteraX.Application.Game.Tests
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
 
-                var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new ApplicationTaskPublisherSpy();
 
                 IAsyncRequestHandler<Command> sut = new CommandHandler(levelRepository, repository, taskPublisher);
                 var command = new Command
@@ -57,7 +57,7 @@ namespace AsteraX.Application.Game.Tests
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
 
-                var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new ApplicationTaskPublisherSpy();
 
                 IAsyncRequestHandler<Command> sut = new CommandHandler(levelRepository, repository, taskPublisher);
                 var command = new Command
@@ -95,7 +95,7 @@ namespace AsteraX.Application.Game.Tests
             => UniTask.ToCoroutine(async () =>
             {
                 var levelRepository = new LevelRepository();
-                var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new ApplicationTaskPublisherSpy();
                 var gameSessionSettings = new GameSessionSettings
                 {
                     InitialJumps = 0
@@ -134,7 +134,7 @@ namespace AsteraX.Application.Game.Tests
             => UniTask.ToCoroutine(async () =>
             {
                 var levelRepository = new LevelRepository();
-                var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new ApplicationTaskPublisherSpy();
                 var gameSessionSettings = new GameSessionSettings
                 {
                     InitialJumps = 0

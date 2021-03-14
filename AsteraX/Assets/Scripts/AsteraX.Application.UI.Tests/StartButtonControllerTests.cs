@@ -20,7 +20,7 @@ namespace AsteraX.Application.UI.Tests
                 const int asteroidCount = 3;
                 var levelRepository = new LevelRepository();
                 var gameSessionRepository = new GameSessionRepository();
-                var taskPublisher = new FakeApplicationTaskPublisher();
+                var taskPublisher = new ApplicationTaskPublisherSpy();
                 IAsyncRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     gameSessionRepository,
