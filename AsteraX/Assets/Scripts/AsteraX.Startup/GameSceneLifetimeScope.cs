@@ -11,6 +11,7 @@ namespace AsteraX.Startup
 {
     public class GameSceneLifetimeScope : LifetimeScope
     {
+        [SerializeField] private LevelSettings _levelSettings;
         [SerializeField] private AssemblyDefinitionAsset[] _requestHandlerAssemblies;
 
         protected override void Configure([NotNull] IContainerBuilder builder)
@@ -24,6 +25,7 @@ namespace AsteraX.Startup
             builder.RegisterInstance(subscriber).As<IApplicationTaskSubscriber>();
             ApplicationTaskDispatcher.Subscriber = subscriber;
 
+            builder.RegisterInstance(_levelSettings);
             builder.Register<GameSessionSettings>(Lifetime.Singleton);
             builder.Register<LevelRepository>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<GameSessionRepository>(Lifetime.Singleton).AsImplementedInterfaces();

@@ -59,7 +59,7 @@ namespace AsteraX.Application.UI.MainMenu
             
             protected override async UniTask Handle(Command command, CancellationToken ct)
             {
-                var level = _levelRepository.GetLevel();
+                var level = _levelRepository.GetLevel(1);
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 _gameSessionRepository.Save();
@@ -68,7 +68,7 @@ namespace AsteraX.Application.UI.MainMenu
                 
                 var showLoadingScreen = new ShowLoadingScreen
                 {
-                    Id = (int) level.Id,
+                    Id = level.Id,
                     Asteroids = level.AsteroidCount,
                     Children = level.AsteroidChildCount
                 };

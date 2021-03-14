@@ -171,6 +171,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  _levelSettings: {fileID: 11400000, guid: 10cef1c1db0e4be4ba516d4b687186ad, type: 2}
   _requestHandlerAssemblies:
   - {fileID: 5897886265953266890, guid: 2fb452967ef871e44860844b3d07cf4c, type: 3}
   - {fileID: 5897886265953266890, guid: 4d48a74ff4004a14a70684d4234d1e55, type: 3}

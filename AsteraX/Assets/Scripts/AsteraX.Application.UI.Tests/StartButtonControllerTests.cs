@@ -1,6 +1,7 @@
 using System.Collections;
 using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
+using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
 using Common.Application.Tests;
@@ -17,10 +18,10 @@ namespace AsteraX.Application.UI.Tests
         public IEnumerator Pressing_start_button()
             => UniTask.ToCoroutine(async () =>
             {
-                const int asteroidCount = 3;
-                var levelRepository = new LevelRepository();
-                var gameSessionRepository = new GameSessionRepository();
                 var taskPublisher = new ApplicationTaskPublisherSpy();
+                var gameSessionRepository = new GameSessionRepository();
+                var level = new Level(1, 2, 3);
+                var levelRepository = new StubLevelRepository(level);
                 IAsyncRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     gameSessionRepository,
@@ -35,13 +36,10 @@ namespace AsteraX.Application.UI.Tests
                     .ConsumeAsync<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(1);
-                        task.Asteroids.Should().Be(3);
+                        task.Asteroids.Should().Be(2);
                         task.Children.Should().Be(3);
                     })
-                    .Consume<SpawnAsteroids>(task =>
-                    {
-                        task.Asteroids.Count.Should().Be(asteroidCount);
-                    })
+                    .Consume<SpawnAsteroids>(task => task.ShouldBeConsistentWithLevel(level))
                     .ConsumeAsync<HideLoadingScreen>()
                     .Consume<ShowPauseButton>()
                     .Consume<UnpauseGame>()

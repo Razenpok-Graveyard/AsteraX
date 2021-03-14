@@ -1,12 +1,27 @@
+using System;
 using AsteraX.Domain.Game;
 
 namespace AsteraX.Infrastructure.Data
 {
     public class LevelRepository : ILevelRepository
     {
-        public Level GetLevel()
+        private readonly LevelSettings _levelSettings;
+
+        public LevelRepository(LevelSettings levelSettings)
         {
-            return new Level(1, 1, 1);
+            _levelSettings = levelSettings;
+        }
+        
+        public Level GetLevel(long id)
+        {
+            var levels = _levelSettings.Levels;
+            if (levels.Count < id)
+            {
+                throw new InvalidOperationException("Level index is outside configured values");
+            }
+
+            var level = levels[(int) id - 1];
+            return new Level(id, level.AsteroidCount, level.AsteroidChildCount);
         }
     }
 }

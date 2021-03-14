@@ -91,7 +91,7 @@ namespace AsteraX.Application.Game.Player
             {
                 var showGameOverScreen = new ShowGameOverScreen
                 {
-                    Level = (int) gameSession.Level.Id,
+                    Level = gameSession.Level.Id,
                     Score = gameSession.Score
                 };
                 return _taskPublisher.AsyncPublish(showGameOverScreen, ct);
@@ -99,7 +99,7 @@ namespace AsteraX.Application.Game.Player
 
             private async UniTask ShowLevelCompleted(GameSession gameSession, CancellationToken ct)
             {
-                var level = _levelRepository.GetLevel();
+                var level = _levelRepository.GetLevel(1);
                 gameSession.StartLevel(level);
                 _gameSessionRepository.Save();
 

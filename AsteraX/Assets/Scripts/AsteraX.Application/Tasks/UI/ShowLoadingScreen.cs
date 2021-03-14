@@ -5,7 +5,7 @@ namespace AsteraX.Application.Tasks.UI
 {
     public class ShowLoadingScreen : IAsyncApplicationTask
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public int Asteroids { get; set; }
         public int Children { get; set; }
 
@@ -13,7 +13,7 @@ namespace AsteraX.Application.Tasks.UI
         {
             return new ShowLoadingScreen
             {
-                Id = (int) level.Id,
+                Id = level.Id,
                 Asteroids = level.AsteroidCount,
                 Children = level.AsteroidChildCount
             };

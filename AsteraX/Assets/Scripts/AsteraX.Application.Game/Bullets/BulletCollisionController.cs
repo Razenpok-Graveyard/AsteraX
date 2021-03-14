@@ -71,7 +71,7 @@ namespace AsteraX.Application.Game.Bullets
                     return;
                 }
 
-                var level = _levelRepository.GetLevel();
+                var level = _levelRepository.GetLevel(1);
                 gameSession.StartLevel(level);
                 _gameSessionRepository.Save();
 

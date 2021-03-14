@@ -20,10 +20,10 @@ namespace AsteraX.Application.Game.Tests
             => UniTask.ToCoroutine(async () =>
             {
                 var taskPublisher = new ApplicationTaskPublisherSpy();
-                var levelRepository = new LevelRepository();
                 var repository = new GameSessionRepository();
-                var gameSession = repository.Get();
                 var level = new Level(1, 3, 0);
+                var levelRepository = new StubLevelRepository(level);
+                var gameSession = repository.Get();
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
                 IAsyncRequestHandler<Command> sut = new CommandHandler(
@@ -47,19 +47,19 @@ namespace AsteraX.Application.Game.Tests
         public IEnumerator Colliding_bullet_with_last_asteroid()
             => UniTask.ToCoroutine(async () =>
             {
-                const int asteroidCount = 3;
                 var taskPublisher = new ApplicationTaskPublisherSpy();
-                var levelRepository = new LevelRepository();
                 var repository = new GameSessionRepository();
+                var firstLevel = new Level(1, 1, 0);
+                var secondLevel = new Level(2, 3, 3);
+                var levelRepository = new StubLevelRepository(firstLevel, secondLevel);
                 var gameSession = repository.Get();
-                var level = new Level(1, 1, 0);
-                gameSession.StartLevel(level);
-                var asteroidId = gameSession.GetAsteroids().First().Id;
+                gameSession.StartLevel(firstLevel);
                 IAsyncRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     repository,
                     taskPublisher
                 );
+                var asteroidId = gameSession.GetAsteroids().First().Id;
                 var command = new Command
                 {
                     AsteroidId = asteroidId
@@ -72,10 +72,10 @@ namespace AsteraX.Application.Game.Tests
                     .ConsumeAsync<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(1);
-                        task.Asteroids.Should().Be(3);
-                        task.Children.Should().Be(3);
+                        task.Asteroids.Should().Be(1);
+                        task.Children.Should().Be(0);
                     })
-                    .Consume<SpawnAsteroids>(task => task.Asteroids.Count.Should().Be(asteroidCount))
+                    .Consume<SpawnAsteroids>(task => task.ShouldBeConsistentWithLevel(firstLevel))
                     .ConsumeAsync<HideLoadingScreen>()
                     .Consume<EnablePlayerInput>()
                     .Consume<UnpauseGame>()
