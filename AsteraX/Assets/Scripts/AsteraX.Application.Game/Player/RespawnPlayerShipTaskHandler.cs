@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using AsteraX.Application.Game.Levels;
 using AsteraX.Application.Tasks.Game;
@@ -16,16 +17,34 @@ namespace AsteraX.Application.Game.Player
 
         protected override async UniTask Handle(RespawnPlayerShip task, CancellationToken ct)
         {
-            await UniTask.Delay(1500, cancellationToken: ct);
-            _playerShip.transform.position = FindSafeSpawnPoint();
-            var position = _playerShip.transform.position;
-            position.z = _appearEffect.transform.position.z;
-            var effect = Instantiate(_appearEffect, position, Quaternion.identity);
-            DestroyWhenDone(effect).Forget();
-            await UniTask.Delay(500, cancellationToken: ct);
-            _playerShip.SetActive(true);
-            var emission = _exhaustTrail.emission;
-            emission.enabled = true;
+            if (task.SpawnEffects)
+            {
+                var effectDelay = TimeSpan.FromMilliseconds(500);
+                var initialDelay = task.Delay - effectDelay;
+                if (initialDelay > TimeSpan.Zero)
+                {
+                    await UniTask.Delay(initialDelay, cancellationToken: ct);
+                }
+                _playerShip.transform.position = FindSafeSpawnPoint();
+                var position = _playerShip.transform.position;
+                position.z = _appearEffect.transform.position.z;
+                var effect = Instantiate(_appearEffect, position, Quaternion.identity);
+                DestroyWhenDone(effect).Forget();
+                var actualEffectDelay = task.Delay - initialDelay;
+                await UniTask.Delay(actualEffectDelay, cancellationToken: ct);
+                _playerShip.SetActive(true);
+                var emission = _exhaustTrail.emission;
+                emission.enabled = true;
+            }
+            else
+            {
+                _playerShip.transform.position = FindSafeSpawnPoint();
+                var position = _playerShip.transform.position;
+                position.z = _appearEffect.transform.position.z;
+                _playerShip.SetActive(true);
+                var emission = _exhaustTrail.emission;
+                emission.enabled = true;
+            }
         }
 
         private static async UniTask DestroyWhenDone(ParticleSystem particleSystem)

@@ -16,19 +16,45 @@ namespace AsteraX.Application.Game.Tests
     public class BulletCollisionControllerTests
     {
         [UnityTest]
-        public IEnumerator Colliding_asteroid_with_bullet() => UniTask.ToCoroutine(
-            async () =>
+        public IEnumerator Colliding_bullet_with_asteroid()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var taskPublisher = new FakeApplicationTaskPublisher();
+                var levelRepository = new LevelRepository();
+                var repository = new GameSessionRepository();
+                var gameSession = repository.Get();
+                var level = new Level(1, 3, 0);
+                gameSession.StartLevel(level);
+                var asteroidId = gameSession.GetAsteroids().First().Id;
+                IAsyncRequestHandler<Command> sut = new CommandHandler(
+                    levelRepository,
+                    repository,
+                    taskPublisher
+                );
+                var command = new Command
+                {
+                    AsteroidId = asteroidId
+                };
+
+                await sut.Handle(command);
+
+                taskPublisher
+                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .Complete();
+            });
+
+        [UnityTest]
+        public IEnumerator Colliding_bullet_with_last_asteroid()
+            => UniTask.ToCoroutine(async () =>
             {
                 const int asteroidCount = 3;
+                var taskPublisher = new FakeApplicationTaskPublisher();
                 var levelRepository = new LevelRepository();
                 var repository = new GameSessionRepository();
                 var gameSession = repository.Get();
                 var level = new Level(1, 1, 0);
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
-
-                var taskPublisher = new FakeApplicationTaskPublisher();
-
                 IAsyncRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     repository,

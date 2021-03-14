@@ -66,7 +66,7 @@ namespace AsteraX.Application.Game.Bullets
                     Id = command.AsteroidId
                 });
 
-                if (gameSession.GetAsteroids().Count > 0)
+                if (!gameSession.IsLevelCompleted)
                 {
                     return;
                 }

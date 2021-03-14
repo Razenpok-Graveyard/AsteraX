@@ -14,8 +14,8 @@ namespace AsteraX.Application.UI.Tests
     public class StartButtonControllerTests
     {
         [UnityTest]
-        public IEnumerator Pressing_start_button() => UniTask.ToCoroutine(
-            async () =>
+        public IEnumerator Pressing_start_button()
+            => UniTask.ToCoroutine(async () =>
             {
                 const int asteroidCount = 3;
                 var levelRepository = new LevelRepository();
