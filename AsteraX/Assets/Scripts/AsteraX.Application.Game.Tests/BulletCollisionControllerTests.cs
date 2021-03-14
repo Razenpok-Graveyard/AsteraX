@@ -50,7 +50,7 @@ namespace AsteraX.Application.Game.Tests
                 var taskPublisher = new ApplicationTaskPublisherSpy();
                 var repository = new GameSessionRepository();
                 var firstLevel = new Level(1, 1, 0);
-                var secondLevel = new Level(2, 3, 3);
+                var secondLevel = new Level(2, 2, 3);
                 var levelRepository = new StubLevelRepository(firstLevel, secondLevel);
                 var gameSession = repository.Get();
                 gameSession.StartLevel(firstLevel);
@@ -71,11 +71,11 @@ namespace AsteraX.Application.Game.Tests
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .ConsumeAsync<ShowLoadingScreen>(task =>
                     {
-                        task.Id.Should().Be(1);
-                        task.Asteroids.Should().Be(1);
-                        task.Children.Should().Be(0);
+                        task.Id.Should().Be(2);
+                        task.Asteroids.Should().Be(2);
+                        task.Children.Should().Be(3);
                     })
-                    .Consume<SpawnAsteroids>(task => task.ShouldBeConsistentWithLevel(firstLevel))
+                    .Consume<SpawnAsteroids>(task => task.ShouldBeConsistentWithLevel(secondLevel))
                     .ConsumeAsync<HideLoadingScreen>()
                     .Consume<EnablePlayerInput>()
                     .Consume<UnpauseGame>()

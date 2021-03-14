@@ -80,7 +80,7 @@ namespace AsteraX.Application.Game.Player
 
                 if (gameSession.IsLevelCompleted)
                 {
-                    await ShowLevelCompleted(gameSession, ct);
+                    await StartNextLevel(gameSession, ct);
                     return;
                 }
 
@@ -93,9 +93,10 @@ namespace AsteraX.Application.Game.Player
                 return _taskPublisher.AsyncPublish(showGameOverScreen, ct);
             }
 
-            private async UniTask ShowLevelCompleted(GameSession gameSession, CancellationToken ct)
+            private async UniTask StartNextLevel(GameSession gameSession, CancellationToken ct)
             {
-                var level = _levelRepository.GetLevel(1);
+                var nextLevelId = gameSession.Level.Id + 1;
+                var level = _levelRepository.GetLevel(nextLevelId);
                 gameSession.StartLevel(level);
                 _gameSessionRepository.Save();
 
