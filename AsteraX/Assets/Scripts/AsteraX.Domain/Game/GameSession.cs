@@ -60,11 +60,9 @@ namespace AsteraX.Domain.Game
             Contract.Requires(IsAsteroidAlive(asteroidId), "IsAsteroidAlive(asteroidId)");
             _levelAttempt.Destroy(asteroidId);
             IsPlayerAlive = false;
-            AddDomainEvent(new PlayerShipDestroyedEvent());
 
             if (Jumps == 0)
             {
-                AddDomainEvent(new GameOverEvent());
                 IsOver = true;
             }
             else

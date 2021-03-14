@@ -26,7 +26,6 @@ namespace AsteraX.Domain.Tests
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.IsPlayerAlive.Should().BeFalse();
-            session.DomainEvents.Should().ContainSingle(e => e is PlayerShipDestroyedEvent);
         }
 
         [Test]
@@ -36,7 +35,20 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
-            session.GetAsteroids().Should().NotContain(asteroid);
+            session.IsAsteroidAlive(asteroid.Id).Should().BeFalse();
+        }
+
+        [Test]
+        public void Collision_of_asteroid_and_player_ship_spawns_child_asteroids()
+        {
+            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
+            
+            foreach (var child in asteroid.Children)
+            {
+                session.IsAsteroidAlive(child.Id).Should().BeTrue();
+            }
         }
 
         [Test]
@@ -72,7 +84,6 @@ namespace AsteraX.Domain.Tests
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.IsOver.Should().BeTrue();
-            session.DomainEvents.Should().ContainSingle(e => e is GameOverEvent);
         }
 
         [Test]
@@ -84,7 +95,6 @@ namespace AsteraX.Domain.Tests
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.IsOver.Should().BeFalse();
-            session.DomainEvents.Should().NotContain(e => e is GameOverEvent);
         }
 
         [Test]
@@ -105,7 +115,20 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithBullet(asteroid.Id);
 
-            session.GetAsteroids().Should().NotContain(asteroid);
+            session.IsAsteroidAlive(asteroid.Id).Should().BeFalse();
+        }
+
+        [Test]
+        public void Collision_of_asteroid_and_bullet_spawns_child_asteroids()
+        {
+            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
+            
+            foreach (var child in asteroid.Children)
+            {
+                session.IsAsteroidAlive(child.Id).Should().BeTrue();
+            }
         }
 
         [Test]
@@ -146,6 +169,6 @@ namespace AsteraX.Domain.Tests
         }
 
         private static Level CreateLevelWithOneAsteroid()
-            => new Level(1, 1, 0);
+            => new Level(1, 1, 3);
     }
 }
