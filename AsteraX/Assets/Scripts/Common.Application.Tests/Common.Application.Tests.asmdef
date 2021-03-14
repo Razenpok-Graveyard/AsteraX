@@ -1,6 +1,6 @@
 {
-    "name": "Common.Tests",
-    "rootNamespace": "Common.Tests",
+    "name": "Common.Application.Tests",
+    "rootNamespace": "Common.Application.Tests",
     "references": [
         "GUID:bbd63bd5221446758c037e17133dee63",
         "GUID:e372c541aba5148868e12aa078ca7c20",

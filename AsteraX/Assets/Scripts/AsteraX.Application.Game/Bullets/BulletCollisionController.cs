@@ -61,7 +61,7 @@ namespace AsteraX.Application.Game.Bullets
                 gameSession.CollideAsteroidWithBullet(command.AsteroidId);
                 _gameSessionRepository.Save();
 
-                _taskPublisher.PublishTask(new DestroyAsteroid
+                _taskPublisher.Publish(new DestroyAsteroid
                 {
                     Id = command.AsteroidId
                 });
@@ -88,11 +88,11 @@ namespace AsteraX.Application.Game.Bullets
                     Asteroids = ToSpawnAsteroidsDto(asteroids)
                 };
 
-                await _taskPublisher.PublishAsyncTask(showLoadingScreen, ct);
-                _taskPublisher.PublishTask(spawnAsteroids);
-                await _taskPublisher.PublishAsyncTask(new HideLoadingScreen(), ct);
-                _taskPublisher.PublishTask(new EnablePlayerInput());
-                _taskPublisher.PublishTask(new UnpauseGame());
+                await _taskPublisher.AsyncPublish(showLoadingScreen, ct);
+                _taskPublisher.Publish(spawnAsteroids);
+                await _taskPublisher.AsyncPublish(new HideLoadingScreen(), ct);
+                _taskPublisher.Publish(new EnablePlayerInput());
+                _taskPublisher.Publish(new UnpauseGame());
             }
 
             private static List<AsteroidDto> ToSpawnAsteroidsDto(IEnumerable<Asteroid> asteroids)

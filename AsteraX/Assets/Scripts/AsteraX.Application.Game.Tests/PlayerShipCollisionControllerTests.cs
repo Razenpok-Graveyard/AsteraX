@@ -4,7 +4,7 @@ using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
-using Common.Tests;
+using Common.Application.Tests;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;
@@ -36,7 +36,8 @@ namespace AsteraX.Application.Game.Tests
                 taskPublisher
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .Consume<DestroyPlayerShip>()
-                    .Consume<RespawnPlayerShip>();
+                    .ConsumeAsync<RespawnPlayerShip>()
+                    .Complete();
             });
 
         [UnityTest]
@@ -70,7 +71,7 @@ namespace AsteraX.Application.Game.Tests
                 taskPublisher
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .Consume<DestroyPlayerShip>()
-                    .Consume<ShowGameOverScreen>(task =>
+                    .ConsumeAsync<ShowGameOverScreen>(task =>
                     {
                         task.Level.Should().Be(1);
                         task.Score.Should().Be(gameSession.Score);

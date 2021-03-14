@@ -64,8 +64,8 @@ namespace AsteraX.Application.Game.Player
                 {
                     Id = command.AsteroidId
                 };
-                _taskPublisher.PublishTask(destroyAsteroidTask);
-                _taskPublisher.PublishTask(new DestroyPlayerShip());
+                _taskPublisher.Publish(destroyAsteroidTask);
+                _taskPublisher.Publish(new DestroyPlayerShip());
 
                 if (gameSession.IsOver)
                 {
@@ -74,7 +74,7 @@ namespace AsteraX.Application.Game.Player
                         Level = (int) gameSession.Level.Id,
                         Score = gameSession.Score
                     };
-                    await _taskPublisher.PublishAsyncTask(showGameOverScreen, ct);
+                    await _taskPublisher.AsyncPublish(showGameOverScreen, ct);
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace AsteraX.Application.Game.Player
                     {
                         Delay = respawnDelay
                     };
-                    await _taskPublisher.PublishAsyncTask(respawnPlayerShipTask, ct);
+                    await _taskPublisher.AsyncPublish(respawnPlayerShipTask, ct);
                     gameSession.RespawnPlayer();
                     _gameSessionRepository.Save();
                 }

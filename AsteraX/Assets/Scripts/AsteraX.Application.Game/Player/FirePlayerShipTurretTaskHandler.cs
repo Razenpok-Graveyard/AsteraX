@@ -65,7 +65,7 @@ namespace AsteraX.Application.Game.Player
                     WorldPosition = command.WorldPosition,
                     Direction = command.Direction
                 };
-                _taskPublisher.PublishTask(spawnBulletMessage);
+                _taskPublisher.Publish(spawnBulletMessage);
             }
         }
     }

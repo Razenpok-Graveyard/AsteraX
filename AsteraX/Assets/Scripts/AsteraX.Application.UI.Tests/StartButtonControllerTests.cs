@@ -3,7 +3,7 @@ using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
-using Common.Tests;
+using Common.Application.Tests;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;
@@ -32,7 +32,7 @@ namespace AsteraX.Application.UI.Tests
 
                 taskPublisher
                     .Consume<HideMainMenuScreen>()
-                    .Consume<ShowLoadingScreen>(task =>
+                    .ConsumeAsync<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(1);
                         task.Asteroids.Should().Be(3);
@@ -42,7 +42,7 @@ namespace AsteraX.Application.UI.Tests
                     {
                         task.Asteroids.Count.Should().Be(asteroidCount);
                     })
-                    .Consume<HideLoadingScreen>()
+                    .ConsumeAsync<HideLoadingScreen>()
                     .Consume<ShowPauseButton>()
                     .Consume<UnpauseGame>()
                     .Consume<EnablePlayerInput>()
