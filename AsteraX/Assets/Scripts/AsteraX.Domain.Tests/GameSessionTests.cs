@@ -109,6 +109,18 @@ namespace AsteraX.Domain.Tests
         }
 
         [Test]
+        public void Collision_of_asteroid_and_player_ship_cannot_be_done_when_player_is_dead()
+        {
+            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var secondAsteroid = session.GetAsteroids().Skip(1).First();
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
+
+            Action act = () => session.CollideAsteroidWithPlayerShip(secondAsteroid.Id);
+
+            act.Should().Throw();
+        }
+
+        [Test]
         public void Collision_of_asteroid_and_bullet_destroys_asteroid()
         {
             var (session, asteroid) = CreateGameSessionWithOneAsteroid();
@@ -162,13 +174,13 @@ namespace AsteraX.Domain.Tests
         private static (GameSession, Asteroid) CreateGameSessionWithOneAsteroid(int jumps)
         {
             var session = new GameSession(jumps);
-            var level = CreateLevelWithOneAsteroid();
+            var level = CreateLevelWithTwoAsteroids();
             session.StartLevel(level);
             var asteroid = session.GetAsteroids().First();
             return (session, asteroid);
         }
 
-        private static Level CreateLevelWithOneAsteroid()
-            => new Level(1, 1, 3);
+        private static Level CreateLevelWithTwoAsteroids()
+            => new Level(1, 2, 3);
     }
 }
