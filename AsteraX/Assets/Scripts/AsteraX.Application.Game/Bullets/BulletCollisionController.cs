@@ -10,7 +10,6 @@ using Common.Application;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
-using static AsteraX.Application.Tasks.Game.SpawnAsteroids;
 
 namespace AsteraX.Application.Game.Bullets
 {
@@ -76,33 +75,14 @@ namespace AsteraX.Application.Game.Bullets
                 _gameSessionRepository.Save();
 
                 var asteroids = gameSession.GetAsteroids();
-
-                var showLoadingScreen = new ShowLoadingScreen
-                {
-                    Id = (int) level.Id,
-                    Asteroids = level.AsteroidCount,
-                    Children = level.AsteroidChildCount
-                };
-                var spawnAsteroids = new SpawnAsteroids
-                {
-                    Asteroids = ToSpawnAsteroidsDto(asteroids)
-                };
+                var showLoadingScreen = ShowLoadingScreen.Create(level);
+                var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
                 await _taskPublisher.AsyncPublish(showLoadingScreen, ct);
                 _taskPublisher.Publish(spawnAsteroids);
                 await _taskPublisher.AsyncPublish(new HideLoadingScreen(), ct);
                 _taskPublisher.Publish(new EnablePlayerInput());
                 _taskPublisher.Publish(new UnpauseGame());
-            }
-
-            private static List<AsteroidDto> ToSpawnAsteroidsDto(IEnumerable<Asteroid> asteroids)
-            {
-                return asteroids.Select(a => new AsteroidDto
-                {
-                    Id = a.Id,
-                    Size = a.Size,
-                    Children = ToSpawnAsteroidsDto(a.Children)
-                }).ToList();
             }
         }
     }

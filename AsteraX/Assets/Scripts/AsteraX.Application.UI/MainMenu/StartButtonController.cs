@@ -12,7 +12,6 @@ using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
-using static AsteraX.Application.Tasks.Game.SpawnAsteroids;
 
 namespace AsteraX.Application.UI.MainMenu
 {
@@ -65,17 +64,8 @@ namespace AsteraX.Application.UI.MainMenu
                 _gameSessionRepository.Save();
 
                 var asteroids = gameSession.GetAsteroids();
-                
-                var showLoadingScreen = new ShowLoadingScreen
-                {
-                    Id = level.Id,
-                    Asteroids = level.AsteroidCount,
-                    Children = level.AsteroidChildCount
-                };
-                var spawnAsteroids = new SpawnAsteroids
-                {
-                    Asteroids = ToSpawnAsteroidsDto(asteroids)
-                };
+                var showLoadingScreen = ShowLoadingScreen.Create(level);
+                var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
                 _taskPublisher.Publish(new HideMainMenuScreen());
                 await _taskPublisher.AsyncPublish(showLoadingScreen, ct);
@@ -84,16 +74,6 @@ namespace AsteraX.Application.UI.MainMenu
                 _taskPublisher.Publish(new ShowPauseButton());
                 _taskPublisher.Publish(new UnpauseGame());
                 _taskPublisher.Publish(new EnablePlayerInput());
-            }
-
-            private static List<AsteroidDto> ToSpawnAsteroidsDto(IEnumerable<Asteroid> asteroids)
-            {
-                return asteroids.Select(a => new AsteroidDto
-                {
-                    Id = a.Id,
-                    Size = a.Size,
-                    Children = ToSpawnAsteroidsDto(a.Children)
-                }).ToList();
             }
         }
     }

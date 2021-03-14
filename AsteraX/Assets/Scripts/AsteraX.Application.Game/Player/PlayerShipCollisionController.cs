@@ -89,11 +89,7 @@ namespace AsteraX.Application.Game.Player
 
             private UniTask ShowGameOver(GameSession gameSession, CancellationToken ct)
             {
-                var showGameOverScreen = new ShowGameOverScreen
-                {
-                    Level = gameSession.Level.Id,
-                    Score = gameSession.Score
-                };
+                var showGameOverScreen = ShowGameOverScreen.Create(gameSession);
                 return _taskPublisher.AsyncPublish(showGameOverScreen, ct);
             }
 
