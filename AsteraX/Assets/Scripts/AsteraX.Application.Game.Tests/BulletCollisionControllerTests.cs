@@ -68,6 +68,7 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 taskPublisher
+                    .Consume<DisablePlayerInput>()
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .ConsumeAsync<ShowLoadingScreen>(task =>
                     {

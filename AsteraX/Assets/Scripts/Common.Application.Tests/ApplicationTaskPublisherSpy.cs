@@ -78,20 +78,22 @@ namespace Common.Application.Tests
 
         public void Complete()
         {
-            var unverifiedTaskCount = 0;
+            var unverifiedTasks = new List<Type>();
             while (_buckets.Any())
             {
                 var nextBucket = _buckets.Dequeue();
-                unverifiedTaskCount += nextBucket.Tasks.Count;
-                unverifiedTaskCount += nextBucket.ForgetTasks.Count;
+                unverifiedTasks.AddRange(nextBucket.Tasks.Select(t => t.GetType()));
+                unverifiedTasks.AddRange(nextBucket.ForgetTasks.Select(t => t.GetType()));
                 if (nextBucket.AsyncTask != null)
                 {
-                    unverifiedTaskCount++;
+                    unverifiedTasks.Add(nextBucket.AsyncTask.GetType());
                 }
             }
+
+            var taskNames = string.Join(", ", unverifiedTasks.Select(t => t.Name));
             Execute.Assertion
-                .ForCondition(unverifiedTaskCount == 0)
-                .FailWith($"Expected task publisher to be fully verified, but found {unverifiedTaskCount} unverified tasks.");
+                .ForCondition(unverifiedTasks.Count == 0)
+                .FailWith($"Expected task publisher to be fully verified, but found {unverifiedTasks.Count} unverified tasks: {taskNames}.");
         }
 
         private class TaskBucket

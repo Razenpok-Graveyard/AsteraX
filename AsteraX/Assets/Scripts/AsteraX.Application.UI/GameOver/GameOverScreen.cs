@@ -17,6 +17,7 @@ namespace AsteraX.Application.UI.GameOver
         private void Awake()
         {
             this.Subscribe<ShowGameOverScreen>(Handle);
+            this.Subscribe<HideGameOverScreen>(Handle);
         }
 
         private async UniTask Handle(ShowGameOverScreen task, CancellationToken ct)
@@ -28,6 +29,13 @@ namespace AsteraX.Application.UI.GameOver
             await _canvasGroup.DOFade(1, 0.5f)
                 .SetUpdate(true)
                 .WithCancellation(ct);
+        }
+
+        private async UniTask Handle(HideGameOverScreen task, CancellationToken ct)
+        {
+            await UniTask.Delay(3000, cancellationToken: ct);
+            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.alpha = 0;
         }
     }
 }

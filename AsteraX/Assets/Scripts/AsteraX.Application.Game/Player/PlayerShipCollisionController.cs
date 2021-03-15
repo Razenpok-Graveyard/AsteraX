@@ -70,6 +70,7 @@ namespace AsteraX.Application.Game.Player
                     Id = command.AsteroidId
                 };
                 _taskPublisher.Publish(destroyAsteroidTask);
+                _taskPublisher.Publish(new DisablePlayerInput());
                 _taskPublisher.Publish(new DestroyPlayerShip());
 
                 if (gameSession.IsOver)
@@ -87,10 +88,15 @@ namespace AsteraX.Application.Game.Player
                 await Respawn(gameSession, ct);
             }
 
-            private UniTask ShowGameOver(GameSession gameSession, CancellationToken ct)
+            private async UniTask ShowGameOver(GameSession gameSession, CancellationToken ct)
             {
                 var showGameOverScreen = ShowGameOverScreen.Create(gameSession);
-                return _taskPublisher.AsyncPublish(showGameOverScreen, ct);
+                var respawnPlayerShip = new RespawnPlayerShip{ IntoInitialPosition = true };
+                await _taskPublisher.AsyncPublish(showGameOverScreen, ct);
+                _taskPublisher.Publish(new ClearAsteroids());
+                _taskPublisher.Publish(respawnPlayerShip);
+                await _taskPublisher.AsyncPublish(new HideGameOverScreen(), ct);
+                _taskPublisher.Publish(new ShowMainMenuScreen());
             }
 
             private async UniTask StartNextLevel(GameSession gameSession, CancellationToken ct)
@@ -109,7 +115,7 @@ namespace AsteraX.Application.Game.Player
 
                 gameSession.RespawnPlayer();
                 _gameSessionRepository.Save();
-                await _taskPublisher.AsyncPublish(new RespawnPlayerShip(), ct);
+                _taskPublisher.Publish(new RespawnPlayerShip());
 
                 await _taskPublisher.AsyncPublish(new HideLoadingScreen(), ct);
                 _taskPublisher.Publish(new UnpauseGame());
@@ -118,14 +124,14 @@ namespace AsteraX.Application.Game.Player
 
             private async UniTask Respawn(GameSession gameSession, CancellationToken ct)
             {
-                var respawnPlayerShipTask = new RespawnPlayerShip
+                var respawnPlayerShipTask = new RespawnPlayerShipWithVisuals
                 {
-                    Delay = TimeSpan.FromSeconds(2),
-                    SpawnEffects = true
+                    Delay = TimeSpan.FromSeconds(2)
                 };
                 await _taskPublisher.AsyncPublish(respawnPlayerShipTask, ct);
                 gameSession.RespawnPlayer();
                 _gameSessionRepository.Save();
+                _taskPublisher.Publish(new EnablePlayerInput());
             }
         }
     }

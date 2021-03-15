@@ -29,6 +29,12 @@ namespace AsteraX.Application.Game.Player
         {
             _mainCamera = Camera.main;
             enabled = false;
+            this.Subscribe<DisablePlayerInput>(_ =>
+            {
+                _movePlayerShipTask.Movement = Vector2.zero;
+                _taskPublisher.Publish(_movePlayerShipTask);
+                enabled = false;
+            });
             this.Subscribe<EnablePlayerInput>(_ => enabled = true);
         }
 

@@ -20,29 +20,27 @@ namespace AsteraX.Application.Game.Tests
         public IEnumerator Colliding_asteroid_with_player()
             => UniTask.ToCoroutine(async () =>
             {
+                var taskPublisher = new ApplicationTaskPublisherSpy();
                 var repository = new GameSessionRepository();
                 var level = new Level(1, 3, 0);
                 var levelRepository = new StubLevelRepository(level);
                 var gameSession = repository.Get();
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
-
-                var taskPublisher = new ApplicationTaskPublisherSpy();
-
                 IAsyncRequestHandler<Command> sut = new CommandHandler(levelRepository, repository, taskPublisher);
                 var command = new Command
                 {
                     AsteroidId = asteroidId
                 };
+
                 await sut.Handle(command);
 
                 taskPublisher
+                    .Consume<DisablePlayerInput>()
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .Consume<DestroyPlayerShip>()
-                    .ConsumeAsync<RespawnPlayerShip>(task =>
-                    {
-                        task.SpawnEffects.Should().BeTrue();
-                    })
+                    .ConsumeAsync<RespawnPlayerShipWithVisuals>()
+                    .Consume<EnablePlayerInput>()
                     .Complete();
             });
 
@@ -68,6 +66,7 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 taskPublisher
+                    .Consume<DisablePlayerInput>()
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .Consume<DestroyPlayerShip>()
                     .ConsumeAsync<ShowLoadingScreen>(task =>
@@ -77,11 +76,7 @@ namespace AsteraX.Application.Game.Tests
                         task.Children.Should().Be(3);
                     })
                     .Consume<SpawnAsteroids>(task => task.ShouldBeConsistentWithLevel(secondLevel))
-                    .ConsumeAsync<RespawnPlayerShip>(task =>
-                    {
-                        task.Delay.Should().Be(TimeSpan.Zero);
-                        task.SpawnEffects.Should().BeFalse();
-                    })
+                    .Consume<RespawnPlayerShip>(task => task.IntoInitialPosition.Should().BeFalse())
                     .ConsumeAsync<HideLoadingScreen>()
                     .Consume<UnpauseGame>()
                     .Consume<EnablePlayerInput>()
@@ -119,6 +114,7 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 taskPublisher
+                    .Consume<DisablePlayerInput>()
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .Consume<DestroyPlayerShip>()
                     .ConsumeAsync<ShowGameOverScreen>(task =>
@@ -126,6 +122,10 @@ namespace AsteraX.Application.Game.Tests
                         task.Level.Should().Be(1);
                         task.Score.Should().Be(killedAsteroidScore);
                     })
+                    .Consume<ClearAsteroids>()
+                    .Consume<RespawnPlayerShip>(task => task.IntoInitialPosition.Should().BeTrue())
+                    .ConsumeAsync<HideGameOverScreen>()
+                    .Consume<ShowMainMenuScreen>()
                     .Complete();
             });
 
@@ -159,6 +159,7 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 taskPublisher
+                    .Consume<DisablePlayerInput>()
                     .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .Consume<DestroyPlayerShip>()
                     .ConsumeAsync<ShowGameOverScreen>(task =>
@@ -166,6 +167,10 @@ namespace AsteraX.Application.Game.Tests
                         task.Level.Should().Be(1);
                         task.Score.Should().Be(killedAsteroidScore);
                     })
+                    .Consume<ClearAsteroids>()
+                    .Consume<RespawnPlayerShip>(task => task.IntoInitialPosition.Should().BeTrue())
+                    .ConsumeAsync<HideGameOverScreen>()
+                    .Consume<ShowMainMenuScreen>()
                     .Complete();
             });
     }

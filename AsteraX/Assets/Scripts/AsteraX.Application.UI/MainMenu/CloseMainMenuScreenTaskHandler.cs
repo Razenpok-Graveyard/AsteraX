@@ -3,7 +3,7 @@ using Common.Application.Unity;
 
 namespace AsteraX.Application.UI.MainMenu
 {
-    public class CloseMainMenuTaskHandler : ApplicationTaskHandler<HideMainMenuScreen>
+    public class CloseMainMenuScreenTaskHandler : ApplicationTaskHandler<HideMainMenuScreen>
     {
         protected override void Handle(HideMainMenuScreen task)
         {

@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using AsteraX.Application.Game.Asteroids;
 using AsteraX.Application.Tasks.Game;
 using AsteraX.Application.Tasks.UI;
-using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Cysharp.Threading.Tasks;
@@ -79,6 +76,7 @@ namespace AsteraX.Application.Game.Bullets
                 var showLoadingScreen = ShowLoadingScreen.Create(level);
                 var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
+                _taskPublisher.Publish(new DisablePlayerInput());
                 await _taskPublisher.AsyncPublish(showLoadingScreen, ct);
                 _taskPublisher.Publish(spawnAsteroids);
                 await _taskPublisher.AsyncPublish(new HideLoadingScreen(), ct);
