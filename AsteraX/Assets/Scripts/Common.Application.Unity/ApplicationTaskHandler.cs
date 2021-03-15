@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Common.Application.Unity
@@ -17,7 +18,7 @@ namespace Common.Application.Unity
             this.Subscribe<T>(Handle);
         }
 
-        protected abstract void Handle(T task);
+        protected abstract void Handle([NotNull] T task);
     }
 
     public abstract class AsyncApplicationTaskHandler<T> : MonoBehaviour
@@ -33,6 +34,6 @@ namespace Common.Application.Unity
             this.Subscribe<T>(Handle);
         }
 
-        protected abstract UniTask Handle(T task, CancellationToken ct);
+        protected abstract UniTask Handle([NotNull] T task, CancellationToken ct);
     }
 }

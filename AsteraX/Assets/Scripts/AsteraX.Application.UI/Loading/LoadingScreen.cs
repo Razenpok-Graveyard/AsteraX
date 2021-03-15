@@ -41,12 +41,8 @@ namespace AsteraX.Application.UI.Loading
             _footerCanvasGroup.alpha = 0;
             _screenCanvasGroup.alpha = 0;
             _screenCanvasGroup.blocksRaycasts = true;
-            await _screenCanvasGroup.DOFade(1, 0.5f)
-                .SetUpdate(true)
-                .WithCancellation(ct);
-            await _footerCanvasGroup.DOFade(1, 0.5f)
-                .SetUpdate(true)
-                .WithCancellation(ct);
+            await _screenCanvasGroup.DOFade(1, 0.5f).WithCancellation(ct);
+            await _footerCanvasGroup.DOFade(1, 0.5f).WithCancellation(ct);
         }
 
         private async UniTask FadeOut(CancellationToken ct)
@@ -54,12 +50,8 @@ namespace AsteraX.Application.UI.Loading
             await UniTask.Delay(1000, DelayType.UnscaledDeltaTime, cancellationToken: ct);
             _footerCanvasGroup.alpha = 1;
             _screenCanvasGroup.alpha = 1;
-            await _footerCanvasGroup.DOFade(0, 0.5f)
-                .SetUpdate(true)
-                .WithCancellation(ct);
-            await _screenCanvasGroup.DOFade(0, 0.5f)
-                .SetUpdate(true)
-                .WithCancellation(ct);
+            await _footerCanvasGroup.DOFade(0, 0.5f).WithCancellation(ct);
+            await _screenCanvasGroup.DOFade(0, 0.5f).WithCancellation(ct);
             _screenCanvasGroup.blocksRaycasts = false;
         }
     }
