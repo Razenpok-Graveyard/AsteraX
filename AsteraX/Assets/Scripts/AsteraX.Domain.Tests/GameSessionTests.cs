@@ -21,7 +21,7 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_player_ship_destroys_player_ship()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -31,7 +31,7 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_player_ship_destroys_asteroid()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -41,10 +41,10 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_player_ship_spawns_child_asteroids()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
-            
+
             foreach (var child in asteroid.Children)
             {
                 session.IsAsteroidAlive(child.Id).Should().BeTrue();
@@ -55,7 +55,7 @@ namespace AsteraX.Domain.Tests
         public void Collision_of_asteroid_and_player_ship_decreases_jumps()
         {
             const int initialJumps = 3;
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids(initialJumps);
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -67,7 +67,7 @@ namespace AsteraX.Domain.Tests
         public void Collision_of_asteroid_and_player_ship_doesnt_decrease_jumps_below_zero()
         {
             const int initialJumps = 0;
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids(initialJumps);
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -79,7 +79,7 @@ namespace AsteraX.Domain.Tests
         public void Collision_of_asteroid_and_player_ship_causes_game_over_when_there_are_no_jumps_remaining()
         {
             const int initialJumps = 0;
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids(initialJumps);
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -90,7 +90,7 @@ namespace AsteraX.Domain.Tests
         public void Collision_of_asteroid_and_player_ship_doesnt_cause_game_over_when_there_are_jumps_remaining()
         {
             const int initialJumps = 3;
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid(initialJumps);
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids(initialJumps);
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -100,7 +100,7 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_player_ship_doesnt_increase_score()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -111,7 +111,7 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_player_ship_cannot_be_done_when_player_is_dead()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
             var secondAsteroid = session.GetAsteroids().Skip(1).First();
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
@@ -123,7 +123,7 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_bullet_destroys_asteroid()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
 
             session.CollideAsteroidWithBullet(asteroid.Id);
 
@@ -133,10 +133,10 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_bullet_spawns_child_asteroids()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
-            
+
             foreach (var child in asteroid.Children)
             {
                 session.IsAsteroidAlive(child.Id).Should().BeTrue();
@@ -146,7 +146,7 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Collision_of_asteroid_and_bullet_increases_score_by_asteroid_score()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
 
             session.CollideAsteroidWithBullet(asteroid.Id);
 
@@ -157,7 +157,7 @@ namespace AsteraX.Domain.Tests
         [Test]
         public void Player_is_alive_after_respawn()
         {
-            var (session, asteroid) = CreateGameSessionWithOneAsteroid();
+            var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
             session.RespawnPlayer();
@@ -165,13 +165,93 @@ namespace AsteraX.Domain.Tests
             session.IsPlayerAlive.Should().BeTrue();
         }
 
-        private static (GameSession, Asteroid) CreateGameSessionWithOneAsteroid()
+        [Test]
+        public void Player_is_alive_after_restart()
         {
-            const int initialJumps = 3;
-            return CreateGameSessionWithOneAsteroid(initialJumps);
+            const int initialJumps = 0;
+            var session = new GameSession(initialJumps);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroid = session.GetAsteroids().First();
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
+
+            session.Restart();
+
+            session.IsPlayerAlive.Should().BeTrue();
         }
 
-        private static (GameSession, Asteroid) CreateGameSessionWithOneAsteroid(int jumps)
+        [Test]
+        public void Game_session_restart_resets_jumps()
+        {
+            const int initialJumps = 1;
+            var session = new GameSession(initialJumps);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroid = session.GetAsteroids().First();
+            var secondAsteroid = session.GetAsteroids().Skip(1).First();
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
+            session.RespawnPlayer();
+            session.CollideAsteroidWithPlayerShip(secondAsteroid.Id);
+
+            session.Restart();
+
+            session.Jumps.Should().Be(1);
+        }
+
+        [Test]
+        public void Game_session_restart_resets_score()
+        {
+            const int initialJumps = 0;
+            var session = new GameSession(initialJumps);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroid = session.GetAsteroids().First();
+            var secondAsteroid = session.GetAsteroids().Skip(1).First();
+            session.CollideAsteroidWithBullet(asteroid.Id);
+            session.CollideAsteroidWithPlayerShip(secondAsteroid.Id);
+
+            session.Restart();
+
+            session.Score.Should().Be(0);
+        }
+
+        [Test]
+        public void Game_session_is_not_over_after_restart()
+        {
+            const int initialJumps = 0;
+            var session = new GameSession(initialJumps);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroid = session.GetAsteroids().First();
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
+
+            session.Restart();
+
+            session.IsOver.Should().BeFalse();
+        }
+
+        [Test]
+        public void Game_session_is_not_playing_a_level_after_restart()
+        {
+            const int initialJumps = 0;
+            var session = new GameSession(initialJumps);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroid = session.GetAsteroids().First();
+            session.CollideAsteroidWithPlayerShip(asteroid.Id);
+
+            session.Restart();
+
+            session.IsPlayingLevel.Should().BeFalse();
+        }
+
+        private static (GameSession, Asteroid) CreateGameSessionWithTwoAsteroids()
+        {
+            const int initialJumps = 3;
+            return CreateGameSessionWithTwoAsteroids(initialJumps);
+        }
+
+        private static (GameSession, Asteroid) CreateGameSessionWithTwoAsteroids(int jumps)
         {
             var session = new GameSession(jumps);
             var level = CreateLevelWithTwoAsteroids();

@@ -97,6 +97,8 @@ namespace AsteraX.Application.Game.Player
                 _taskPublisher.Publish(respawnPlayerShip);
                 await _taskPublisher.AsyncPublish(new HideGameOverScreen(), ct);
                 _taskPublisher.Publish(new ShowMainMenuScreen());
+                gameSession.Restart();
+                _gameSessionRepository.Save();
             }
 
             private async UniTask StartNextLevel(GameSession gameSession, CancellationToken ct)

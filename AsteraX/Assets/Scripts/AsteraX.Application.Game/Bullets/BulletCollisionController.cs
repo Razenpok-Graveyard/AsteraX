@@ -55,7 +55,6 @@ namespace AsteraX.Application.Game.Bullets
             {
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.CollideAsteroidWithBullet(command.AsteroidId);
-                _gameSessionRepository.Save();
 
                 _taskPublisher.Publish(new DestroyAsteroid
                 {
@@ -64,6 +63,7 @@ namespace AsteraX.Application.Game.Bullets
 
                 if (!gameSession.IsLevelCompleted)
                 {
+                    _gameSessionRepository.Save();
                     return;
                 }
 

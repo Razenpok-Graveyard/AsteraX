@@ -5,12 +5,14 @@ namespace AsteraX.Domain.Game
 {
     public class GameSession : AggregateRoot
     {
+        private readonly int _initialJumps;
         private LevelAttempt _levelAttempt;
 
         public GameSession(int initialJumps)
         {
             Contract.Requires(initialJumps >= 0, "initialJumps >= 0");
 
+            _initialJumps = initialJumps;
             Jumps = initialJumps;
             IsPlayerAlive = true;
         }
@@ -27,7 +29,7 @@ namespace AsteraX.Domain.Game
 
         public int Score { get; private set; }
 
-        public bool IsPlayingLevel => _levelAttempt != null;
+        public bool IsPlayingLevel => _levelAttempt != null && Level != null;
 
         public bool IsLevelCompleted => GetAsteroids().Count == 0;
 
@@ -77,6 +79,17 @@ namespace AsteraX.Domain.Game
         {
             Contract.Requires(!IsPlayerAlive, "!IsPlayerAlive");
             IsPlayerAlive = true;
+        }
+
+        public void Restart()
+        {
+            Contract.Requires(IsOver, "IsOver");
+            IsOver = false;
+            IsPlayerAlive = true;
+            Jumps = _initialJumps;
+            Score = 0;
+            Level = null;
+            _levelAttempt = null;
         }
     }
 }

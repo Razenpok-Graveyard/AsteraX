@@ -1581,6 +1581,7 @@ GameObject:
   - component: {fileID: 927803427}
   - component: {fileID: 927803429}
   - component: {fileID: 927803428}
+  - component: {fileID: 927803430}
   m_Layer: 5
   m_Name: MainMenuScreen
   m_TagString: Untagged
@@ -1634,6 +1635,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 528140591}
+--- !u!114 &927803430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927803426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda9b735d54b456d9ef9de6577520ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &935103729
 GameObject:
   m_ObjectHideFlags: 0
@@ -1917,7 +1930,6 @@ GameObject:
   - component: {fileID: 1194742226}
   - component: {fileID: 1194742229}
   - component: {fileID: 1194742228}
-  - component: {fileID: 1194742227}
   m_Layer: 0
   m_Name: AsteroidContainer
   m_TagString: Untagged
@@ -1939,19 +1951,6 @@ Transform:
   m_Father: {fileID: 1666005256}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1194742227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194742225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5c4ba3d415349b38c6494f5f4c752b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _instanceContainer: {fileID: 1194742229}
 --- !u!114 &1194742228
 MonoBehaviour:
   m_ObjectHideFlags: 0
