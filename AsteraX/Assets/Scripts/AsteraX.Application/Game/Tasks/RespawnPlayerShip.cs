@@ -1,6 +1,6 @@
 using Common.Application;
 
-namespace AsteraX.Application.Tasks.Game
+namespace AsteraX.Application.Game.Tasks
 {
     public class RespawnPlayerShip : IApplicationTask
     {

@@ -2,9 +2,8 @@
 using System.Linq;
 using AsteraX.Domain.Game;
 using Common.Application;
-using Cysharp.Threading.Tasks;
 
-namespace AsteraX.Application.Tasks.Game
+namespace AsteraX.Application.Game.Tasks
 {
     public class SpawnAsteroids : IApplicationTask
     {

@@ -1,7 +1,7 @@
 ﻿using Common.Application;
 using UnityEngine;
 
-namespace AsteraX.Application.Tasks.Game
+namespace AsteraX.Application.Game.Tasks
 {
     public class MovePlayerShip : IApplicationTask
     {

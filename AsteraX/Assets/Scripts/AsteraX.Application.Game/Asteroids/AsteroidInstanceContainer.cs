@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using AsteraX.Application.Tasks.Game;
+using AsteraX.Application.Game.Tasks;
 using Common.Application.Unity;
 using UnityEngine;
 

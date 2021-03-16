@@ -1,7 +1,7 @@
 ﻿using AsteraX.Domain.Game;
 using Common.Application;
 
-namespace AsteraX.Application.Tasks.UI
+namespace AsteraX.Application.UI.Tasks
 {
     public class ShowGameOverScreen : IAsyncApplicationTask
     {

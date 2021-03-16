@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using AsteraX.Application.Tasks.UI;
+using AsteraX.Application.UI.Tasks;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;

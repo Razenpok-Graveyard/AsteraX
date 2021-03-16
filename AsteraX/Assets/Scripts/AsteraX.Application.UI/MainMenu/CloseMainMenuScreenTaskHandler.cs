@@ -1,4 +1,4 @@
-﻿using AsteraX.Application.Tasks.UI;
+﻿using AsteraX.Application.UI.Tasks;
 using Common.Application.Unity;
 
 namespace AsteraX.Application.UI.MainMenu

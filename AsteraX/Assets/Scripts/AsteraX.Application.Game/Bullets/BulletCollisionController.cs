@@ -1,7 +1,7 @@
 using System.Threading;
 using AsteraX.Application.Game.Asteroids;
-using AsteraX.Application.Tasks.Game;
-using AsteraX.Application.Tasks.UI;
+using AsteraX.Application.Game.Tasks;
+using AsteraX.Application.UI.Tasks;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Cysharp.Threading.Tasks;

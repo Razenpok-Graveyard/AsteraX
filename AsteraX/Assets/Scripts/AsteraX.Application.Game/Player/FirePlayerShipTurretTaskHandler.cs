@@ -1,4 +1,4 @@
-﻿using AsteraX.Application.Tasks.Game;
+﻿using AsteraX.Application.Game.Tasks;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Common.Application.Unity;

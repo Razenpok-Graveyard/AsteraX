@@ -1,9 +1,9 @@
 ﻿using Common.Application;
 using UnityEngine;
 
-namespace AsteraX.Application.Tasks.Game
+namespace AsteraX.Application.Game.Tasks
 {
-    public class RotatePlayerShipTurret : IApplicationTask
+    public class FirePlayerShipTurret : IApplicationTask
     {
         public Vector2 ScreenPosition { get; set; }
     }

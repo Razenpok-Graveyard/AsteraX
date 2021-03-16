@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Linq;
-using AsteraX.Application.Tasks.Game;
-using AsteraX.Application.Tasks.UI;
+using AsteraX.Application.Game.Tasks;
+using AsteraX.Application.UI.Tasks;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;

@@ -1,5 +1,5 @@
 ﻿using System;
-using AsteraX.Application.Tasks.Game;
+using AsteraX.Application.Game.Tasks;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
