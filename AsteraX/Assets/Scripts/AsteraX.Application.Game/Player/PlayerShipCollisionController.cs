@@ -69,9 +69,9 @@ namespace AsteraX.Application.Game.Player
                 {
                     Id = command.AsteroidId
                 };
-                _mediator.Send(destroyAsteroidTask);
                 _mediator.Send(new DisablePlayerInput());
                 _mediator.Send(new DestroyPlayerShip());
+                _mediator.Send(destroyAsteroidTask);
 
                 if (gameSession.IsOver)
                 {

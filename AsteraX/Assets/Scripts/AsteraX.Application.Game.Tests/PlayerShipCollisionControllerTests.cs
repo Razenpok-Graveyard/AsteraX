@@ -40,8 +40,8 @@ namespace AsteraX.Application.Game.Tests
 
                 mediator
                     .HandleRequest<DisablePlayerInput>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleRequest<DestroyPlayerShip>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleAsyncRequest<RespawnPlayerShipWithVisuals>()
                     .HandleRequest<EnablePlayerInput>()
                     .Complete();
@@ -73,8 +73,8 @@ namespace AsteraX.Application.Game.Tests
 
                 mediator
                     .HandleRequest<DisablePlayerInput>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleRequest<DestroyPlayerShip>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleAsyncRequest<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(2);
@@ -131,8 +131,8 @@ namespace AsteraX.Application.Game.Tests
 
                 mediator
                     .HandleRequest<DisablePlayerInput>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleRequest<DestroyPlayerShip>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleAsyncRequest<ShowGameOverScreen>(task =>
                     {
                         task.Level.Should().Be(1);
@@ -183,8 +183,8 @@ namespace AsteraX.Application.Game.Tests
 
                 mediator
                     .HandleRequest<DisablePlayerInput>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleRequest<DestroyPlayerShip>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
                     .HandleAsyncRequest<ShowGameOverScreen>(task =>
                     {
                         task.Level.Should().Be(1);

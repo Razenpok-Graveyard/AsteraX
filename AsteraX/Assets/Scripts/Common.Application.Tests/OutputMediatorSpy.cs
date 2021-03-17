@@ -38,7 +38,7 @@ namespace Common.Application.Tests
             return UniTask.CompletedTask;
         }
 
-        public void ForgetSend<TRequest>(TRequest request, CancellationToken cancellationToken)
+        public void ForgetSend<TRequest>(TRequest request, CancellationToken cancellationToken = default)
             where TRequest : IAsyncRequest
         {
             _currentBucket.ForgetRequests.Add(request);

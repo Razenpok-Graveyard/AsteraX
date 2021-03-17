@@ -35,7 +35,7 @@ namespace Common.Application.Unity
             return _asyncMessageBus.PublishAsync(request, cancellationToken);
         }
 
-        public void ForgetSend<TRequest>(TRequest request, CancellationToken cancellationToken)
+        public void ForgetSend<TRequest>(TRequest request, CancellationToken cancellationToken = default)
             where TRequest : IAsyncRequest
         {
             SubscriptionTracker<TRequest>.ThrowIfNoSubscribers();

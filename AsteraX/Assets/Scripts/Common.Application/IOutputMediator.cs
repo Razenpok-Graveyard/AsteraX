@@ -18,7 +18,7 @@ namespace Common.Application
         
         void ForgetSend<TRequest>(
             TRequest request,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
             where TRequest : IAsyncRequest;
     }
 }

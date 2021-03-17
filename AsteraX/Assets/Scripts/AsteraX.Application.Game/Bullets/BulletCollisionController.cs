@@ -1,5 +1,6 @@
 using System.Threading;
 using AsteraX.Application.Game.Asteroids;
+using AsteraX.Application.Game.Notifications;
 using AsteraX.Application.Game.Requests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Infrastructure;
@@ -60,6 +61,7 @@ namespace AsteraX.Application.Game.Bullets
                 {
                     Id = command.AsteroidId
                 });
+                _mediator.Publish(new AsteroidShot());
 
                 if (!gameSession.IsLevelCompleted)
                 {
