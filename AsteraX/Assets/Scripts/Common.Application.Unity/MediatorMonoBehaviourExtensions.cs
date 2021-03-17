@@ -8,12 +8,14 @@ namespace Common.Application.Unity
 {
     public static class MediatorMonoBehaviourExtensions
     {
+        public static OutputMediator Mediator;
+        
         public static IDisposable RegisterHandler<TRequest>(
             this MonoBehaviour monoBehaviour,
             Func<TRequest, CancellationToken, UniTask> action)
             where TRequest : IAsyncRequest
         {
-            return OutputMediator.Default
+            return Mediator
                 .RegisterRequestHandler(action, monoBehaviour.GetCancellationTokenOnDestroy())
                 .AddTo(monoBehaviour);
         }
@@ -23,7 +25,7 @@ namespace Common.Application.Unity
             Action<TRequest> action)
             where TRequest : IRequest
         {
-            return OutputMediator.Default
+            return Mediator
                 .RegisterRequestHandler(action)
                 .AddTo(monoBehaviour);
         }

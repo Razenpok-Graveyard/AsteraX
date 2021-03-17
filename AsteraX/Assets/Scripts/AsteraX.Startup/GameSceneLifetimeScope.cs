@@ -4,6 +4,7 @@ using AsteraX.Infrastructure.Data;
 using Common.Application;
 using Common.Application.Unity;
 using JetBrains.Annotations;
+using UniTaskPubSub;
 using UnityEditorInternal;
 using UnityEngine;
 using VContainer;
@@ -21,7 +22,10 @@ namespace AsteraX.Startup
             builder.RegisterContainer();
             builder.RegisterRequestHandlers(_requestHandlerAssemblies);
 
-            builder.RegisterInstance(OutputMediator.Default).As<IOutputMediator>().AsSelf();
+            var messageBus = new MessageBus(AsyncMessageBus.Default);
+            var mediator = new OutputMediator(messageBus);
+            MediatorMonoBehaviourExtensions.Mediator = mediator;
+            builder.RegisterInstance(mediator).As<IOutputMediator>().AsSelf();
 
             builder.RegisterInstance(_levelSettings);
 

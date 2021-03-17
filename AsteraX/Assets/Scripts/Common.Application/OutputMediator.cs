@@ -1,17 +1,14 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UniTaskPubSub;
 
-namespace Common.Application.Unity
+namespace Common.Application
 {
     public class OutputMediator : IOutputMediator
     {
-        public static readonly OutputMediator Default = new OutputMediator(new AsyncMessageBus());
+        private readonly IMessageBus _asyncMessageBus;
 
-        private readonly AsyncMessageBus _asyncMessageBus;
-
-        public OutputMediator(AsyncMessageBus asyncMessageBus)
+        public OutputMediator(IMessageBus asyncMessageBus)
         {
             _asyncMessageBus = asyncMessageBus;
         }
@@ -39,7 +36,7 @@ namespace Common.Application.Unity
             where TRequest : IAsyncRequest
         {
             SubscriptionTracker<TRequest>.ThrowIfNoSubscribers();
-            _asyncMessageBus.Publish(request, cancellationToken);
+            _asyncMessageBus.PublishAsync(request, cancellationToken).Forget();
         }
         
         public IDisposable RegisterNotificationHandler<TNotification>(Action<TNotification> handler)
@@ -82,7 +79,7 @@ namespace Common.Application.Unity
 
         private class SubscriptionTracker<T> : IDisposable
         {
-            private IDisposable _subscription;
+            private readonly IDisposable _subscription;
 
             private SubscriptionTracker(IDisposable subscription)
             {
@@ -91,9 +88,11 @@ namespace Common.Application.Unity
 
             public void Dispose()
             {
+                _subscription.Dispose();
                 SubscriptionCount--;
             }
 
+            // ReSharper disable once StaticMemberInGenericType
             public static int SubscriptionCount { get; private set; }
 
             public static void ThrowIfNoSubscribers()
