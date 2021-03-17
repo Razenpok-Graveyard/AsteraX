@@ -1,5 +1,5 @@
 ﻿using System;
-using AsteraX.Application.Game.Tasks;
+using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace AsteraX.Application.Game.Bullets
 {
-    public class SpawnBulletTaskHandler : ApplicationTaskHandler<SpawnBullet>
+    public class SpawnBulletTaskHandler : OutputRequestHandler<SpawnBullet>
     {
         [SerializeField] private BulletSettings _bulletSettings;
 

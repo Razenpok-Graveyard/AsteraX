@@ -1,7 +1,7 @@
 using System.Threading;
 using AsteraX.Application.Game.Asteroids;
-using AsteraX.Application.Game.Tasks;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.Game.Requests;
+using AsteraX.Application.UI.Requests;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Cysharp.Threading.Tasks;
@@ -12,10 +12,10 @@ namespace AsteraX.Application.Game.Bullets
 {
     public class BulletCollisionController : MonoBehaviour
     {
-        private IAsyncRequestHandler<Command> _commandHandler;
+        private IAsyncInputRequestHandler<Command> _commandHandler;
 
         [Inject]
-        public void Construct(IAsyncRequestHandler<Command> commandHandler)
+        public void Construct(IAsyncInputRequestHandler<Command> commandHandler)
         {
             _commandHandler = commandHandler;
         }
@@ -35,20 +35,20 @@ namespace AsteraX.Application.Game.Bullets
             public long AsteroidId { get; set; }
         }
 
-        public class CommandHandler : AsyncRequestHandler<Command>
+        public class CommandHandler : AsyncInputRequestHandler<Command>
         {
             private readonly ILevelRepository _levelRepository;
             private readonly IGameSessionRepository _gameSessionRepository;
-            private readonly IApplicationTaskPublisher _taskPublisher;
+            private readonly IOutputMediator _mediator;
 
             public CommandHandler(
                 ILevelRepository levelRepository,
                 IGameSessionRepository gameSessionRepository,
-                IApplicationTaskPublisher taskPublisher)
+                IOutputMediator mediator)
             {
                 _levelRepository = levelRepository;
                 _gameSessionRepository = gameSessionRepository;
-                _taskPublisher = taskPublisher;
+                _mediator = mediator;
             }
 
             protected override async UniTask Handle(Command command, CancellationToken ct)
@@ -56,7 +56,7 @@ namespace AsteraX.Application.Game.Bullets
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.CollideAsteroidWithBullet(command.AsteroidId);
 
-                _taskPublisher.Publish(new DestroyAsteroid
+                _mediator.Send(new DestroyAsteroid
                 {
                     Id = command.AsteroidId
                 });
@@ -76,12 +76,12 @@ namespace AsteraX.Application.Game.Bullets
                 var showLoadingScreen = ShowLoadingScreen.Create(level);
                 var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
-                _taskPublisher.Publish(new DisablePlayerInput());
-                await _taskPublisher.AsyncPublish(showLoadingScreen, ct);
-                _taskPublisher.Publish(spawnAsteroids);
-                await _taskPublisher.AsyncPublish(new HideLoadingScreen(), ct);
-                _taskPublisher.Publish(new EnablePlayerInput());
-                _taskPublisher.Publish(new UnpauseGame());
+                _mediator.Send(new DisablePlayerInput());
+                await _mediator.AsyncSend(showLoadingScreen, ct);
+                _mediator.Send(spawnAsteroids);
+                await _mediator.AsyncSend(new HideLoadingScreen(), ct);
+                _mediator.Send(new EnablePlayerInput());
+                _mediator.Send(new UnpauseGame());
             }
         }
     }

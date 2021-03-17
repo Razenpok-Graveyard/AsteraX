@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.UI.Requests;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -16,8 +16,8 @@ namespace AsteraX.Application.UI.GameOver
 
         private void Awake()
         {
-            this.Subscribe<ShowGameOverScreen>(Handle);
-            this.Subscribe<HideGameOverScreen>(Handle);
+            this.RegisterHandler<ShowGameOverScreen>(Handle);
+            this.RegisterHandler<HideGameOverScreen>(Handle);
         }
 
         private async UniTask Handle(ShowGameOverScreen task, CancellationToken ct)

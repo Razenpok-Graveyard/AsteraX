@@ -1,10 +1,10 @@
-﻿using AsteraX.Application.Game.Tasks;
+﻿using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class MovePlayerShipTaskHandler : ApplicationTaskHandler<MovePlayerShip>
+    public class MovePlayerShipTaskHandler : OutputRequestHandler<MovePlayerShip>
     {
         [SerializeField] private Transform _ship;
         [SerializeField] private PlayerShipSettings _settings;

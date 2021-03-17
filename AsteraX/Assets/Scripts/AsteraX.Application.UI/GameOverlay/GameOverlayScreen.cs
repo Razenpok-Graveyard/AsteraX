@@ -13,10 +13,10 @@ namespace AsteraX.Application.UI.GameOverlay
         [SerializeField] private TextMeshProUGUI _jumps;
         [SerializeField] private TextMeshProUGUI _score;
 
-        private IRequestHandler<Query, Model> _queryHandler;
+        private IInputRequestHandler<Query, Model> _queryHandler;
 
         [Inject]
-        public void Construct(IRequestHandler<Query, Model> queryHandler)
+        public void Construct(IInputRequestHandler<Query, Model> queryHandler)
         {
             _queryHandler = queryHandler;
         }
@@ -42,7 +42,7 @@ namespace AsteraX.Application.UI.GameOverlay
         
         public class Query : IRequest<Model> { }
 
-        public class QueryHandler : RequestHandler<Query, Model>
+        public class QueryHandler : InputRequestHandler<Query, Model>
         {
             private readonly IGameSessionObservableRepository _observableRepository;
 

@@ -29,13 +29,13 @@ namespace AsteraX.Startup
 
         private static void RegisterRequestHandlers(Assembly assembly, IContainerBuilder builder)
         {
-            var baseRequestHandlerType = typeof(IBaseRequestHandler);
+            var baseRequestHandlerType = typeof(IBaseInputRequestHandler);
             var requestHandlerTypes = new[]
             {
-                typeof(IRequestHandler<>),
-                typeof(IRequestHandler<,>),
-                typeof(IAsyncRequestHandler<>),
-                typeof(IAsyncRequestHandler<,>)
+                typeof(IInputRequestHandler<>),
+                typeof(IInputRequestHandler<,>),
+                typeof(IAsyncInputRequestHandler<>),
+                typeof(IAsyncInputRequestHandler<,>)
             };
             foreach (var type in assembly.GetTypes())
             {

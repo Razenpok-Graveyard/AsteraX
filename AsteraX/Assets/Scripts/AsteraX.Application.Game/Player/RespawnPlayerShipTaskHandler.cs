@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using AsteraX.Application.Game.Levels;
-using AsteraX.Application.Game.Tasks;
+using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -17,8 +17,8 @@ namespace AsteraX.Application.Game.Player
 
         private void Awake()
         {
-            this.Subscribe<RespawnPlayerShipWithVisuals>(Handle);
-            this.Subscribe<RespawnPlayerShip>(Handle);
+            this.RegisterHandler<RespawnPlayerShipWithVisuals>(Handle);
+            this.RegisterHandler<RespawnPlayerShip>(Handle);
         }
 
         private async UniTask Handle(RespawnPlayerShipWithVisuals task, CancellationToken ct)

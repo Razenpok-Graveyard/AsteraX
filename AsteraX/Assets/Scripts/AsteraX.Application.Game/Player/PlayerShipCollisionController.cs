@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using AsteraX.Application.Game.Asteroids;
-using AsteraX.Application.Game.Tasks;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.Game.Requests;
+using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
 using Common.Application;
@@ -14,10 +14,10 @@ namespace AsteraX.Application.Game.Player
 {
     public class PlayerShipCollisionController : MonoBehaviour
     {
-        private IAsyncRequestHandler<Command> _commandHandler;
+        private IAsyncInputRequestHandler<Command> _commandHandler;
 
         [Inject]
-        public void Construct(IAsyncRequestHandler<Command> commandHandler)
+        public void Construct(IAsyncInputRequestHandler<Command> commandHandler)
         {
             _commandHandler = commandHandler;
         }
@@ -43,20 +43,20 @@ namespace AsteraX.Application.Game.Player
             public long AsteroidId { get; set; }
         }
 
-        public class CommandHandler : AsyncRequestHandler<Command>
+        public class CommandHandler : AsyncInputRequestHandler<Command>
         {
             private readonly ILevelRepository _levelRepository;
             private readonly IGameSessionRepository _gameSessionRepository;
-            private readonly IApplicationTaskPublisher _taskPublisher;
+            private readonly IOutputMediator _mediator;
 
             public CommandHandler(
                 ILevelRepository levelRepository,
                 IGameSessionRepository gameSessionRepository,
-                IApplicationTaskPublisher taskPublisher)
+                IOutputMediator mediator)
             {
                 _levelRepository = levelRepository;
                 _gameSessionRepository = gameSessionRepository;
-                _taskPublisher = taskPublisher;
+                _mediator = mediator;
             }
 
             protected override async UniTask Handle(Command command, CancellationToken ct)
@@ -69,9 +69,9 @@ namespace AsteraX.Application.Game.Player
                 {
                     Id = command.AsteroidId
                 };
-                _taskPublisher.Publish(destroyAsteroidTask);
-                _taskPublisher.Publish(new DisablePlayerInput());
-                _taskPublisher.Publish(new DestroyPlayerShip());
+                _mediator.Send(destroyAsteroidTask);
+                _mediator.Send(new DisablePlayerInput());
+                _mediator.Send(new DestroyPlayerShip());
 
                 if (gameSession.IsOver)
                 {
@@ -92,11 +92,11 @@ namespace AsteraX.Application.Game.Player
             {
                 var showGameOverScreen = ShowGameOverScreen.Create(gameSession);
                 var respawnPlayerShip = new RespawnPlayerShip{ IntoInitialPosition = true };
-                await _taskPublisher.AsyncPublish(showGameOverScreen, ct);
-                _taskPublisher.Publish(new ClearAsteroids());
-                _taskPublisher.Publish(respawnPlayerShip);
-                await _taskPublisher.AsyncPublish(new HideGameOverScreen(), ct);
-                _taskPublisher.Publish(new ShowMainMenuScreen());
+                await _mediator.AsyncSend(showGameOverScreen, ct);
+                _mediator.Send(new ClearAsteroids());
+                _mediator.Send(respawnPlayerShip);
+                await _mediator.AsyncSend(new HideGameOverScreen(), ct);
+                _mediator.Send(new ShowMainMenuScreen());
                 gameSession.Restart();
                 _gameSessionRepository.Save();
             }
@@ -112,16 +112,16 @@ namespace AsteraX.Application.Game.Player
                 var showLoadingScreen = ShowLoadingScreen.Create(level);
                 var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
-                await _taskPublisher.AsyncPublish(showLoadingScreen, ct);
-                _taskPublisher.Publish(spawnAsteroids);
+                await _mediator.AsyncSend(showLoadingScreen, ct);
+                _mediator.Send(spawnAsteroids);
 
                 gameSession.RespawnPlayer();
                 _gameSessionRepository.Save();
-                _taskPublisher.Publish(new RespawnPlayerShip());
+                _mediator.Send(new RespawnPlayerShip());
 
-                await _taskPublisher.AsyncPublish(new HideLoadingScreen(), ct);
-                _taskPublisher.Publish(new UnpauseGame());
-                _taskPublisher.Publish(new EnablePlayerInput());
+                await _mediator.AsyncSend(new HideLoadingScreen(), ct);
+                _mediator.Send(new UnpauseGame());
+                _mediator.Send(new EnablePlayerInput());
             }
 
             private async UniTask Respawn(GameSession gameSession, CancellationToken ct)
@@ -130,10 +130,10 @@ namespace AsteraX.Application.Game.Player
                 {
                     Delay = TimeSpan.FromSeconds(2)
                 };
-                await _taskPublisher.AsyncPublish(respawnPlayerShipTask, ct);
+                await _mediator.AsyncSend(respawnPlayerShipTask, ct);
                 gameSession.RespawnPlayer();
                 _gameSessionRepository.Save();
-                _taskPublisher.Publish(new EnablePlayerInput());
+                _mediator.Send(new EnablePlayerInput());
             }
         }
     }

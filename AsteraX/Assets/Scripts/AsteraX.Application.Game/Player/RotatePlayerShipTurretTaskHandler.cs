@@ -1,10 +1,10 @@
-﻿using AsteraX.Application.Game.Tasks;
+﻿using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class RotatePlayerShipTurretTaskHandler : ApplicationTaskHandler<RotatePlayerShipTurret>
+    public class RotatePlayerShipTurretTaskHandler : OutputRequestHandler<RotatePlayerShipTurret>
     {
         [SerializeField] private Transform _turret;
 

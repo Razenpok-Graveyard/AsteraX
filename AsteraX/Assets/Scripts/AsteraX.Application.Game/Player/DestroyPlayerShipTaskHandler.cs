@@ -1,11 +1,11 @@
-﻿using AsteraX.Application.Game.Tasks;
+﻿using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class DestroyPlayerShipTaskHandler : ApplicationTaskHandler<DestroyPlayerShip>
+    public class DestroyPlayerShipTaskHandler : OutputRequestHandler<DestroyPlayerShip>
     {
         [SerializeField] private GameObject _playerShip;
         [SerializeField] private ParticleSystem _exhaustTrail;

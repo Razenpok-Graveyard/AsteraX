@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AsteraX.Application.Game.Tasks;
+using AsteraX.Application.Game.Requests;
 using AsteraX.Domain.Game;
 using FluentAssertions.Execution;
 

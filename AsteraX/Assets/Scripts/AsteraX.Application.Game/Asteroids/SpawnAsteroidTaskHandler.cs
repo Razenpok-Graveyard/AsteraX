@@ -1,11 +1,11 @@
 ﻿using AsteraX.Application.Game.Levels;
-using AsteraX.Application.Game.Tasks;
+using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Asteroids
 {
-    public class SpawnAsteroidTaskHandler : ApplicationTaskHandler<SpawnAsteroids>
+    public class SpawnAsteroidTaskHandler : OutputRequestHandler<SpawnAsteroids>
     {
         [SerializeField] private AsteroidInstanceContainer _instanceContainer;
         [SerializeField] private AsteroidSettings _asteroidSettings;

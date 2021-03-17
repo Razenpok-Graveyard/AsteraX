@@ -2,10 +2,10 @@
     "name": "Common.Application.Unity",
     "rootNamespace": "Common.Application.Unity",
     "references": [
-        "GUID:58a6fe6b1b8d4360ae5f8ce35331b7a2",
         "GUID:bbd63bd5221446758c037e17133dee63",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:8161667de84644ec1b7c7b2a6d8e757d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

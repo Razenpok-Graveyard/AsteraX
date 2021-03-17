@@ -1,6 +1,6 @@
 using System.Collections;
-using AsteraX.Application.Game.Tasks;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.Game.Requests;
+using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
@@ -18,32 +18,35 @@ namespace AsteraX.Application.UI.Tests
         public IEnumerator Pressing_start_button()
             => UniTask.ToCoroutine(async () =>
             {
-                var taskPublisher = new ApplicationTaskPublisherSpy();
+                var mediator = new OutputMediatorSpy();
                 var gameSessionRepository = new GameSessionRepository();
                 var level = new Level(1, 2, 3);
                 var levelRepository = new StubLevelRepository(level);
-                IAsyncRequestHandler<Command> sut = new CommandHandler(
+                IAsyncInputRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     gameSessionRepository,
-                    taskPublisher
+                    mediator
                 );
                 var command = new Command();
 
                 await sut.Handle(command);
 
-                taskPublisher
-                    .Consume<HideMainMenuScreen>()
-                    .ConsumeAsync<ShowLoadingScreen>(task =>
+                mediator
+                    .HandleRequest<HideMainMenuScreen>()
+                    .HandleAsyncRequest<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(1);
                         task.Asteroids.Should().Be(2);
                         task.Children.Should().Be(3);
                     })
-                    .Consume<SpawnAsteroids>(task => task.ShouldBeConsistentWithLevel(level))
-                    .ConsumeAsync<HideLoadingScreen>()
-                    .Consume<ShowPauseButton>()
-                    .Consume<UnpauseGame>()
-                    .Consume<EnablePlayerInput>()
+                    .HandleRequest<SpawnAsteroids>(task =>
+                    {
+                        task.ShouldBeConsistentWithLevel(level);
+                    })
+                    .HandleAsyncRequest<HideLoadingScreen>()
+                    //.HandleRequest<ShowPauseButton>()
+                    .HandleRequest<UnpauseGame>()
+                    .HandleRequest<EnablePlayerInput>()
                     .Complete();
             });
     }

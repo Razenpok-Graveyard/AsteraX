@@ -1,6 +1,4 @@
-﻿using UniRx;
-
-namespace Common.Application
+﻿namespace Common.Application
 {
     public interface IBaseRequest { }
 

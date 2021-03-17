@@ -1,4 +1,4 @@
-﻿using AsteraX.Application.Game.Tasks;
+﻿using AsteraX.Application.Game.Requests;
 using Common.Application;
 using Common.Application.Unity;
 using UnityEngine;
@@ -17,41 +17,41 @@ namespace AsteraX.Application.Game.Player
         private readonly FirePlayerShipTurret _firePlayerShipTurretTask
             = new FirePlayerShipTurret();
 
-        private IApplicationTaskPublisher _taskPublisher;
+        private IOutputMediator _mediator;
 
         [Inject]
-        public void Construct(IApplicationTaskPublisher applicationTaskPublisher)
+        public void Construct(IOutputMediator mediator)
         {
-            _taskPublisher = applicationTaskPublisher;
+            _mediator = mediator;
         }
 
         private void Awake()
         {
             _mainCamera = Camera.main;
             enabled = false;
-            this.Subscribe<DisablePlayerInput>(_ =>
+            this.RegisterHandler<DisablePlayerInput>(_ =>
             {
                 _movePlayerShipTask.Movement = Vector2.zero;
-                _taskPublisher.Publish(_movePlayerShipTask);
+                _mediator.Send(_movePlayerShipTask);
                 enabled = false;
             });
-            this.Subscribe<EnablePlayerInput>(_ => enabled = true);
+            this.RegisterHandler<EnablePlayerInput>(_ => enabled = true);
         }
 
         private void Update()
         {
             var movement = GetMovement();
             _movePlayerShipTask.Movement = movement;
-            _taskPublisher.Publish(_movePlayerShipTask);
+            _mediator.Send(_movePlayerShipTask);
 
             var mouseScreenPosition = (Vector2) _mainCamera.ScreenToViewportPoint(Input.mousePosition);
             _rotatePlayerShipTurretTask.ScreenPosition = mouseScreenPosition;
-            _taskPublisher.Publish(_rotatePlayerShipTurretTask);
+            _mediator.Send(_rotatePlayerShipTurretTask);
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
                 _firePlayerShipTurretTask.ScreenPosition = mouseScreenPosition;
-                _taskPublisher.Publish(_firePlayerShipTurretTask);
+                _mediator.Send(_firePlayerShipTurretTask);
             }
         }
 

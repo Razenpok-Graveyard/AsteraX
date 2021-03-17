@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.UI.Requests;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -19,8 +19,8 @@ namespace AsteraX.Application.UI.Loading
 
         private void Awake()
         {
-            this.Subscribe<ShowLoadingScreen>(Handle);
-            this.Subscribe<HideLoadingScreen>(Handle);
+            this.RegisterHandler<ShowLoadingScreen>(Handle);
+            this.RegisterHandler<HideLoadingScreen>(Handle);
         }
 
         private UniTask Handle(ShowLoadingScreen task, CancellationToken ct)

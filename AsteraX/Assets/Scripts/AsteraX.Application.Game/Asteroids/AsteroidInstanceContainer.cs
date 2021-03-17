@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using AsteraX.Application.Game.Tasks;
+using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using UnityEngine;
 
@@ -12,8 +12,8 @@ namespace AsteraX.Application.Game.Asteroids
 
         private void Awake()
         {
-            this.Subscribe<DestroyAsteroid>(Handle);
-            this.Subscribe<ClearAsteroids>(Handle);
+            this.RegisterHandler<DestroyAsteroid>(Handle);
+            this.RegisterHandler<ClearAsteroids>(Handle);
         }
 
         private void Handle(DestroyAsteroid message)

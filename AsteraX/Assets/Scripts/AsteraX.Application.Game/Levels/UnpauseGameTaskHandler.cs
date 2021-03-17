@@ -1,10 +1,10 @@
-﻿using AsteraX.Application.Game.Tasks;
+﻿using AsteraX.Application.Game.Requests;
 using Common.Application.Unity;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Levels
 {
-    public class UnpauseGameTaskHandler : ApplicationTaskHandler<UnpauseGame>
+    public class UnpauseGameTaskHandler : OutputRequestHandler<UnpauseGame>
     {
         protected override void Awake()
         {

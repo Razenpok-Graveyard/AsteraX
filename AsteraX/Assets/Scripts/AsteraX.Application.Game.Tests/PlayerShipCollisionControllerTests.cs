@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using System.Linq;
-using AsteraX.Application.Game.Tasks;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.Game.Requests;
+using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure.Data;
 using Common.Application;
@@ -20,14 +19,18 @@ namespace AsteraX.Application.Game.Tests
         public IEnumerator Colliding_asteroid_with_player()
             => UniTask.ToCoroutine(async () =>
             {
-                var taskPublisher = new ApplicationTaskPublisherSpy();
-                var repository = new GameSessionRepository();
+                var mediator = new OutputMediatorSpy();
+                var gameSessionRepository = new GameSessionRepository();
                 var level = new Level(1, 3, 0);
                 var levelRepository = new StubLevelRepository(level);
-                var gameSession = repository.Get();
+                var gameSession = gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
-                IAsyncRequestHandler<Command> sut = new CommandHandler(levelRepository, repository, taskPublisher);
+                IAsyncInputRequestHandler<Command> sut = new CommandHandler(
+                    levelRepository,
+                    gameSessionRepository,
+                    mediator
+                );
                 var command = new Command
                 {
                     AsteroidId = asteroidId
@@ -35,12 +38,12 @@ namespace AsteraX.Application.Game.Tests
 
                 await sut.Handle(command);
 
-                taskPublisher
-                    .Consume<DisablePlayerInput>()
-                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .Consume<DestroyPlayerShip>()
-                    .ConsumeAsync<RespawnPlayerShipWithVisuals>()
-                    .Consume<EnablePlayerInput>()
+                mediator
+                    .HandleRequest<DisablePlayerInput>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyPlayerShip>()
+                    .HandleAsyncRequest<RespawnPlayerShipWithVisuals>()
+                    .HandleRequest<EnablePlayerInput>()
                     .Complete();
             });
 
@@ -48,38 +51,47 @@ namespace AsteraX.Application.Game.Tests
         public IEnumerator Colliding_asteroid_with_player_when_all_asteroids_are_destroyed()
             => UniTask.ToCoroutine(async () =>
             {
-                var repository = new GameSessionRepository();
-                var gameSession = repository.Get();
+                var mediator = new OutputMediatorSpy();
+                var gameSessionRepository = new GameSessionRepository();
+                var gameSession = gameSessionRepository.Get();
                 var firstLevel = new Level(1, 1, 0);
                 var secondLevel = new Level(2, 2, 3);
                 var levelRepository = new StubLevelRepository(firstLevel, secondLevel);
                 gameSession.StartLevel(firstLevel);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
 
-                var taskPublisher = new ApplicationTaskPublisherSpy();
-
-                IAsyncRequestHandler<Command> sut = new CommandHandler(levelRepository, repository, taskPublisher);
+                IAsyncInputRequestHandler<Command> sut = new CommandHandler(
+                    levelRepository,
+                    gameSessionRepository,
+                    mediator
+                );
                 var command = new Command
                 {
                     AsteroidId = asteroidId
                 };
                 await sut.Handle(command);
 
-                taskPublisher
-                    .Consume<DisablePlayerInput>()
-                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .Consume<DestroyPlayerShip>()
-                    .ConsumeAsync<ShowLoadingScreen>(task =>
+                mediator
+                    .HandleRequest<DisablePlayerInput>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyPlayerShip>()
+                    .HandleAsyncRequest<ShowLoadingScreen>(task =>
                     {
                         task.Id.Should().Be(2);
                         task.Asteroids.Should().Be(2);
                         task.Children.Should().Be(3);
                     })
-                    .Consume<SpawnAsteroids>(task => task.ShouldBeConsistentWithLevel(secondLevel))
-                    .Consume<RespawnPlayerShip>(task => task.IntoInitialPosition.Should().BeFalse())
-                    .ConsumeAsync<HideLoadingScreen>()
-                    .Consume<UnpauseGame>()
-                    .Consume<EnablePlayerInput>()
+                    .HandleRequest<SpawnAsteroids>(task =>
+                    {
+                        task.ShouldBeConsistentWithLevel(secondLevel);
+                    })
+                    .HandleRequest<RespawnPlayerShip>(task =>
+                    {
+                        task.IntoInitialPosition.Should().BeFalse();
+                    })
+                    .HandleAsyncRequest<HideLoadingScreen>()
+                    .HandleRequest<UnpauseGame>()
+                    .HandleRequest<EnablePlayerInput>()
                     .Complete();
             });
 
@@ -87,15 +99,15 @@ namespace AsteraX.Application.Game.Tests
         public IEnumerator Colliding_asteroid_with_player_when_there_are_no_jumps_remaining()
             => UniTask.ToCoroutine(async () =>
             {
-                var taskPublisher = new ApplicationTaskPublisherSpy();
+                var mediator = new OutputMediatorSpy();
                 var gameSessionSettings = new GameSessionSettings
                 {
                     InitialJumps = 0
                 };
-                var repository = new GameSessionRepository(gameSessionSettings);
+                var gameSessionRepository = new GameSessionRepository(gameSessionSettings);
                 var level = new Level(1, 3, 0);
                 var levelRepository = new StubLevelRepository(level);
-                var gameSession = repository.Get();
+                var gameSession = gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 var asteroids = gameSession.GetAsteroids();
                 var killedAsteroidId = asteroids[0].Id;
@@ -103,9 +115,13 @@ namespace AsteraX.Application.Game.Tests
                 var asteroidId = asteroids[1].Id;
                 // Kill asteroid to test game over screen score
                 gameSession.CollideAsteroidWithBullet(killedAsteroidId);
-                repository.Save();
+                gameSessionRepository.Save();
 
-                IAsyncRequestHandler<Command> sut = new CommandHandler(levelRepository, repository, taskPublisher);
+                IAsyncInputRequestHandler<Command> sut = new CommandHandler(
+                    levelRepository,
+                    gameSessionRepository,
+                    mediator
+                );
                 var command = new Command
                 {
                     AsteroidId = asteroidId
@@ -113,19 +129,22 @@ namespace AsteraX.Application.Game.Tests
 
                 await sut.Handle(command);
 
-                taskPublisher
-                    .Consume<DisablePlayerInput>()
-                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .Consume<DestroyPlayerShip>()
-                    .ConsumeAsync<ShowGameOverScreen>(task =>
+                mediator
+                    .HandleRequest<DisablePlayerInput>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyPlayerShip>()
+                    .HandleAsyncRequest<ShowGameOverScreen>(task =>
                     {
                         task.Level.Should().Be(1);
                         task.Score.Should().Be(killedAsteroidScore);
                     })
-                    .Consume<ClearAsteroids>()
-                    .Consume<RespawnPlayerShip>(task => task.IntoInitialPosition.Should().BeTrue())
-                    .ConsumeAsync<HideGameOverScreen>()
-                    .Consume<ShowMainMenuScreen>()
+                    .HandleRequest<ClearAsteroids>()
+                    .HandleRequest<RespawnPlayerShip>(task =>
+                    {
+                        task.IntoInitialPosition.Should().BeTrue();
+                    })
+                    .HandleAsyncRequest<HideGameOverScreen>()
+                    .HandleRequest<ShowMainMenuScreen>()
                     .Complete();
             });
 
@@ -133,15 +152,15 @@ namespace AsteraX.Application.Game.Tests
         public IEnumerator Colliding_asteroid_with_player_when_there_are_no_jumps_remaining_and_all_asteroids_are_destroyed()
             => UniTask.ToCoroutine(async () =>
             {
-                var taskPublisher = new ApplicationTaskPublisherSpy();
+                var mediator = new OutputMediatorSpy();
                 var gameSessionSettings = new GameSessionSettings
                 {
                     InitialJumps = 0
                 };
-                var repository = new GameSessionRepository(gameSessionSettings);
+                var gameSessionRepository = new GameSessionRepository(gameSessionSettings);
                 var level = new Level(1, 2, 0);
                 var levelRepository = new StubLevelRepository(level);
-                var gameSession = repository.Get();
+                var gameSession = gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 var asteroids = gameSession.GetAsteroids();
                 var killedAsteroidId = asteroids[0].Id;
@@ -149,8 +168,12 @@ namespace AsteraX.Application.Game.Tests
                 var asteroidId = asteroids[1].Id;
                 // Kill asteroid to test game over screen score
                 gameSession.CollideAsteroidWithBullet(killedAsteroidId);
-                repository.Save();
-                IAsyncRequestHandler<Command> sut = new CommandHandler(levelRepository, repository, taskPublisher);
+                gameSessionRepository.Save();
+                IAsyncInputRequestHandler<Command> sut = new CommandHandler(
+                    levelRepository,
+                    gameSessionRepository,
+                    mediator
+                );
                 var command = new Command
                 {
                     AsteroidId = asteroidId
@@ -158,19 +181,22 @@ namespace AsteraX.Application.Game.Tests
 
                 await sut.Handle(command);
 
-                taskPublisher
-                    .Consume<DisablePlayerInput>()
-                    .Consume<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .Consume<DestroyPlayerShip>()
-                    .ConsumeAsync<ShowGameOverScreen>(task =>
+                mediator
+                    .HandleRequest<DisablePlayerInput>()
+                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyPlayerShip>()
+                    .HandleAsyncRequest<ShowGameOverScreen>(task =>
                     {
                         task.Level.Should().Be(1);
                         task.Score.Should().Be(killedAsteroidScore);
                     })
-                    .Consume<ClearAsteroids>()
-                    .Consume<RespawnPlayerShip>(task => task.IntoInitialPosition.Should().BeTrue())
-                    .ConsumeAsync<HideGameOverScreen>()
-                    .Consume<ShowMainMenuScreen>()
+                    .HandleRequest<ClearAsteroids>()
+                    .HandleRequest<RespawnPlayerShip>(task =>
+                    {
+                        task.IntoInitialPosition.Should().BeTrue();
+                    })
+                    .HandleAsyncRequest<HideGameOverScreen>()
+                    .HandleRequest<ShowMainMenuScreen>()
                     .Complete();
             });
     }

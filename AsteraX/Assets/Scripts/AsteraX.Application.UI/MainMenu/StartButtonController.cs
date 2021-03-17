@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using AsteraX.Application.Game.Tasks;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.Game.Requests;
+using AsteraX.Application.UI.Requests;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Cysharp.Threading.Tasks;
@@ -16,10 +16,10 @@ namespace AsteraX.Application.UI.MainMenu
     {
         [SerializeField] private Button _button;
 
-        private IAsyncRequestHandler<Command> _commandHandler;
+        private IAsyncInputRequestHandler<Command> _commandHandler;
 
         [Inject]
-        public void Construct(IAsyncRequestHandler<Command> commandHandler)
+        public void Construct(IAsyncInputRequestHandler<Command> commandHandler)
         {
             _commandHandler = commandHandler;
         }
@@ -37,20 +37,20 @@ namespace AsteraX.Application.UI.MainMenu
 
         public class Command : IAsyncRequest { }
 
-        public class CommandHandler : AsyncRequestHandler<Command>
+        public class CommandHandler : AsyncInputRequestHandler<Command>
         {
             private readonly ILevelRepository _levelRepository;
             private readonly IGameSessionRepository _gameSessionRepository;
-            private readonly IApplicationTaskPublisher _taskPublisher;
+            private readonly IOutputMediator _mediator;
 
             public CommandHandler(
                 ILevelRepository levelRepository,
                 IGameSessionRepository gameSessionRepository,
-                IApplicationTaskPublisher taskPublisher)
+                IOutputMediator mediator)
             {
                 _levelRepository = levelRepository;
                 _gameSessionRepository = gameSessionRepository;
-                _taskPublisher = taskPublisher;
+                _mediator = mediator;
             }
             
             protected override async UniTask Handle(Command command, CancellationToken ct)
@@ -64,13 +64,13 @@ namespace AsteraX.Application.UI.MainMenu
                 var showLoadingScreen = ShowLoadingScreen.Create(level);
                 var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
-                _taskPublisher.Publish(new HideMainMenuScreen());
-                await _taskPublisher.AsyncPublish(showLoadingScreen, ct);
-                _taskPublisher.Publish(spawnAsteroids);
-                await _taskPublisher.AsyncPublish(new HideLoadingScreen(), ct);
-                _taskPublisher.Publish(new ShowPauseButton());
-                _taskPublisher.Publish(new UnpauseGame());
-                _taskPublisher.Publish(new EnablePlayerInput());
+                _mediator.Send(new HideMainMenuScreen());
+                await _mediator.AsyncSend(showLoadingScreen, ct);
+                _mediator.Send(spawnAsteroids);
+                await _mediator.AsyncSend(new HideLoadingScreen(), ct);
+                //_mediator.Send(new ShowPauseButton());
+                _mediator.Send(new UnpauseGame());
+                _mediator.Send(new EnablePlayerInput());
             }
         }
     }

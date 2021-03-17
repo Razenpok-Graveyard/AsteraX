@@ -1,60 +1,31 @@
 using System;
 using System.Threading;
-using Common.Domain;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
 namespace Common.Application.Unity
 {
-    public static class MonoBehaviourExtensions
+    public static class MediatorMonoBehaviourExtensions
     {
-        public static IDisposable Subscribe<T>(
+        public static IDisposable RegisterHandler<TRequest>(
             this MonoBehaviour monoBehaviour,
-            Func<T, CancellationToken, UniTask> action)
-            where T : IAsyncApplicationTask
+            Func<TRequest, CancellationToken, UniTask> action)
+            where TRequest : IAsyncRequest
         {
-            return ApplicationTaskDispatcher.Subscriber
-                .Subscribe(action, monoBehaviour.GetCancellationTokenOnDestroy())
+            return OutputMediator.Default
+                .RegisterRequestHandler(action, monoBehaviour.GetCancellationTokenOnDestroy())
                 .AddTo(monoBehaviour);
         }
 
-        public static IDisposable Subscribe<T>(
+        public static IDisposable RegisterHandler<TRequest>(
             this MonoBehaviour monoBehaviour,
-            Action<T> action)
-            where T : IApplicationTask
+            Action<TRequest> action)
+            where TRequest : IRequest
         {
-            return ApplicationTaskDispatcher.Subscriber
-                .Subscribe(action)
+            return OutputMediator.Default
+                .RegisterRequestHandler(action)
                 .AddTo(monoBehaviour);
-        }
-
-        public static IDisposable SubscribeToDomain<T>(
-            this MonoBehaviour monoBehaviour,
-            Func<T, CancellationToken, UniTask> action)
-            where T : IDomainEvent
-        {
-            return DomainEventBus
-                .Subscribe<T>(e => action(e, monoBehaviour.GetCancellationTokenOnDestroy()).Forget())
-                .AddTo(monoBehaviour);
-        }
-
-        public static IDisposable SubscribeToDomain<T>(
-            this MonoBehaviour monoBehaviour,
-            Func<T, UniTask> action)
-            where T : IDomainEvent
-        {
-            return DomainEventBus
-                .Subscribe<T>(e => action(e).Forget())
-                .AddTo(monoBehaviour);
-        }
-
-        public static IDisposable SubscribeToDomain<T>(
-            this MonoBehaviour monoBehaviour,
-            Action<T> action)
-            where T : IDomainEvent
-        {
-            return DomainEventBus.Subscribe(action).AddTo(monoBehaviour);
         }
     }
 }

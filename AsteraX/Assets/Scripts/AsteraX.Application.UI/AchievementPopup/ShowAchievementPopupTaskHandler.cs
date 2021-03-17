@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using AsteraX.Application.UI.Tasks;
+using AsteraX.Application.UI.Requests;
 using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AsteraX.Application.UI.AchievementPopup
 {
-    public class ShowAchievementPopupTaskHandler : AsyncApplicationTaskHandler<ShowAchievementPopup>
+    public class ShowAchievementPopupTaskHandler : AsyncOutputRequestHandler<ShowAchievementPopup>
     {
         [SerializeField] private RectTransform _root;
         [SerializeField] private TextMeshProUGUI _title;

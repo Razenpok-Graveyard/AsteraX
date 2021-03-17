@@ -1,7 +1,7 @@
 using AsteraX.Infrastructure.Data;
 using Common.Application;
+using Common.Application.Unity;
 using JetBrains.Annotations;
-using UniTaskPubSub;
 using UnityEditorInternal;
 using UnityEngine;
 using VContainer;
@@ -19,11 +19,7 @@ namespace AsteraX.Startup
             builder.RegisterContainer();
             builder.RegisterRequestHandlers(_requestHandlerAssemblies);
 
-            var publisher = new ApplicationTaskPublisher(AsyncMessageBus.Default);
-            var subscriber = new ApplicationTaskSubscriber(AsyncMessageBus.Default);
-            builder.RegisterInstance(publisher).As<IApplicationTaskPublisher>();
-            builder.RegisterInstance(subscriber).As<IApplicationTaskSubscriber>();
-            ApplicationTaskDispatcher.Subscriber = subscriber;
+            builder.RegisterInstance(OutputMediator.Default).As<IOutputMediator>();
 
             builder.RegisterInstance(_levelSettings);
             builder.Register<GameSessionSettings>(Lifetime.Singleton);

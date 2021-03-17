@@ -1,4 +1,4 @@
-﻿using AsteraX.Application.Game.Tasks;
+﻿using AsteraX.Application.Game.Requests;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Common.Application.Unity;
@@ -7,17 +7,17 @@ using VContainer;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class FirePlayerShipTurretTaskHandler : ApplicationTaskHandler<FirePlayerShipTurret>
+    public class FirePlayerShipTurretTaskHandler : OutputRequestHandler<FirePlayerShipTurret>
     {
         [SerializeField] private Transform _turret;
         [SerializeField] private Transform _shootingPoint;
 
-        private IRequestHandler<Command> _requestHandler;
+        private IInputRequestHandler<Command> _commandHandler;
 
         [Inject]
-        public void Construct(IRequestHandler<Command> requestHandler)
+        public void Construct(IInputRequestHandler<Command> commandHandler)
         {
-            _requestHandler = requestHandler;
+            _commandHandler = commandHandler;
         }
 
         protected override void Handle(FirePlayerShipTurret message)
@@ -30,7 +30,7 @@ namespace AsteraX.Application.Game.Player
                 WorldPosition = turretPosition,
                 Direction = direction
             };
-            _requestHandler.Handle(command);
+            _commandHandler.Handle(command);
         }
 
         public class Command : IRequest
@@ -39,17 +39,17 @@ namespace AsteraX.Application.Game.Player
             public Vector3 Direction { get; set; }
         }
 
-        public class QueryHandler : RequestHandler<Command>
+        public class QueryHandler : InputRequestHandler<Command>
         {
             private readonly IGameSessionRepository _gameSessionRepository;
-            private readonly IApplicationTaskPublisher _taskPublisher;
+            private readonly IOutputMediator _mediator;
 
             public QueryHandler(
                 IGameSessionRepository gameSessionRepository,
-                IApplicationTaskPublisher taskPublisher)
+                IOutputMediator mediator)
             {
                 _gameSessionRepository = gameSessionRepository;
-                _taskPublisher = taskPublisher;
+                _mediator = mediator;
             }
 
             protected override void Handle(Command command)
@@ -65,7 +65,7 @@ namespace AsteraX.Application.Game.Player
                     WorldPosition = command.WorldPosition,
                     Direction = command.Direction
                 };
-                _taskPublisher.Publish(spawnBulletMessage);
+                _mediator.Send(spawnBulletMessage);
             }
         }
     }
