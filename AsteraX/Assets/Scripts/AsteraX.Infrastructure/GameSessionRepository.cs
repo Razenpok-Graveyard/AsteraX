@@ -1,9 +1,9 @@
 using AsteraX.Domain.Game;
 using Common.Domain;
 
-namespace AsteraX.Infrastructure.Data
+namespace AsteraX.Infrastructure
 {
-    public class GameSessionRepository : IGameSessionRepository, IGameSessionObservableRepository
+    public class GameSessionRepository
     {
         private readonly GameSession _gameSession;
         private readonly GameSessionObservable _observable = new GameSessionObservable();
@@ -19,15 +19,9 @@ namespace AsteraX.Infrastructure.Data
         {
         }
 
-        public GameSession Get()
-        {
-            return _gameSession;
-        }
+        public GameSession Get() => _gameSession;
 
-        IGameSessionObservable IGameSessionObservableRepository.Get()
-        {
-            return _observable;
-        }
+        public GameSessionObservable GetObservable() => _observable;
 
         public void Save()
         {

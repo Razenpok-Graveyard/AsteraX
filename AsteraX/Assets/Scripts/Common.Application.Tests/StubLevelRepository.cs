@@ -21,7 +21,7 @@ namespace Common.Application.Tests
 
         public IReadOnlyList<Level> Levels => _levels;
         
-        public Level GetLevel(long id)
+        public Level Get(long id)
         {
             return _levels.First(l => l.Id == id);
         }

@@ -1,4 +1,4 @@
-namespace AsteraX.Infrastructure.Data
+namespace AsteraX.Infrastructure
 {
     public class GameSessionSettings
     {

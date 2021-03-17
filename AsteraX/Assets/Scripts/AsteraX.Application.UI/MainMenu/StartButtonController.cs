@@ -40,12 +40,12 @@ namespace AsteraX.Application.UI.MainMenu
         public class CommandHandler : AsyncInputRequestHandler<Command>
         {
             private readonly ILevelRepository _levelRepository;
-            private readonly IGameSessionRepository _gameSessionRepository;
+            private readonly GameSessionRepository _gameSessionRepository;
             private readonly IOutputMediator _mediator;
 
             public CommandHandler(
                 ILevelRepository levelRepository,
-                IGameSessionRepository gameSessionRepository,
+                GameSessionRepository gameSessionRepository,
                 IOutputMediator mediator)
             {
                 _levelRepository = levelRepository;
@@ -55,7 +55,7 @@ namespace AsteraX.Application.UI.MainMenu
             
             protected override async UniTask Handle(Command command, CancellationToken ct)
             {
-                var level = _levelRepository.GetLevel(1);
+                var level = _levelRepository.Get(1);
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 _gameSessionRepository.Save();

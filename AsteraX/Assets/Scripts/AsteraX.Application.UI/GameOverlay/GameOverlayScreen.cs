@@ -44,16 +44,16 @@ namespace AsteraX.Application.UI.GameOverlay
 
         public class QueryHandler : InputRequestHandler<Query, Model>
         {
-            private readonly IGameSessionObservableRepository _observableRepository;
+            private readonly GameSessionRepository _observableRepository;
 
-            public QueryHandler(IGameSessionObservableRepository observableRepository)
+            public QueryHandler(GameSessionRepository observableRepository)
             {
                 _observableRepository = observableRepository;
             }
 
             protected override Model Handle(Query request)
             {
-                var gameSession = _observableRepository.Get();
+                var gameSession = _observableRepository.GetObservable();
                 return new Model
                 {
                     Jumps = gameSession.Jumps,

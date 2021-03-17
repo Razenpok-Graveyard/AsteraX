@@ -1,6 +1,5 @@
 using AsteraX.Application.Achievements;
 using AsteraX.Infrastructure;
-using AsteraX.Infrastructure.Data;
 using Common.Application;
 using Common.Application.Unity;
 using JetBrains.Annotations;

@@ -1,7 +1,7 @@
 using System;
 using AsteraX.Domain.Game;
 
-namespace AsteraX.Infrastructure.Data
+namespace AsteraX.Infrastructure
 {
     public class LevelRepository : ILevelRepository
     {
@@ -12,7 +12,7 @@ namespace AsteraX.Infrastructure.Data
             _levelSettings = levelSettings;
         }
         
-        public Level GetLevel(long id)
+        public Level Get(long id)
         {
             var levels = _levelSettings.Levels;
             if (levels.Count < id)

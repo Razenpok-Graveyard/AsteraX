@@ -2,7 +2,7 @@ using System.Collections;
 using AsteraX.Application.Game.Requests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
-using AsteraX.Infrastructure.Data;
+using AsteraX.Infrastructure;
 using Common.Application;
 using Common.Application.Tests;
 using Cysharp.Threading.Tasks;

@@ -41,11 +41,11 @@ namespace AsteraX.Application.Game.Player
 
         public class QueryHandler : InputRequestHandler<Command>
         {
-            private readonly IGameSessionRepository _gameSessionRepository;
+            private readonly GameSessionRepository _gameSessionRepository;
             private readonly IOutputMediator _mediator;
 
             public QueryHandler(
-                IGameSessionRepository gameSessionRepository,
+                GameSessionRepository gameSessionRepository,
                 IOutputMediator mediator)
             {
                 _gameSessionRepository = gameSessionRepository;

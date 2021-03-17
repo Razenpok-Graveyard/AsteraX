@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AsteraX.Infrastructure.Data
+namespace AsteraX.Infrastructure
 {
     [CreateAssetMenu(fileName = "LevelSettings", menuName = "AsteraX/Create LevelSettings")]
     public class LevelSettings : ScriptableObject

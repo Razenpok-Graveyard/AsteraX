@@ -15,9 +15,5 @@ namespace AsteraX.Infrastructure
         {
             return _achievements.Where(a => a.GoalType == type && !a.IsAchieved).ToList();
         }
-
-        public void Save()
-        {
-        }
     }
 }
