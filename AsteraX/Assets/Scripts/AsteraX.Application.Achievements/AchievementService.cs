@@ -5,7 +5,6 @@ using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Achievements;
 using AsteraX.Infrastructure;
 using Common.Application;
-using Common.Application.Unity;
 
 namespace AsteraX.Application.Achievements
 {
@@ -14,20 +13,31 @@ namespace AsteraX.Application.Achievements
         private readonly List<IDisposable> _registrations = new List<IDisposable>();
 
         private readonly AchievementRepository _achievementRepository;
+        private readonly GameSessionRepository _gameSessionRepository;
         private readonly OutputMediator _mediator;
 
         public AchievementService(
             AchievementRepository achievementRepository,
+            GameSessionRepository gameSessionRepository,
             OutputMediator mediator)
         {
             _achievementRepository = achievementRepository;
+            _gameSessionRepository = gameSessionRepository;
             _mediator = mediator;
             Register<AsteroidShot>(Handle);
+            Register<ShotFired>(Handle);
         }
 
         private void Handle(AsteroidShot notification)
         {
+            var gameSession = _gameSessionRepository.Get();
             UpdateProgress(AchievementGoalType.KilledAsteroidCount, progress => progress + 1);
+            UpdateProgress(AchievementGoalType.HighScore, _ => gameSession.Score);
+        }
+
+        private void Handle(ShotFired notification)
+        {
+            UpdateProgress(AchievementGoalType.ShotCount, progress => progress + 1);
         }
 
         private void UpdateProgress(AchievementGoalType type, Func<int, int> getNewProgress)

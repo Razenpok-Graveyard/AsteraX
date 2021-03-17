@@ -1,4 +1,5 @@
-﻿using AsteraX.Application.Game.Requests;
+﻿using AsteraX.Application.Game.Notifications;
+using AsteraX.Application.Game.Requests;
 using AsteraX.Infrastructure;
 using Common.Application;
 using Common.Application.Unity;
@@ -39,12 +40,12 @@ namespace AsteraX.Application.Game.Player
             public Vector3 Direction { get; set; }
         }
 
-        public class QueryHandler : InputRequestHandler<Command>
+        public class CommandHandler : InputRequestHandler<Command>
         {
             private readonly GameSessionRepository _gameSessionRepository;
             private readonly IOutputMediator _mediator;
 
-            public QueryHandler(
+            public CommandHandler(
                 GameSessionRepository gameSessionRepository,
                 IOutputMediator mediator)
             {
@@ -66,6 +67,7 @@ namespace AsteraX.Application.Game.Player
                     Direction = command.Direction
                 };
                 _mediator.Send(spawnBulletMessage);
+                _mediator.Publish(new ShotFired());
             }
         }
     }
