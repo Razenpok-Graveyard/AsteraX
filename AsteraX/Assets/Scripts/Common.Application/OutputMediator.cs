@@ -73,8 +73,10 @@ namespace Common.Application
             CancellationToken ct2)
             where TRequest : IAsyncRequest
         {
-            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, ct2);
+            var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, ct2);
             await handler(message, linkedCts.Token);
+            linkedCts.Cancel();
+            linkedCts.Dispose();
         }
 
         private class SubscriptionTracker<T> : IDisposable

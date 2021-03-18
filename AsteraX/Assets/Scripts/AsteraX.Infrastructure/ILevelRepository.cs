@@ -4,6 +4,6 @@ namespace AsteraX.Infrastructure
 {
     public interface ILevelRepository
     {
-        public Level Get(long id);
+        Level Get(long id);
     }
 }

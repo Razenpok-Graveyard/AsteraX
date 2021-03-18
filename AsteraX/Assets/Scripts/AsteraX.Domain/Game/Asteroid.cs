@@ -22,13 +22,17 @@ namespace AsteraX.Domain.Game
         {
             get
             {
-                return Size switch
+                switch (Size)
                 {
-                    1 => 300,
-                    2 => 200,
-                    3 => 100,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+                    case 1:
+                        return 300;
+                    case 2:
+                        return 200;
+                    case 3:
+                        return 100;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
     }
