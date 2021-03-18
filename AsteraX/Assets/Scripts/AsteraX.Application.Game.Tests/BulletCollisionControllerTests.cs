@@ -85,6 +85,10 @@ namespace AsteraX.Application.Game.Tests
                     {
                         notification.Score.Should().Be(asteroidScore);
                     })
+                    .HandleNotification<LevelReached>(notification =>
+                    {
+                        notification.Id.Should().Be(2);
+                    })
                     .HandleAsyncRequest<ShowLoadingScreen>(request =>
                     {
                         request.Id.Should().Be(2);

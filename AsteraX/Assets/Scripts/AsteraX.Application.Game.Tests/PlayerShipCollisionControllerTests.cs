@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using AsteraX.Application.Game.Notifications;
 using AsteraX.Application.Game.Requests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
@@ -74,7 +75,14 @@ namespace AsteraX.Application.Game.Tests
                 mediator
                     .HandleRequest<DisablePlayerInput>()
                     .HandleRequest<DestroyPlayerShip>()
-                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyAsteroid>(request =>
+                    {
+                        request.Id.Should().Be(asteroidId);
+                    })
+                    .HandleNotification<LevelReached>(notification =>
+                    {
+                        notification.Id.Should().Be(2);
+                    })
                     .HandleAsyncRequest<ShowLoadingScreen>(request =>
                     {
                         request.Id.Should().Be(2);

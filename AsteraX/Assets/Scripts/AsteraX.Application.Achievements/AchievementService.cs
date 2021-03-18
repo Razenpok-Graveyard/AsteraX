@@ -24,6 +24,7 @@ namespace AsteraX.Application.Achievements
             Register<AsteroidShot>(Handle);
             Register<HighScoreUpdated>(Handle);
             Register<ShotFired>(Handle);
+            Register<LevelReached>(Handle);
         }
 
         private void Handle(AsteroidShot notification)
@@ -39,6 +40,11 @@ namespace AsteraX.Application.Achievements
         private void Handle(ShotFired notification)
         {
             UpdateProgress(AchievementGoalType.ShotCount, progress => progress + 1);
+        }
+
+        private void Handle(LevelReached notification)
+        {
+            UpdateProgress(AchievementGoalType.LevelReached, _ => (int) notification.Id);
         }
 
         private void UpdateProgress(AchievementGoalType type, Func<int, int> getNewProgress)

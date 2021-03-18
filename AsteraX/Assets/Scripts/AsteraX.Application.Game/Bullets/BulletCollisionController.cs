@@ -80,10 +80,15 @@ namespace AsteraX.Application.Game.Bullets
                 gameSession.StartLevel(level);
                 _gameSessionRepository.Save();
 
+                var levelReached = new LevelReached
+                {
+                    Id = level.Id
+                };
                 var asteroids = gameSession.GetAsteroids();
                 var showLoadingScreen = ShowLoadingScreen.Create(level);
                 var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
+                _mediator.Publish(levelReached);
                 _mediator.Send(new DisablePlayerInput());
                 await _mediator.AsyncSend(showLoadingScreen, ct);
                 _mediator.Send(spawnAsteroids);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using AsteraX.Application.Game.Asteroids;
+using AsteraX.Application.Game.Notifications;
 using AsteraX.Application.Game.Requests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
@@ -108,10 +109,15 @@ namespace AsteraX.Application.Game.Player
                 gameSession.StartLevel(level);
                 _gameSessionRepository.Save();
 
+                var levelReached = new LevelReached
+                {
+                    Id = level.Id
+                };
                 var asteroids = gameSession.GetAsteroids();
                 var showLoadingScreen = ShowLoadingScreen.Create(level);
                 var spawnAsteroids = SpawnAsteroids.Create(asteroids);
 
+                _mediator.Publish(levelReached);
                 await _mediator.AsyncSend(showLoadingScreen, ct);
                 _mediator.Send(spawnAsteroids);
 
