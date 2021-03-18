@@ -21,6 +21,13 @@
       "dependencies": {},
       "hash": "284d5c50d3f1ddd9fa7df3d382ea904732a9c2ff"
     },
+    "com.razensoft.domain": {
+      "version": "https://github.com/Razenpok/Razensoft.Domain.git?path=src/Razensoft.Domain#1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "46018b1f40573f2342cb4cc3e2422b6b83ea5cc3"
+    },
     "com.razensoft.functional": {
       "version": "https://github.com/Razenpok/Razensoft.Functional.git?path=src/Razensoft.Functional#1.0.0",
       "depth": 0,

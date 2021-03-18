@@ -1,5 +1,4 @@
 using AsteraX.Domain.Game;
-using Common.Domain;
 
 namespace AsteraX.Infrastructure
 {
@@ -26,7 +25,6 @@ namespace AsteraX.Infrastructure
         public void Save()
         {
             _observable.Update(_gameSession);
-            DomainEventBus.DispatchEvents(_gameSession);
         }
     }
 }

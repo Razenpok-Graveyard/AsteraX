@@ -1,4 +1,4 @@
-using Common.Domain;
+using Razensoft.Domain;
 
 namespace AsteraX.Domain.Game
 {

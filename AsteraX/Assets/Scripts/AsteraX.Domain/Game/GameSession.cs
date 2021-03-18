@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Common.Domain;
+using Razensoft.Domain;
 
 namespace AsteraX.Domain.Game
 {

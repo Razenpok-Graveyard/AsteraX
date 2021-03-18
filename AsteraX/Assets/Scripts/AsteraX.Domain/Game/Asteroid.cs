@@ -1,6 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
-using Common.Domain;
+using Razensoft.Domain;
 
 namespace AsteraX.Domain.Game
 {
