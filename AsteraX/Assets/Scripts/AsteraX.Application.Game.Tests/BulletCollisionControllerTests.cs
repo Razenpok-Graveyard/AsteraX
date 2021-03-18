@@ -26,7 +26,9 @@ namespace AsteraX.Application.Game.Tests
                 var levelRepository = new StubLevelRepository(level);
                 var gameSession = repository.Get();
                 gameSession.StartLevel(level);
-                var asteroidId = gameSession.GetAsteroids().First().Id;
+                var asteroid = gameSession.GetAsteroids().First();
+                var asteroidId = asteroid.Id;
+                var asteroidScore = asteroid.Score;
                 IAsyncInputRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     repository,
@@ -40,8 +42,12 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 mediator
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
                     .HandleNotification<AsteroidShot>()
+                    .HandleNotification<HighScoreUpdated>(notification =>
+                    {
+                        notification.Score.Should().Be(asteroidScore);
+                    })
                     .Complete();
             });
 
@@ -61,7 +67,9 @@ namespace AsteraX.Application.Game.Tests
                     repository,
                     mediator
                 );
-                var asteroidId = gameSession.GetAsteroids().First().Id;
+                var asteroid = gameSession.GetAsteroids().First();
+                var asteroidId = asteroid.Id;
+                var asteroidScore = asteroid.Score;
                 var command = new Command
                 {
                     AsteroidId = asteroidId
@@ -71,17 +79,21 @@ namespace AsteraX.Application.Game.Tests
 
                 mediator
                     .HandleRequest<DisablePlayerInput>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
                     .HandleNotification<AsteroidShot>()
-                    .HandleAsyncRequest<ShowLoadingScreen>(task =>
+                    .HandleNotification<HighScoreUpdated>(notification =>
                     {
-                        task.Id.Should().Be(2);
-                        task.Asteroids.Should().Be(2);
-                        task.Children.Should().Be(3);
+                        notification.Score.Should().Be(asteroidScore);
                     })
-                    .HandleRequest<SpawnAsteroids>(task =>
+                    .HandleAsyncRequest<ShowLoadingScreen>(request =>
                     {
-                        task.ShouldBeConsistentWithLevel(secondLevel);
+                        request.Id.Should().Be(2);
+                        request.Asteroids.Should().Be(2);
+                        request.Children.Should().Be(3);
+                    })
+                    .HandleRequest<SpawnAsteroids>(request =>
+                    {
+                        request.ShouldBeConsistentWithLevel(secondLevel);
                     })
                     .HandleAsyncRequest<HideLoadingScreen>()
                     .HandleRequest<EnablePlayerInput>()

@@ -41,7 +41,7 @@ namespace AsteraX.Application.Game.Tests
                 mediator
                     .HandleRequest<DisablePlayerInput>()
                     .HandleRequest<DestroyPlayerShip>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
+                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
                     .HandleAsyncRequest<RespawnPlayerShipWithVisuals>()
                     .HandleRequest<EnablePlayerInput>()
                     .Complete();
@@ -74,20 +74,20 @@ namespace AsteraX.Application.Game.Tests
                 mediator
                     .HandleRequest<DisablePlayerInput>()
                     .HandleRequest<DestroyPlayerShip>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .HandleAsyncRequest<ShowLoadingScreen>(task =>
+                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
+                    .HandleAsyncRequest<ShowLoadingScreen>(request =>
                     {
-                        task.Id.Should().Be(2);
-                        task.Asteroids.Should().Be(2);
-                        task.Children.Should().Be(3);
+                        request.Id.Should().Be(2);
+                        request.Asteroids.Should().Be(2);
+                        request.Children.Should().Be(3);
                     })
-                    .HandleRequest<SpawnAsteroids>(task =>
+                    .HandleRequest<SpawnAsteroids>(request =>
                     {
-                        task.ShouldBeConsistentWithLevel(secondLevel);
+                        request.ShouldBeConsistentWithLevel(secondLevel);
                     })
-                    .HandleRequest<RespawnPlayerShip>(task =>
+                    .HandleRequest<RespawnPlayerShip>(request =>
                     {
-                        task.IntoInitialPosition.Should().BeFalse();
+                        request.IntoInitialPosition.Should().BeFalse();
                     })
                     .HandleAsyncRequest<HideLoadingScreen>()
                     .HandleRequest<UnpauseGame>()
@@ -132,16 +132,16 @@ namespace AsteraX.Application.Game.Tests
                 mediator
                     .HandleRequest<DisablePlayerInput>()
                     .HandleRequest<DestroyPlayerShip>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .HandleAsyncRequest<ShowGameOverScreen>(task =>
+                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
+                    .HandleAsyncRequest<ShowGameOverScreen>(request =>
                     {
-                        task.Level.Should().Be(1);
-                        task.Score.Should().Be(killedAsteroidScore);
+                        request.Level.Should().Be(1);
+                        request.Score.Should().Be(killedAsteroidScore);
                     })
                     .HandleRequest<ClearAsteroids>()
-                    .HandleRequest<RespawnPlayerShip>(task =>
+                    .HandleRequest<RespawnPlayerShip>(request =>
                     {
-                        task.IntoInitialPosition.Should().BeTrue();
+                        request.IntoInitialPosition.Should().BeTrue();
                     })
                     .HandleAsyncRequest<HideGameOverScreen>()
                     .HandleRequest<ShowMainMenuScreen>()
@@ -184,16 +184,16 @@ namespace AsteraX.Application.Game.Tests
                 mediator
                     .HandleRequest<DisablePlayerInput>()
                     .HandleRequest<DestroyPlayerShip>()
-                    .HandleRequest<DestroyAsteroid>(task => task.Id.Should().Be(asteroidId))
-                    .HandleAsyncRequest<ShowGameOverScreen>(task =>
+                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
+                    .HandleAsyncRequest<ShowGameOverScreen>(request =>
                     {
-                        task.Level.Should().Be(1);
-                        task.Score.Should().Be(killedAsteroidScore);
+                        request.Level.Should().Be(1);
+                        request.Score.Should().Be(killedAsteroidScore);
                     })
                     .HandleRequest<ClearAsteroids>()
-                    .HandleRequest<RespawnPlayerShip>(task =>
+                    .HandleRequest<RespawnPlayerShip>(request =>
                     {
-                        task.IntoInitialPosition.Should().BeTrue();
+                        request.IntoInitialPosition.Should().BeTrue();
                     })
                     .HandleAsyncRequest<HideGameOverScreen>()
                     .HandleRequest<ShowMainMenuScreen>()

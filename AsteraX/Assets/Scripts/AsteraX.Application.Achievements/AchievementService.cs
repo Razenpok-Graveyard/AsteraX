@@ -13,26 +13,27 @@ namespace AsteraX.Application.Achievements
         private readonly List<IDisposable> _registrations = new List<IDisposable>();
 
         private readonly AchievementRepository _achievementRepository;
-        private readonly GameSessionRepository _gameSessionRepository;
         private readonly OutputMediator _mediator;
 
         public AchievementService(
             AchievementRepository achievementRepository,
-            GameSessionRepository gameSessionRepository,
             OutputMediator mediator)
         {
             _achievementRepository = achievementRepository;
-            _gameSessionRepository = gameSessionRepository;
             _mediator = mediator;
             Register<AsteroidShot>(Handle);
+            Register<HighScoreUpdated>(Handle);
             Register<ShotFired>(Handle);
         }
 
         private void Handle(AsteroidShot notification)
         {
-            var gameSession = _gameSessionRepository.Get();
             UpdateProgress(AchievementGoalType.KilledAsteroidCount, progress => progress + 1);
-            UpdateProgress(AchievementGoalType.HighScore, _ => gameSession.Score);
+        }
+
+        private void Handle(HighScoreUpdated notification)
+        {
+            UpdateProgress(AchievementGoalType.HighScore, _ => notification.Score);
         }
 
         private void Handle(ShotFired notification)

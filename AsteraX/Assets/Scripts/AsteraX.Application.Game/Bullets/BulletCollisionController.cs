@@ -56,16 +56,22 @@ namespace AsteraX.Application.Game.Bullets
             {
                 var gameSession = _gameSessionRepository.Get();
                 gameSession.CollideAsteroidWithBullet(command.AsteroidId);
+                _gameSessionRepository.Save();
 
-                _mediator.Send(new DestroyAsteroid
+                var destroyAsteroid = new DestroyAsteroid
                 {
                     Id = command.AsteroidId
-                });
+                };
+                var highScoreUpdated = new HighScoreUpdated
+                {
+                    Score = gameSession.Score
+                };
+                _mediator.Send(destroyAsteroid);
                 _mediator.Publish(new AsteroidShot());
+                _mediator.Publish(highScoreUpdated);
 
                 if (!gameSession.IsLevelCompleted)
                 {
-                    _gameSessionRepository.Save();
                     return;
                 }
 
