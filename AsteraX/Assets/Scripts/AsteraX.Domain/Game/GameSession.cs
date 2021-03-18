@@ -28,6 +28,8 @@ namespace AsteraX.Domain.Game
         public bool IsOver { get; private set; }
 
         public int Score { get; private set; }
+        
+        public bool AchievedHighScore { get; set; }
 
         public bool IsPlayingLevel => _levelAttempt != null && Level != null;
 
@@ -90,6 +92,7 @@ namespace AsteraX.Domain.Game
             Score = 0;
             Level = null;
             _levelAttempt = null;
+            AchievedHighScore = false;
         }
     }
 }

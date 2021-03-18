@@ -48,15 +48,18 @@ namespace AsteraX.Application.Game.Bullets
             private readonly ILevelRepository _levelRepository;
             private readonly GameSessionRepository _gameSessionRepository;
             private readonly IOutputMediator _mediator;
+            private readonly SaveFileProvider _saveFileProvider;
 
             public CommandHandler(
                 ILevelRepository levelRepository,
                 GameSessionRepository gameSessionRepository,
-                IOutputMediator mediator)
+                IOutputMediator mediator,
+                SaveFileProvider saveFileProvider)
             {
                 _levelRepository = levelRepository;
                 _gameSessionRepository = gameSessionRepository;
                 _mediator = mediator;
+                _saveFileProvider = saveFileProvider;
             }
 
             protected override async UniTask Handle(Command command, CancellationToken ct)
@@ -65,20 +68,36 @@ namespace AsteraX.Application.Game.Bullets
                 gameSession.CollideAsteroidWithBullet(command.AsteroidId);
                 _gameSessionRepository.Save();
 
+                var saveFile = _saveFileProvider.GetSaveFile();
+                var score = gameSession.Score;
+                if (saveFile.HighScore > 0 && score > saveFile.HighScore)
+                {
+                    saveFile.HighScore = score;
+                    if (!gameSession.AchievedHighScore)
+                    {
+                        gameSession.AchievedHighScore = true;
+                        var showAchievementPopup = new ShowHighScorePopup
+                        {
+                            HighScore = score
+                        };
+                        _mediator.ForgetSend(showAchievementPopup, ct);
+                    }
+                }
+
+                var highScoreUpdated = new HighScoreUpdated
+                {
+                    Score = score
+                };
                 var destroyAsteroid = new DestroyAsteroid
                 {
                     Id = command.AsteroidId
                 };
-                var highScoreUpdated = new HighScoreUpdated
-                {
-                    Score = gameSession.Score
-                };
+                _mediator.Publish(highScoreUpdated);
                 _mediator.Send(destroyAsteroid);
                 _mediator.Publish(new AsteroidShot
                 {
                     IsLuckyShot = command.IsLuckyShot
                 });
-                _mediator.Publish(highScoreUpdated);
 
                 if (!gameSession.IsLevelCompleted)
                 {

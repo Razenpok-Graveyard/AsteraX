@@ -32,7 +32,8 @@ namespace AsteraX.Application.Game.Tests
                 IAsyncInputRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     repository,
-                    mediator
+                    mediator,
+                    null
                 );
                 var command = new Command
                 {
@@ -70,7 +71,8 @@ namespace AsteraX.Application.Game.Tests
                 IAsyncInputRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     repository,
-                    mediator
+                    mediator,
+                    null
                 );
                 var command = new Command
                 {
@@ -107,7 +109,8 @@ namespace AsteraX.Application.Game.Tests
                 IAsyncInputRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     repository,
-                    mediator
+                    mediator,
+                    null
                 );
                 var asteroid = gameSession.GetAsteroids().First();
                 var asteroidId = asteroid.Id;
