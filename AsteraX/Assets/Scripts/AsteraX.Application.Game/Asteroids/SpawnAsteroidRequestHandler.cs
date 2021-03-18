@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AsteraX.Application.Game.Asteroids
 {
-    public class SpawnAsteroidTaskHandler : OutputRequestHandler<SpawnAsteroids>
+    public class SpawnAsteroidRequestHandler : OutputRequestHandler<SpawnAsteroids>
     {
         [SerializeField] private AsteroidInstanceContainer _instanceContainer;
         [SerializeField] private AsteroidSettings _asteroidSettings;

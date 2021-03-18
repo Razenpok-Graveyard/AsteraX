@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class MovePlayerShipTaskHandler : OutputRequestHandler<MovePlayerShip>
+    public class MovePlayerShipRequestHandler : OutputRequestHandler<MovePlayerShip>
     {
         [SerializeField] private Transform _ship;
         [SerializeField] private PlayerShipSettings _settings;

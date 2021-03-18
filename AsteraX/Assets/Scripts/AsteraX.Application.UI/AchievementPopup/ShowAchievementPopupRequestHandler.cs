@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AsteraX.Application.UI.AchievementPopup
 {
-    public class ShowAchievementPopupTaskHandler : AsyncOutputRequestHandler<ShowAchievementPopup>
+    public class ShowAchievementPopupRequestHandler : AsyncOutputRequestHandler<ShowAchievementPopup>
     {
         [SerializeField] private RectTransform _root;
         [SerializeField] private TextMeshProUGUI _title;

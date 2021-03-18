@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class DestroyPlayerShipTaskHandler : OutputRequestHandler<DestroyPlayerShip>
+    public class DestroyPlayerShipRequestHandler : OutputRequestHandler<DestroyPlayerShip>
     {
         [SerializeField] private GameObject _playerShip;
         [SerializeField] private ParticleSystem _exhaustTrail;

@@ -8,7 +8,7 @@ using VContainer;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class FirePlayerShipTurretTaskHandler : OutputRequestHandler<FirePlayerShipTurret>
+    public class FirePlayerShipTurretRequestHandler : OutputRequestHandler<FirePlayerShipTurret>
     {
         [SerializeField] private Transform _turret;
         [SerializeField] private Transform _shootingPoint;

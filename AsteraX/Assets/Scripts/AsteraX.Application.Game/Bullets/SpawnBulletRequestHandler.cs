@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace AsteraX.Application.Game.Bullets
 {
-    public class SpawnBulletTaskHandler : OutputRequestHandler<SpawnBullet>
+    public class SpawnBulletRequestHandler : OutputRequestHandler<SpawnBullet>
     {
         [SerializeField] private BulletSettings _bulletSettings;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AsteraX.Application.Game.Player
 {
-    public class RotatePlayerShipTurretTaskHandler : OutputRequestHandler<RotatePlayerShipTurret>
+    public class RotatePlayerShipTurretRequestHandler : OutputRequestHandler<RotatePlayerShipTurret>
     {
         [SerializeField] private Transform _turret;
 
