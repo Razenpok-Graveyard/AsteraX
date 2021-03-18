@@ -43,7 +43,49 @@ namespace AsteraX.Application.Game.Tests
 
                 mediator
                     .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
-                    .HandleNotification<AsteroidShot>()
+                    .HandleNotification<AsteroidShot>(notification =>
+                    {
+                        notification.IsLuckyShot.Should().BeFalse();
+                    })
+                    .HandleNotification<HighScoreUpdated>(notification =>
+                    {
+                        notification.Score.Should().Be(asteroidScore);
+                    })
+                    .Complete();
+            });
+
+        [UnityTest]
+        public IEnumerator Colliding_lucky_shot_with_asteroid()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var mediator = new OutputMediatorSpy();
+                var repository = new GameSessionRepository();
+                var level = new Level(1, 3, 0);
+                var levelRepository = new StubLevelRepository(level);
+                var gameSession = repository.Get();
+                gameSession.StartLevel(level);
+                var asteroid = gameSession.GetAsteroids().First();
+                var asteroidId = asteroid.Id;
+                var asteroidScore = asteroid.Score;
+                IAsyncInputRequestHandler<Command> sut = new CommandHandler(
+                    levelRepository,
+                    repository,
+                    mediator
+                );
+                var command = new Command
+                {
+                    AsteroidId = asteroidId,
+                    IsLuckyShot = true
+                };
+
+                await sut.Handle(command);
+
+                mediator
+                    .HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId))
+                    .HandleNotification<AsteroidShot>(notification =>
+                    {
+                        notification.IsLuckyShot.Should().BeTrue();
+                    })
                     .HandleNotification<HighScoreUpdated>(notification =>
                     {
                         notification.Score.Should().Be(asteroidScore);

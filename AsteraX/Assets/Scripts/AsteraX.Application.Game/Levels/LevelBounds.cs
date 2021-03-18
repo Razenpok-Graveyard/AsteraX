@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AsteraX.Application.Game.Asteroids;
+using AsteraX.Application.Game.Bullets;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Levels
@@ -51,6 +52,11 @@ namespace AsteraX.Application.Game.Levels
             }
 
             other.transform.position = transform.TransformPoint(inverseTransformPoint);
+
+            if (other.TryGetComponent<BulletCollisionController>(out var bulletCollisionController))
+            {
+                bulletCollisionController.IsLuckyShot = true;
+            }
         }
 
         public Vector2 GetRandomPositionOutsideSafeArea(Vector2 padding)

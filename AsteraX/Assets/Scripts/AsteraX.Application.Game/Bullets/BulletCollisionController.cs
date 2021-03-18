@@ -20,13 +20,19 @@ namespace AsteraX.Application.Game.Bullets
         {
             _commandHandler = commandHandler;
         }
+        
+        public bool IsLuckyShot { get; set; }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<AsteroidInstance>(out var asteroid))
             {
                 Destroy(gameObject);
-                var request = new Command {AsteroidId = asteroid.Id};
+                var request = new Command
+                {
+                    AsteroidId = asteroid.Id,
+                    IsLuckyShot = IsLuckyShot
+                };
                 _commandHandler.Handle(request).Forget();
             }
         }
@@ -34,6 +40,7 @@ namespace AsteraX.Application.Game.Bullets
         public class Command : IAsyncRequest
         {
             public long AsteroidId { get; set; }
+            public bool IsLuckyShot { get; set; }
         }
 
         public class CommandHandler : AsyncInputRequestHandler<Command>
@@ -67,7 +74,10 @@ namespace AsteraX.Application.Game.Bullets
                     Score = gameSession.Score
                 };
                 _mediator.Send(destroyAsteroid);
-                _mediator.Publish(new AsteroidShot());
+                _mediator.Publish(new AsteroidShot
+                {
+                    IsLuckyShot = command.IsLuckyShot
+                });
                 _mediator.Publish(highScoreUpdated);
 
                 if (!gameSession.IsLevelCompleted)

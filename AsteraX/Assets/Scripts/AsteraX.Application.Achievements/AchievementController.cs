@@ -29,7 +29,11 @@ namespace AsteraX.Application.Achievements
 
         private void Handle(AsteroidShot notification)
         {
-            UpdateProgress(AchievementGoalType.KilledAsteroidCount, progress => progress + 1);
+            IncrementProgress(AchievementGoalType.KilledAsteroidCount);
+            if (notification.IsLuckyShot)
+            {
+                IncrementProgress(AchievementGoalType.LuckyShotCount);
+            }
         }
 
         private void Handle(HighScoreUpdated notification)
@@ -39,12 +43,17 @@ namespace AsteraX.Application.Achievements
 
         private void Handle(ShotFired notification)
         {
-            UpdateProgress(AchievementGoalType.ShotCount, progress => progress + 1);
+            IncrementProgress(AchievementGoalType.ShotCount);
         }
 
         private void Handle(LevelReached notification)
         {
             UpdateProgress(AchievementGoalType.LevelReached, _ => (int) notification.Id);
+        }
+
+        private void IncrementProgress(AchievementGoalType type)
+        {
+            UpdateProgress(type, progress => progress + 1);
         }
 
         private void UpdateProgress(AchievementGoalType type, Func<int, int> getNewProgress)
