@@ -33,7 +33,7 @@ namespace AsteraX.Startup
             builder.Register<LevelRepository>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<GameSessionRepository>(Lifetime.Singleton).AsImplementedInterfaces();
 
-            builder.RegisterNonLazy<AchievementService>(Lifetime.Singleton);
+            builder.RegisterNonLazy<AchievementController>(Lifetime.Singleton);
             
             builder.RegisterBuildCallback(InjectAllMonoBehaviours);
         }

@@ -8,14 +8,14 @@ using Common.Application;
 
 namespace AsteraX.Application.Achievements
 {
-    public class AchievementService : IDisposable
+    public class AchievementController : IDisposable
     {
         private readonly List<IDisposable> _registrations = new List<IDisposable>();
 
         private readonly AchievementRepository _achievementRepository;
         private readonly OutputMediator _mediator;
 
-        public AchievementService(
+        public AchievementController(
             AchievementRepository achievementRepository,
             OutputMediator mediator)
         {
