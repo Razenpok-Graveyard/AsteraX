@@ -72,6 +72,7 @@ namespace AsteraX.Application.Achievements
                     });
                 }
             }
+            _achievementRepository.Save(achievements);
         }
 
         public void Dispose()
