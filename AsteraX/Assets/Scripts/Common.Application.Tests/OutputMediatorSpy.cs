@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using FluentAssertions.Execution;
+using Razensoft.Mediator;
 
 namespace Common.Application.Tests
 {

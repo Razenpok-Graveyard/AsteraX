@@ -1,6 +1,5 @@
 {
     "name": "AsteraX.Application.UI",
-    "rootNamespace": "AsteraX.Application.UI",
     "references": [
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
@@ -10,7 +9,6 @@
         "GUID:560b04d1a97f54a4e82edc0cbbb69285",
         "GUID:58a6fe6b1b8d4360ae5f8ce35331b7a2",
         "GUID:bbd63bd5221446758c037e17133dee63",
-        "GUID:a030521c670a4f58a54ad9e6f14890f8",
         "GUID:2daa647f6354483aa7c3fe42e62c795f",
         "GUID:127be14384db49b28d9405d369eb5d0a",
         "GUID:29eb5d4d48424afc8f1f6ba3ee8208b2"

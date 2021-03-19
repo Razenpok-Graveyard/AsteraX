@@ -35,6 +35,13 @@
       "dependencies": {},
       "hash": "7e4b37b3956bf09272da9ecd153634fb6dd4d62b"
     },
+    "com.razensoft.mediator": {
+      "version": "https://github.com/Razenpok/Razensoft.Mediator.git?path=src/Razensoft.Mediator#1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "51b4c386c1c2518d4c34406b6682695788a15048"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

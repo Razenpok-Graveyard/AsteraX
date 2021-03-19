@@ -1,8 +1,8 @@
+using AsteraX.Application;
 using AsteraX.Application.Achievements;
 using AsteraX.Infrastructure;
-using Common.Application;
-using Common.Application.Unity;
 using JetBrains.Annotations;
+using Razensoft.Mediator;
 using UniTaskPubSub;
 using UnityEditorInternal;
 using UnityEngine;
@@ -23,7 +23,7 @@ namespace AsteraX.Startup
 
             var messageBus = new MessageBus(AsyncMessageBus.Default);
             var mediator = new OutputMediator(messageBus);
-            MediatorMonoBehaviourExtensions.Mediator = mediator;
+            OutputMediator.Unity = mediator;
             builder.RegisterInstance(mediator).As<IOutputMediator>().AsSelf();
 
             builder.RegisterInstance(_levelSettings);

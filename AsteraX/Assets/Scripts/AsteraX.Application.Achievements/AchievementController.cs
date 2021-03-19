@@ -4,7 +4,7 @@ using AsteraX.Application.Game.Notifications;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Achievements;
 using AsteraX.Infrastructure;
-using Common.Application;
+using Razensoft.Mediator;
 
 namespace AsteraX.Application.Achievements
 {

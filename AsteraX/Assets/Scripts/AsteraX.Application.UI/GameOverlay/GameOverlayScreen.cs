@@ -1,6 +1,6 @@
 ﻿using System;
 using AsteraX.Infrastructure;
-using Common.Application;
+using Razensoft.Mediator;
 using TMPro;
 using UniRx;
 using UnityEngine;

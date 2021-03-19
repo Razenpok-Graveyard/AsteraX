@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AsteraX.Domain.Game;
-using Common.Application;
+using Razensoft.Mediator;
 
 namespace AsteraX.Application.Game.Requests
 {

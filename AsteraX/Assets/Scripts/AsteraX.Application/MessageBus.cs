@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Razensoft.Mediator;
 using UniTaskPubSub;
 
-namespace Common.Application.Unity
+namespace AsteraX.Application
 {
     public class MessageBus : IMessageBus
     {

@@ -1,13 +1,11 @@
 {
     "name": "AsteraX.Application",
-    "rootNamespace": "AsteraX.Application",
     "references": [
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:8161667de84644ec1b7c7b2a6d8e757d",
         "GUID:58a6fe6b1b8d4360ae5f8ce35331b7a2",
         "GUID:bbd63bd5221446758c037e17133dee63",
-        "GUID:2daa647f6354483aa7c3fe42e62c795f",
-        "GUID:127be14384db49b28d9405d369eb5d0a"
+        "GUID:2daa647f6354483aa7c3fe42e62c795f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

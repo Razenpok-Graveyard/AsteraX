@@ -3,7 +3,7 @@ using AsteraX.Application.Game.Requests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
-using Common.Application;
+using Razensoft.Mediator;
 using Common.Application.Tests;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;

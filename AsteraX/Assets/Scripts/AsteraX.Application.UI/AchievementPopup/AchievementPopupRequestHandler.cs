@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using AsteraX.Application.UI.Requests;
-using Common.Application;
-using Common.Application.Unity;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Razensoft.Mediator;
 using TMPro;
 using UniRx;
 using UnityEngine;

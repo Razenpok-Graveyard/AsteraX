@@ -1,5 +1,5 @@
 ﻿using AsteraX.Application.UI.Requests;
-using Common.Application.Unity;
+using Razensoft.Mediator;
 
 namespace AsteraX.Application.UI.MainMenu
 {

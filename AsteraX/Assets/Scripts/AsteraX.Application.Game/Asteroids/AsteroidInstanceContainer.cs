@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using AsteraX.Application.Game.Requests;
-using Common.Application.Unity;
+using Razensoft.Mediator;
 using UnityEngine;
 
 namespace AsteraX.Application.Game.Asteroids

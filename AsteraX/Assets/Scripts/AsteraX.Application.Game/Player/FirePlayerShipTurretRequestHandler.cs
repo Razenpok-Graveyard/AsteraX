@@ -1,8 +1,7 @@
 ﻿using AsteraX.Application.Game.Notifications;
 using AsteraX.Application.Game.Requests;
 using AsteraX.Infrastructure;
-using Common.Application;
-using Common.Application.Unity;
+using Razensoft.Mediator;
 using UnityEngine;
 using VContainer;
 

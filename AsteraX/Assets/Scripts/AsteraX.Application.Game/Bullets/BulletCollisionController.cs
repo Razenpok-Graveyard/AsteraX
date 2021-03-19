@@ -4,7 +4,7 @@ using AsteraX.Application.Game.Notifications;
 using AsteraX.Application.Game.Requests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Infrastructure;
-using Common.Application;
+using Razensoft.Mediator;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;

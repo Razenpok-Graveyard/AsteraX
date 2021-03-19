@@ -1,4 +1,4 @@
-using Common.Application;
+using Razensoft.Mediator;
 
 namespace AsteraX.Application.Game.Requests
 {
