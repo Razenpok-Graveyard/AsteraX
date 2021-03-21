@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Razensoft.Domain;
 
 namespace AsteraX.Domain.Game
@@ -8,11 +9,13 @@ namespace AsteraX.Domain.Game
         private readonly int _initialJumps;
         private LevelAttempt _levelAttempt;
 
-        public GameSession(int initialJumps)
+        public GameSession(int initialJumps, int highScore = 0)
         {
             Contract.Requires(initialJumps >= 0, "initialJumps >= 0");
+            Contract.Requires(highScore >= 0, "highScore >= 0");
 
             _initialJumps = initialJumps;
+            HighScore = highScore;
             Jumps = initialJumps;
             IsPlayerAlive = true;
         }
@@ -25,11 +28,13 @@ namespace AsteraX.Domain.Game
 
         public bool CanShoot => IsPlayerAlive;
 
-        public bool IsOver { get; private set; }
+        public bool IsGameOver { get; private set; }
 
         public int Score { get; private set; }
-        
-        public bool AchievedHighScore { get; set; }
+
+        public int HighScore { get; private set; }
+
+        public bool HasBeatenHighScore => HighScore > 0 && Score > HighScore;
 
         public bool IsPlayingLevel => _levelAttempt != null && Level != null;
 
@@ -38,7 +43,7 @@ namespace AsteraX.Domain.Game
         public IReadOnlyList<Asteroid> GetAsteroids()
         {
             Contract.Requires(IsPlayingLevel, "IsPlayingLevel");
-            return _levelAttempt.Asteroids;
+            return _levelAttempt.Asteroids.ToList();
         }
 
         public void StartLevel(Level level)
@@ -67,13 +72,16 @@ namespace AsteraX.Domain.Game
             _levelAttempt.Destroy(asteroidId);
             IsPlayerAlive = false;
 
-            if (Jumps == 0)
-            {
-                IsOver = true;
-            }
-            else
+            if (Jumps != 0)
             {
                 Jumps--;
+                return;
+            }
+
+            IsGameOver = true;
+            if (HasBeatenHighScore)
+            {
+                HighScore = Score;
             }
         }
 
@@ -85,14 +93,13 @@ namespace AsteraX.Domain.Game
 
         public void Restart()
         {
-            Contract.Requires(IsOver, "IsOver");
-            IsOver = false;
+            Contract.Requires(IsGameOver, "IsOver");
+            IsGameOver = false;
             IsPlayerAlive = true;
             Jumps = _initialJumps;
             Score = 0;
             Level = null;
             _levelAttempt = null;
-            AchievedHighScore = false;
         }
     }
 }

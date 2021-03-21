@@ -19,6 +19,17 @@ namespace AsteraX.Domain.Tests
         }
 
         [Test]
+        public void Game_session_cannot_be_created_with_negative_high_score()
+        {
+            const int initialJumps = 1;
+            const int highScore = -1;
+
+            Func<GameSession> act = () => new GameSession(initialJumps, highScore);
+
+            act.Should().Throw("High score is negative");
+        }
+
+        [Test]
         public void Collision_of_asteroid_and_player_ship_destroys_player_ship()
         {
             var (session, asteroid) = CreateGameSessionWithTwoAsteroids();
@@ -83,7 +94,7 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
-            session.IsOver.Should().BeTrue();
+            session.IsGameOver.Should().BeTrue();
         }
 
         [Test]
@@ -94,7 +105,25 @@ namespace AsteraX.Domain.Tests
 
             session.CollideAsteroidWithPlayerShip(asteroid.Id);
 
-            session.IsOver.Should().BeFalse();
+            session.IsGameOver.Should().BeFalse();
+        }
+
+        [Test]
+        public void Collision_of_asteroid_and_player_ship_makes_high_score_equals_current_score_when_there_are_no_jumps_remaining_and_high_score_was_beaten()
+        {
+            const int initialJumps = 0;
+            const int highScore = 1;
+            var session = new GameSession(initialJumps, highScore);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroids = session.GetAsteroids();
+            var killedAsteroid = asteroids.First();
+            var killerAsteroid = asteroids.Last();
+            session.CollideAsteroidWithBullet(killedAsteroid.Id);
+            
+            session.CollideAsteroidWithPlayerShip(killerAsteroid.Id);
+
+            session.HighScore.Should().Be(session.Score);
         }
 
         [Test]
@@ -152,6 +181,24 @@ namespace AsteraX.Domain.Tests
 
             var expectedScore = asteroid.Score;
             session.Score.Should().Be(expectedScore);
+        }
+
+        [Test]
+        public void Collision_of_asteroid_and_bullet_beats_high_score_if_new_score_is_higher_than_active_high_score()
+        {
+            const int initialJumps = 3;
+            const int highScore = 1;
+            var session = new GameSession(initialJumps, highScore);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroids = session.GetAsteroids();
+
+            foreach (var asteroid in asteroids)
+            {
+                session.CollideAsteroidWithBullet(asteroid.Id);
+            }
+
+            session.HasBeatenHighScore.Should().BeTrue();
         }
 
         [Test]
@@ -216,6 +263,23 @@ namespace AsteraX.Domain.Tests
         }
 
         [Test]
+        public void Game_session_has_not_beaten_high_score_after_reset()
+        {
+            const int initialJumps = 0;
+            var session = new GameSession(initialJumps);
+            var level = CreateLevelWithTwoAsteroids();
+            session.StartLevel(level);
+            var asteroid = session.GetAsteroids().First();
+            var secondAsteroid = session.GetAsteroids().Skip(1).First();
+            session.CollideAsteroidWithBullet(asteroid.Id);
+            session.CollideAsteroidWithPlayerShip(secondAsteroid.Id);
+
+            session.Restart();
+
+            session.HasBeatenHighScore.Should().BeFalse();
+        }
+
+        [Test]
         public void Game_session_is_not_over_after_restart()
         {
             const int initialJumps = 0;
@@ -227,7 +291,7 @@ namespace AsteraX.Domain.Tests
 
             session.Restart();
 
-            session.IsOver.Should().BeFalse();
+            session.IsGameOver.Should().BeFalse();
         }
 
         [Test]

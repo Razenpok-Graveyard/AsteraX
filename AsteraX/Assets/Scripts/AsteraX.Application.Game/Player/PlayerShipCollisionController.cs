@@ -74,7 +74,7 @@ namespace AsteraX.Application.Game.Player
                 _mediator.Send(new DestroyPlayerShip());
                 _mediator.Send(destroyAsteroidTask);
 
-                if (gameSession.IsOver)
+                if (gameSession.IsGameOver)
                 {
                     await ShowGameOver(gameSession, ct);
                     return;

@@ -73,9 +73,8 @@ namespace AsteraX.Application.Game.Bullets
                 if (saveFile.HighScore > 0 && score > saveFile.HighScore)
                 {
                     saveFile.HighScore = score;
-                    if (!gameSession.AchievedHighScore)
+                    if (!gameSession.HasBeatenHighScore)
                     {
-                        gameSession.AchievedHighScore = true;
                         var showAchievementPopup = new ShowHighScorePopup
                         {
                             HighScore = score
