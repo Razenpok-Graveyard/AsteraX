@@ -23,16 +23,16 @@ namespace AsteraX.Infrastructure
                 "Reach Level 5")
         };
 
-        private readonly SaveFileProvider _saveFileProvider;
+        private readonly SaveFile _saveFile;
 
-        public AchievementRepository(SaveFileProvider saveFileProvider)
+        public AchievementRepository(SaveFile saveFile)
         {
-            _saveFileProvider = saveFileProvider;
+            _saveFile = saveFile;
         }
 
         public IReadOnlyList<Achievement> GetNonAchievedByType(AchievementGoalType type)
         {
-            var saveFile = _saveFileProvider.GetSaveFile();
+            var saveFile = _saveFile.GetContents();
             return _achievements
                 .Where(a => a.GoalType == type)
                 .Where(a => !saveFile.Achievements.Contains(a.Id))
@@ -40,11 +40,11 @@ namespace AsteraX.Infrastructure
                 .ToList();
         }
 
-        private static Achievement CreateFromSaveFile(Achievement achievement, SaveFile saveFile)
+        private static Achievement CreateFromSaveFile(Achievement achievement, SaveFileContents saveFileContents)
         {
-            var maybeProgress = saveFile.AchievementProgress.TryFirst(p => p.Id == achievement.Id);
+            var maybeProgress = saveFileContents.AchievementProgress.TryFirst(p => p.Id == achievement.Id);
             int progress;
-            if (saveFile.Achievements.Contains(achievement.Id))
+            if (saveFileContents.Achievements.Contains(achievement.Id))
             {
                 progress = achievement.Goal;
             }
@@ -69,27 +69,27 @@ namespace AsteraX.Infrastructure
 
         public void Save(IReadOnlyList<Achievement> achievements)
         {
-            var saveFile = _saveFileProvider.GetSaveFile();
+            var saveFile = _saveFile.GetContents();
             foreach (var achievement in achievements)
             {
                 UpdateSave(saveFile, achievement);
             }
-            _saveFileProvider.Save(saveFile);
+            _saveFile.SaveContents(saveFile);
         }
 
-        private static void UpdateSave(SaveFile saveFile, Achievement achievement)
+        private static void UpdateSave(SaveFileContents saveFileContents, Achievement achievement)
         {
-            var maybeProgress = saveFile.AchievementProgress.TryFirst(p => p.Id == achievement.Id);
+            var maybeProgress = saveFileContents.AchievementProgress.TryFirst(p => p.Id == achievement.Id);
             if (achievement.IsAchieved)
             {
                 if (maybeProgress.HasValue)
                 {
-                    saveFile.AchievementProgress.Remove(maybeProgress.Value);
+                    saveFileContents.AchievementProgress.Remove(maybeProgress.Value);
                 }
 
-                if (!saveFile.Achievements.Contains(achievement.Id))
+                if (!saveFileContents.Achievements.Contains(achievement.Id))
                 {
-                    saveFile.Achievements.Add(achievement.Id);
+                    saveFileContents.Achievements.Add(achievement.Id);
                 }
 
                 return;
@@ -102,7 +102,7 @@ namespace AsteraX.Infrastructure
                 {
                     Id = achievement.Id
                 };
-                saveFile.AchievementProgress.Add(progress);
+                saveFileContents.AchievementProgress.Add(progress);
             }
             else
             {

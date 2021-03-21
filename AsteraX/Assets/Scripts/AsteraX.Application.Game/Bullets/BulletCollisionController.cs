@@ -48,18 +48,18 @@ namespace AsteraX.Application.Game.Bullets
             private readonly ILevelRepository _levelRepository;
             private readonly GameSessionRepository _gameSessionRepository;
             private readonly IOutputMediator _mediator;
-            private readonly SaveFileProvider _saveFileProvider;
+            private readonly SaveFile _saveFile;
 
             public CommandHandler(
                 ILevelRepository levelRepository,
                 GameSessionRepository gameSessionRepository,
                 IOutputMediator mediator,
-                SaveFileProvider saveFileProvider)
+                SaveFile saveFile)
             {
                 _levelRepository = levelRepository;
                 _gameSessionRepository = gameSessionRepository;
                 _mediator = mediator;
-                _saveFileProvider = saveFileProvider;
+                _saveFile = saveFile;
             }
 
             protected override async UniTask Handle(Command command, CancellationToken ct)
@@ -68,7 +68,7 @@ namespace AsteraX.Application.Game.Bullets
                 gameSession.CollideAsteroidWithBullet(command.AsteroidId);
                 _gameSessionRepository.Save();
 
-                var saveFile = _saveFileProvider.GetSaveFile();
+                var saveFile = _saveFile.GetContents();
                 var score = gameSession.Score;
                 if (saveFile.HighScore > 0 && score > saveFile.HighScore)
                 {

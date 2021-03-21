@@ -28,8 +28,8 @@ namespace AsteraX.Startup
 
             builder.RegisterInstance(_levelSettings);
 
-            builder.Register<SaveFileProvider>(Lifetime.Singleton)
-                .WithParameter<string>(SaveFileProvider.DefaultSaveFilePath);
+            builder.Register<SaveFile>(Lifetime.Singleton)
+                .WithParameter<string>(SaveFile.DefaultSaveFilePath);
             builder.Register<GameSessionSettings>(Lifetime.Singleton);
             builder.Register<AchievementRepository>(Lifetime.Singleton);
             builder.Register<LevelRepository>(Lifetime.Singleton).AsImplementedInterfaces();
