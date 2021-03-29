@@ -4,7 +4,7 @@ using AsteraX.Application.Game.Requests;
 using AsteraX.Domain.Game;
 using FluentAssertions.Execution;
 
-namespace Common.Application.Tests
+namespace AsteraX.Application.Tests
 {
     public static class ApplicationTaskExtensions
     {

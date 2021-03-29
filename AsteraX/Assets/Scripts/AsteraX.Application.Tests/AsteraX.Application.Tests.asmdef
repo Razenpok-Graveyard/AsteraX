@@ -1,6 +1,6 @@
 {
-    "name": "Common.Application.Tests",
-    "rootNamespace": "Common.Application.Tests",
+    "name": "AsteraX.Application.Tests",
+    "rootNamespace": "AsteraX.Application.Tests",
     "references": [
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
         "GUID:bbd63bd5221446758c037e17133dee63",

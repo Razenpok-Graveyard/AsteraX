@@ -3,7 +3,7 @@ using System.Linq;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
 
-namespace Common.Application.Tests
+namespace AsteraX.Application.Tests
 {
     public class StubLevelRepository : ILevelRepository
     {

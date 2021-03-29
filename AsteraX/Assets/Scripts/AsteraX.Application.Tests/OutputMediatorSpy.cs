@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using FluentAssertions.Execution;
 using Razensoft.Mediator;
 
-namespace Common.Application.Tests
+namespace AsteraX.Application.Tests
 {
     public class OutputMediatorSpy : IOutputMediator
     {

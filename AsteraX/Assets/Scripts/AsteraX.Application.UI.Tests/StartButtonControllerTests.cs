@@ -1,10 +1,10 @@
 using System.Collections;
 using AsteraX.Application.Game.Requests;
+using AsteraX.Application.Tests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
 using Razensoft.Mediator;
-using Common.Application.Tests;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
 using UnityEngine.TestTools;
