@@ -23,7 +23,7 @@ namespace AsteraX.Application.Game.Tests
                 var mediator = new OutputMediatorSpy();
                 var repository = new GameSessionRepository();
                 var level = new Level(1, 3, 0);
-                var levelRepository = new StubLevelRepository(level);
+                var levelRepository = new LevelRepositoryStub(level);
                 var gameSession = repository.Get();
                 gameSession.StartLevel(level);
                 var asteroid = gameSession.GetAsteroids().First();
@@ -62,7 +62,7 @@ namespace AsteraX.Application.Game.Tests
                 var mediator = new OutputMediatorSpy();
                 var repository = new GameSessionRepository();
                 var level = new Level(1, 3, 0);
-                var levelRepository = new StubLevelRepository(level);
+                var levelRepository = new LevelRepositoryStub(level);
                 var gameSession = repository.Get();
                 gameSession.StartLevel(level);
                 var asteroid = gameSession.GetAsteroids().First();
@@ -103,7 +103,7 @@ namespace AsteraX.Application.Game.Tests
                 var repository = new GameSessionRepository();
                 var firstLevel = new Level(1, 1, 0);
                 var secondLevel = new Level(2, 2, 3);
-                var levelRepository = new StubLevelRepository(firstLevel, secondLevel);
+                var levelRepository = new LevelRepositoryStub(firstLevel, secondLevel);
                 var gameSession = repository.Get();
                 gameSession.StartLevel(firstLevel);
                 IAsyncInputRequestHandler<Command> sut = new CommandHandler(

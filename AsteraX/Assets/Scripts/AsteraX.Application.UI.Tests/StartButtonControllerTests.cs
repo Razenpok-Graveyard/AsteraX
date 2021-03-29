@@ -21,7 +21,7 @@ namespace AsteraX.Application.UI.Tests
                 var mediator = new OutputMediatorSpy();
                 var gameSessionRepository = new GameSessionRepository();
                 var level = new Level(1, 2, 3);
-                var levelRepository = new StubLevelRepository(level);
+                var levelRepository = new LevelRepositoryStub(level);
                 IAsyncInputRequestHandler<Command> sut = new CommandHandler(
                     levelRepository,
                     gameSessionRepository,

@@ -5,16 +5,16 @@ using AsteraX.Infrastructure;
 
 namespace AsteraX.Application.Tests
 {
-    public class StubLevelRepository : ILevelRepository
+    public class LevelRepositoryStub : ILevelRepository
     {
         private readonly List<Level> _levels;
 
-        public StubLevelRepository(IEnumerable<Level> levels)
+        public LevelRepositoryStub(IEnumerable<Level> levels)
         {
             _levels = levels.ToList();
         }
 
-        public StubLevelRepository(params Level[] levels)
+        public LevelRepositoryStub(params Level[] levels)
         {
             _levels = levels.ToList();
         }

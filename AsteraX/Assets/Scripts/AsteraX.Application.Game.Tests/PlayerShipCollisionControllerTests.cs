@@ -23,7 +23,7 @@ namespace AsteraX.Application.Game.Tests
                 var mediator = new OutputMediatorSpy();
                 var gameSessionRepository = new GameSessionRepository();
                 var level = new Level(1, 3, 0);
-                var levelRepository = new StubLevelRepository(level);
+                var levelRepository = new LevelRepositoryStub(level);
                 var gameSession = gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
@@ -57,7 +57,7 @@ namespace AsteraX.Application.Game.Tests
                 var gameSession = gameSessionRepository.Get();
                 var firstLevel = new Level(1, 1, 0);
                 var secondLevel = new Level(2, 2, 3);
-                var levelRepository = new StubLevelRepository(firstLevel, secondLevel);
+                var levelRepository = new LevelRepositoryStub(firstLevel, secondLevel);
                 gameSession.StartLevel(firstLevel);
                 var asteroidId = gameSession.GetAsteroids().First().Id;
 
@@ -114,7 +114,7 @@ namespace AsteraX.Application.Game.Tests
                 };
                 var gameSessionRepository = new GameSessionRepository(gameSessionSettings);
                 var level = new Level(1, 3, 0);
-                var levelRepository = new StubLevelRepository(level);
+                var levelRepository = new LevelRepositoryStub(level);
                 var gameSession = gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 var asteroids = gameSession.GetAsteroids();
@@ -167,7 +167,7 @@ namespace AsteraX.Application.Game.Tests
                 };
                 var gameSessionRepository = new GameSessionRepository(gameSessionSettings);
                 var level = new Level(1, 2, 0);
-                var levelRepository = new StubLevelRepository(level);
+                var levelRepository = new LevelRepositoryStub(level);
                 var gameSession = gameSessionRepository.Get();
                 gameSession.StartLevel(level);
                 var asteroids = gameSession.GetAsteroids();
