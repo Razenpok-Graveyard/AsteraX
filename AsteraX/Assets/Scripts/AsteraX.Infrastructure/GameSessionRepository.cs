@@ -7,14 +7,15 @@ namespace AsteraX.Infrastructure
         private readonly GameSession _gameSession;
         private readonly GameSessionObservable _observable = new GameSessionObservable();
 
-        public GameSessionRepository(GameSessionSettings settings)
+        public GameSessionRepository(SaveFile saveFile, GameSessionSettings settings)
         {
-            _gameSession = new GameSession(settings.InitialJumps);
+            var contents = saveFile.GetContents();
+            _gameSession = new GameSession(settings.InitialJumps, contents.HighScore);
             _observable.Update(_gameSession);
         }
 
-        public GameSessionRepository()
-            : this(new GameSessionSettings())
+        public GameSessionRepository(SaveFile saveFile)
+            : this(saveFile, new GameSessionSettings())
         {
         }
 
