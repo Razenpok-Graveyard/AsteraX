@@ -54,7 +54,7 @@ namespace AsteraX.Application.Game.Tests
                 {
                     notification.Score.Should().Be(asteroidScore);
                 });
-                Complete();
+                CompleteMediatorVerification();
             });
 
         [UnityTest]
@@ -96,7 +96,7 @@ namespace AsteraX.Application.Game.Tests
                 {
                     notification.Score.Should().Be(asteroidScore);
                 });
-                Complete();
+                CompleteMediatorVerification();
             });
 
         [UnityTest]
@@ -150,7 +150,7 @@ namespace AsteraX.Application.Game.Tests
                 VerifyAsyncRequest<HideLoadingScreen>();
                 VerifyRequest<EnablePlayerInput>();
                 VerifyRequest<UnpauseGame>();
-                Complete();
+                CompleteMediatorVerification();
             });
     }
 }

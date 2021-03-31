@@ -47,9 +47,9 @@ namespace AsteraX.Application.Tests
             Mediator.VerifyAsyncRequest(validate);
         }
 
-        protected void Complete()
+        protected void CompleteMediatorVerification()
         {
-            Mediator.Complete();
+            Mediator.CompleteVerification();
         }
 
         [TearDown]

@@ -47,7 +47,7 @@ namespace AsteraX.Application.Game.Tests
                 VerifyRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
                 VerifyAsyncRequest<RespawnPlayerShipWithVisuals>();
                 VerifyRequest<EnablePlayerInput>();
-                Complete();
+                CompleteMediatorVerification();
             });
 
         [UnityTest]
@@ -104,7 +104,7 @@ namespace AsteraX.Application.Game.Tests
                 VerifyAsyncRequest<HideLoadingScreen>();
                 VerifyRequest<UnpauseGame>();
                 VerifyRequest<EnablePlayerInput>();
-                Complete();
+                CompleteMediatorVerification();
             });
 
         [UnityTest]
@@ -158,7 +158,7 @@ namespace AsteraX.Application.Game.Tests
                 });
                 VerifyAsyncRequest<HideGameOverScreen>();
                 VerifyRequest<ShowMainMenuScreen>();
-                Complete();
+                CompleteMediatorVerification();
             });
 
         [UnityTest]
@@ -212,7 +212,7 @@ namespace AsteraX.Application.Game.Tests
                 });
                 VerifyAsyncRequest<HideGameOverScreen>();
                 VerifyRequest<ShowMainMenuScreen>();
-                Complete();
+                CompleteMediatorVerification();
             });
     }
 }

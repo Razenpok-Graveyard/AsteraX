@@ -105,7 +105,7 @@ namespace AsteraX.Application.Tests
             return this;
         }
 
-        public void Complete()
+        public void CompleteVerification()
         {
             var unhandledItems = new List<Type>();
             while (_buckets.Any())

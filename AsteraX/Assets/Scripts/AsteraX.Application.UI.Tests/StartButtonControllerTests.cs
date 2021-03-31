@@ -48,7 +48,7 @@ namespace AsteraX.Application.UI.Tests
                 VerifyAsyncRequest<HideLoadingScreen>();
                 VerifyRequest<UnpauseGame>();
                 VerifyRequest<EnablePlayerInput>();
-                Complete();
+                CompleteMediatorVerification();
             });
     }
 }
