@@ -34,20 +34,20 @@ namespace AsteraX.Application.UI.Tests
                 await sut.Handle(command);
 
                 // Assert
-                HandleRequest<HideMainMenuScreen>();
-                HandleAsyncRequest<ShowLoadingScreen>(task =>
+                VerifyRequest<HideMainMenuScreen>();
+                VerifyAsyncRequest<ShowLoadingScreen>(task =>
                 {
                     task.Id.Should().Be(1);
                     task.Asteroids.Should().Be(2);
                     task.Children.Should().Be(3);
                 });
-                HandleRequest<SpawnAsteroids>(task =>
+                VerifyRequest<SpawnAsteroids>(task =>
                 {
                     task.ShouldBeConsistentWithLevel(level);
                 });
-                HandleAsyncRequest<HideLoadingScreen>();
-                HandleRequest<UnpauseGame>();
-                HandleRequest<EnablePlayerInput>();
+                VerifyAsyncRequest<HideLoadingScreen>();
+                VerifyRequest<UnpauseGame>();
+                VerifyRequest<EnablePlayerInput>();
                 Complete();
             });
     }

@@ -45,7 +45,7 @@ namespace AsteraX.Application.Tests
             _currentBucket.ForgetRequests.Add(request);
         }
 
-        public OutputMediatorSpy HandleNotification<TNotification>(Action<TNotification> validate = null)
+        public OutputMediatorSpy VerifyNotification<TNotification>(Action<TNotification> validate = null)
             where TNotification : INotification
         {
             var nextBucket = _buckets.Peek();
@@ -58,7 +58,7 @@ namespace AsteraX.Application.Tests
             return this;
         }
 
-        public OutputMediatorSpy HandleRequest<TRequest>(Action<TRequest> validate = null)
+        public OutputMediatorSpy VerifyRequest<TRequest>(Action<TRequest> validate = null)
             where TRequest : IRequest
         {
             var nextBucket = _buckets.Peek();
@@ -71,7 +71,7 @@ namespace AsteraX.Application.Tests
             return this;
         }
 
-        public OutputMediatorSpy HandleForgetRequest<TRequest>(Action<TRequest> validate = null)
+        public OutputMediatorSpy VerifyForgetRequest<TRequest>(Action<TRequest> validate = null)
             where TRequest : IAsyncRequest
         {
             var nextBucket = _buckets.Peek();
@@ -84,7 +84,7 @@ namespace AsteraX.Application.Tests
             return this;
         }
 
-        public OutputMediatorSpy HandleAsyncRequest<TRequest>(Action<TRequest> validate = null)
+        public OutputMediatorSpy VerifyAsyncRequest<TRequest>(Action<TRequest> validate = null)
             where TRequest : IAsyncRequest
         {
             var nextBucket = _buckets.Peek();

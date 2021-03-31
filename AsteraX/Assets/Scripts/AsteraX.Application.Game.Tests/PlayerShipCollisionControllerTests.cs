@@ -42,11 +42,11 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 // Assert
-                HandleRequest<DisablePlayerInput>();
-                HandleRequest<DestroyPlayerShip>();
-                HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
-                HandleAsyncRequest<RespawnPlayerShipWithVisuals>();
-                HandleRequest<EnablePlayerInput>();
+                VerifyRequest<DisablePlayerInput>();
+                VerifyRequest<DestroyPlayerShip>();
+                VerifyRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
+                VerifyAsyncRequest<RespawnPlayerShipWithVisuals>();
+                VerifyRequest<EnablePlayerInput>();
                 Complete();
             });
 
@@ -77,33 +77,33 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 // Assert
-                HandleRequest<DisablePlayerInput>();
-                HandleRequest<DestroyPlayerShip>();
-                HandleRequest<DestroyAsteroid>(request =>
+                VerifyRequest<DisablePlayerInput>();
+                VerifyRequest<DestroyPlayerShip>();
+                VerifyRequest<DestroyAsteroid>(request =>
                 {
                     request.Id.Should().Be(asteroidId);
                 });
-                HandleNotification<LevelReached>(notification =>
+                VerifyNotification<LevelReached>(notification =>
                 {
                     notification.Id.Should().Be(2);
                 });
-                HandleAsyncRequest<ShowLoadingScreen>(request =>
+                VerifyAsyncRequest<ShowLoadingScreen>(request =>
                 {
                     request.Id.Should().Be(2);
                     request.Asteroids.Should().Be(2);
                     request.Children.Should().Be(3);
                 });
-                HandleRequest<SpawnAsteroids>(request =>
+                VerifyRequest<SpawnAsteroids>(request =>
                 {
                     request.ShouldBeConsistentWithLevel(secondLevel);
                 });
-                HandleRequest<RespawnPlayerShip>(request =>
+                VerifyRequest<RespawnPlayerShip>(request =>
                 {
                     request.IntoInitialPosition.Should().BeFalse();
                 });
-                HandleAsyncRequest<HideLoadingScreen>();
-                HandleRequest<UnpauseGame>();
-                HandleRequest<EnablePlayerInput>();
+                VerifyAsyncRequest<HideLoadingScreen>();
+                VerifyRequest<UnpauseGame>();
+                VerifyRequest<EnablePlayerInput>();
                 Complete();
             });
 
@@ -143,22 +143,21 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 // Assert
-
-                HandleRequest<DisablePlayerInput>();
-                HandleRequest<DestroyPlayerShip>();
-                HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
-                HandleAsyncRequest<ShowGameOverScreen>(request =>
+                VerifyRequest<DisablePlayerInput>();
+                VerifyRequest<DestroyPlayerShip>();
+                VerifyRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
+                VerifyAsyncRequest<ShowGameOverScreen>(request =>
                 {
                     request.Level.Should().Be(1);
                     request.Score.Should().Be(killedAsteroidScore);
                 });
-                HandleRequest<ClearAsteroids>();
-                HandleRequest<RespawnPlayerShip>(request =>
+                VerifyRequest<ClearAsteroids>();
+                VerifyRequest<RespawnPlayerShip>(request =>
                 {
                     request.IntoInitialPosition.Should().BeTrue();
                 });
-                HandleAsyncRequest<HideGameOverScreen>();
-                HandleRequest<ShowMainMenuScreen>();
+                VerifyAsyncRequest<HideGameOverScreen>();
+                VerifyRequest<ShowMainMenuScreen>();
                 Complete();
             });
 
@@ -198,21 +197,21 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 // Assert
-                HandleRequest<DisablePlayerInput>();
-                HandleRequest<DestroyPlayerShip>();
-                HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
-                HandleAsyncRequest<ShowGameOverScreen>(request =>
+                VerifyRequest<DisablePlayerInput>();
+                VerifyRequest<DestroyPlayerShip>();
+                VerifyRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
+                VerifyAsyncRequest<ShowGameOverScreen>(request =>
                 {
                     request.Level.Should().Be(1);
                     request.Score.Should().Be(killedAsteroidScore);
                 });
-                HandleRequest<ClearAsteroids>();
-                HandleRequest<RespawnPlayerShip>(request =>
+                VerifyRequest<ClearAsteroids>();
+                VerifyRequest<RespawnPlayerShip>(request =>
                 {
                     request.IntoInitialPosition.Should().BeTrue();
                 });
-                HandleAsyncRequest<HideGameOverScreen>();
-                HandleRequest<ShowMainMenuScreen>();
+                VerifyAsyncRequest<HideGameOverScreen>();
+                VerifyRequest<ShowMainMenuScreen>();
                 Complete();
             });
     }

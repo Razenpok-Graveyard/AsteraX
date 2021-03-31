@@ -45,12 +45,12 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 // Assert
-                HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
-                HandleNotification<AsteroidShot>(notification =>
+                VerifyRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
+                VerifyNotification<AsteroidShot>(notification =>
                 {
                     notification.IsLuckyShot.Should().BeFalse();
                 });
-                HandleNotification<HighScoreUpdated>(notification =>
+                VerifyNotification<HighScoreUpdated>(notification =>
                 {
                     notification.Score.Should().Be(asteroidScore);
                 });
@@ -87,12 +87,12 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 // Assert
-                HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
-                HandleNotification<AsteroidShot>(notification =>
+                VerifyRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
+                VerifyNotification<AsteroidShot>(notification =>
                 {
                     notification.IsLuckyShot.Should().BeTrue();
                 });
-                HandleNotification<HighScoreUpdated>(notification =>
+                VerifyNotification<HighScoreUpdated>(notification =>
                 {
                     notification.Score.Should().Be(asteroidScore);
                 });
@@ -126,30 +126,30 @@ namespace AsteraX.Application.Game.Tests
                 await sut.Handle(command);
 
                 // Assert
-                HandleRequest<DisablePlayerInput>();
-                HandleRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
-                HandleNotification<AsteroidShot>();
-                HandleNotification<HighScoreUpdated>(notification =>
+                VerifyRequest<DisablePlayerInput>();
+                VerifyRequest<DestroyAsteroid>(request => request.Id.Should().Be(asteroidId));
+                VerifyNotification<AsteroidShot>();
+                VerifyNotification<HighScoreUpdated>(notification =>
                 {
                     notification.Score.Should().Be(asteroidScore);
                 });
-                HandleNotification<LevelReached>(notification =>
+                VerifyNotification<LevelReached>(notification =>
                 {
                     notification.Id.Should().Be(2);
                 });
-                HandleAsyncRequest<ShowLoadingScreen>(request =>
+                VerifyAsyncRequest<ShowLoadingScreen>(request =>
                 {
                     request.Id.Should().Be(2);
                     request.Asteroids.Should().Be(2);
                     request.Children.Should().Be(3);
                 });
-                HandleRequest<SpawnAsteroids>(request =>
+                VerifyRequest<SpawnAsteroids>(request =>
                 {
                     request.ShouldBeConsistentWithLevel(secondLevel);
                 });
-                HandleAsyncRequest<HideLoadingScreen>();
-                HandleRequest<EnablePlayerInput>();
-                HandleRequest<UnpauseGame>();
+                VerifyAsyncRequest<HideLoadingScreen>();
+                VerifyRequest<EnablePlayerInput>();
+                VerifyRequest<UnpauseGame>();
                 Complete();
             });
     }

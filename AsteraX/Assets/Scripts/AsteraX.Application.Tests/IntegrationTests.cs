@@ -23,28 +23,28 @@ namespace AsteraX.Application.Tests
 
         protected OutputMediatorSpy Mediator { get; private set; }
         
-        protected void HandleNotification<TNotification>(Action<TNotification> validate = null)
+        protected void VerifyNotification<TNotification>(Action<TNotification> validate = null)
             where TNotification : INotification
         {
-            Mediator.HandleNotification(validate);
+            Mediator.VerifyNotification(validate);
         }
 
-        protected void HandleRequest<TRequest>(Action<TRequest> validate = null)
+        protected void VerifyRequest<TRequest>(Action<TRequest> validate = null)
             where TRequest : IRequest
         {
-            Mediator.HandleRequest(validate);
+            Mediator.VerifyRequest(validate);
         }
 
-        protected void HandleForgetRequest<TRequest>(Action<TRequest> validate = null)
+        protected void VerifyForgetRequest<TRequest>(Action<TRequest> validate = null)
             where TRequest : IAsyncRequest
         {
-            Mediator.HandleForgetRequest(validate);
+            Mediator.VerifyForgetRequest(validate);
         }
 
-        protected void HandleAsyncRequest<TRequest>(Action<TRequest> validate = null)
+        protected void VerifyAsyncRequest<TRequest>(Action<TRequest> validate = null)
             where TRequest : IAsyncRequest
         {
-            Mediator.HandleAsyncRequest(validate);
+            Mediator.VerifyAsyncRequest(validate);
         }
 
         protected void Complete()
