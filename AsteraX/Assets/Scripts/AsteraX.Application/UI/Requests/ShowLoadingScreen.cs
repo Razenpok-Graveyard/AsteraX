@@ -1,4 +1,5 @@
 ﻿using AsteraX.Domain.Game;
+using Razensoft.Mapper;
 using Razensoft.Mediator;
 
 namespace AsteraX.Application.UI.Requests
@@ -9,14 +10,16 @@ namespace AsteraX.Application.UI.Requests
         public int Asteroids { get; set; }
         public int Children { get; set; }
 
-        public static ShowLoadingScreen Create(Level level)
+        public class Mapper : IMapper<Level, ShowLoadingScreen>
         {
-            return new ShowLoadingScreen
+            public static Mapper Instance { get; } = new Mapper();
+
+            public void Map(Level source, ShowLoadingScreen destination)
             {
-                Id = level.Id,
-                Asteroids = level.AsteroidCount,
-                Children = level.AsteroidChildCount
-            };
+                destination.Id = source.Id;
+                destination.Asteroids = source.AsteroidCount;
+                destination.Children = source.AsteroidChildCount;
+            }
         }
     }
 }

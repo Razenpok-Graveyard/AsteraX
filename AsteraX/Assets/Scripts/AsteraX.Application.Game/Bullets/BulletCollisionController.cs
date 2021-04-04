@@ -6,6 +6,7 @@ using AsteraX.Application.UI.Requests;
 using AsteraX.Infrastructure;
 using Razensoft.Mediator;
 using Cysharp.Threading.Tasks;
+using Razensoft.Mapper;
 using UnityEngine;
 using VContainer;
 
@@ -113,8 +114,8 @@ namespace AsteraX.Application.Game.Bullets
                     Id = level.Id
                 };
                 var asteroids = gameSession.GetAsteroids();
-                var showLoadingScreen = ShowLoadingScreen.Create(level);
-                var spawnAsteroids = SpawnAsteroids.Create(asteroids);
+                var showLoadingScreen = ShowLoadingScreen.Mapper.Instance.Map(level);
+                var spawnAsteroids = SpawnAsteroids.Mapper.Instance.Map(asteroids);
 
                 _mediator.Publish(levelReached);
                 _mediator.Send(new DisablePlayerInput());

@@ -8,6 +8,7 @@ using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
 using Razensoft.Mediator;
 using Cysharp.Threading.Tasks;
+using Razensoft.Mapper;
 using UnityEngine;
 using VContainer;
 
@@ -91,7 +92,7 @@ namespace AsteraX.Application.Game.Player
 
             private async UniTask ShowGameOver(GameSession gameSession, CancellationToken ct)
             {
-                var showGameOverScreen = ShowGameOverScreen.Create(gameSession);
+                var showGameOverScreen = ShowGameOverScreen.Mapper.Instance.Map(gameSession);
                 var respawnPlayerShip = new RespawnPlayerShip{ IntoInitialPosition = true };
                 await _mediator.AsyncSend(showGameOverScreen, ct);
                 _mediator.Send(new ClearAsteroids());
@@ -114,8 +115,8 @@ namespace AsteraX.Application.Game.Player
                     Id = level.Id
                 };
                 var asteroids = gameSession.GetAsteroids();
-                var showLoadingScreen = ShowLoadingScreen.Create(level);
-                var spawnAsteroids = SpawnAsteroids.Create(asteroids);
+                var showLoadingScreen = ShowLoadingScreen.Mapper.Instance.Map(level);
+                var spawnAsteroids = SpawnAsteroids.Mapper.Instance.Map(asteroids);
 
                 _mediator.Publish(levelReached);
                 await _mediator.AsyncSend(showLoadingScreen, ct);

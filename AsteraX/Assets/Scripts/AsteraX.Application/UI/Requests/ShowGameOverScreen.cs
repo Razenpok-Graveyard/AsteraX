@@ -1,4 +1,5 @@
 ﻿using AsteraX.Domain.Game;
+using Razensoft.Mapper;
 using Razensoft.Mediator;
 
 namespace AsteraX.Application.UI.Requests
@@ -7,14 +8,16 @@ namespace AsteraX.Application.UI.Requests
     {
         public long Level { get; set; }
         public int Score { get; set; }
-
-        public static ShowGameOverScreen Create(GameSession gameSession)
+        
+        public class Mapper : IMapper<GameSession, ShowGameOverScreen>
         {
-            return new ShowGameOverScreen
+            public static Mapper Instance { get; } = new Mapper();
+
+            public void Map(GameSession source, ShowGameOverScreen destination)
             {
-                Level = gameSession.Level.Id,
-                Score = gameSession.Score
-            };
+                destination.Level = source.Level.Id;
+                destination.Score = source.Score;
+            }
         }
     }
 }

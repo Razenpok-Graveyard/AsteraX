@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AsteraX.Domain.Game;
+using Razensoft.Mapper;
 using Razensoft.Mediator;
 
 namespace AsteraX.Application.Game.Requests
@@ -8,13 +8,15 @@ namespace AsteraX.Application.Game.Requests
     public class SpawnAsteroids : IRequest
     {
         public List<AsteroidDto> Asteroids { get; set; } = new List<AsteroidDto>();
-
-        public static SpawnAsteroids Create(IEnumerable<Asteroid> asteroids)
+        
+        public class Mapper : IMapper<IEnumerable<Asteroid>, SpawnAsteroids>
         {
-            return new SpawnAsteroids
+            public static Mapper Instance { get; } = new Mapper();
+
+            public void Map(IEnumerable<Asteroid> source, SpawnAsteroids destination)
             {
-                Asteroids = AsteroidDto.FromDomain(asteroids)
-            };
+                destination.Asteroids = AsteroidDto.Mapper.Instance.MapList(source);
+            }
         }
 
         public class AsteroidDto
@@ -22,20 +24,17 @@ namespace AsteraX.Application.Game.Requests
             public long Id { get; set; }
             public int Size { get; set; }
             public List<AsteroidDto> Children { get; set; } = new List<AsteroidDto>();
-
-            public static List<AsteroidDto> FromDomain(IEnumerable<Asteroid> asteroids)
+        
+            public class Mapper : IMapper<Asteroid, AsteroidDto>
             {
-                return asteroids.Select(FromDomain).ToList();
-            }
+                public static Mapper Instance { get; } = new Mapper();
 
-            private static AsteroidDto FromDomain(Asteroid asteroid)
-            {
-                return new AsteroidDto
+                public void Map(Asteroid source, AsteroidDto destination)
                 {
-                    Id = asteroid.Id,
-                    Size = asteroid.Size,
-                    Children = FromDomain(asteroid.Children)
-                };
+                    destination.Id = source.Id;
+                    destination.Size = source.Size;
+                    destination.Children = this.MapList(source.Children);
+                }
             }
         }
     }

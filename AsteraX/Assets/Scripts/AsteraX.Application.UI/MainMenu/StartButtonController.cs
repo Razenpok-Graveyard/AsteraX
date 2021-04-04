@@ -4,6 +4,7 @@ using AsteraX.Application.UI.Requests;
 using AsteraX.Infrastructure;
 using Razensoft.Mediator;
 using Cysharp.Threading.Tasks;
+using Razensoft.Mapper;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -61,8 +62,8 @@ namespace AsteraX.Application.UI.MainMenu
                 _gameSessionRepository.Save();
 
                 var asteroids = gameSession.GetAsteroids();
-                var showLoadingScreen = ShowLoadingScreen.Create(level);
-                var spawnAsteroids = SpawnAsteroids.Create(asteroids);
+                var showLoadingScreen = ShowLoadingScreen.Mapper.Instance.Map(level);
+                var spawnAsteroids = SpawnAsteroids.Mapper.Instance.Map(asteroids);
 
                 _mediator.Send(new HideMainMenuScreen());
                 await _mediator.AsyncSend(showLoadingScreen, ct);
