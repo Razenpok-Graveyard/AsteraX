@@ -2,17 +2,16 @@ using System.Collections;
 using System.Linq;
 using AsteraX.Application.Game.Notifications;
 using AsteraX.Application.Game.Requests;
-using AsteraX.Application.Tests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
-using Razensoft.Mediator;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
+using Razensoft.Mediator;
 using UnityEngine.TestTools;
 using static AsteraX.Application.Game.Bullets.BulletCollisionController;
 
-namespace AsteraX.Application.Game.Tests
+namespace AsteraX.Application.Tests.Game
 {
     public class BulletCollisionControllerTests : IntegrationTests
     {

@@ -9,7 +9,7 @@ namespace AsteraX.Infrastructure
 {
     public class SaveFile
     {
-        public static readonly string DefaultSaveFilePath = Application.persistentDataPath + "/AsteraX.save";
+        public static readonly string DefaultSaveFilePath = UnityEngine.Application.persistentDataPath + "/AsteraX.save";
 
         private readonly string _saveFilePath;
 

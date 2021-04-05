@@ -1,16 +1,15 @@
 using System.Collections;
 using AsteraX.Application.Game.Requests;
-using AsteraX.Application.Tests;
 using AsteraX.Application.UI.Requests;
 using AsteraX.Domain.Game;
 using AsteraX.Infrastructure;
-using Razensoft.Mediator;
 using Cysharp.Threading.Tasks;
 using FluentAssertions;
+using Razensoft.Mediator;
 using UnityEngine.TestTools;
 using static AsteraX.Application.UI.MainMenu.StartButtonController;
 
-namespace AsteraX.Application.UI.Tests
+namespace AsteraX.Application.Tests.UI
 {
     public class StartButtonControllerTests : IntegrationTests
     {
