@@ -1,8 +1,8 @@
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Razensoft.Mapper
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Maps an object of type <typeparamref name="TSource"/> to <typeparamref name="TDestination"/> asynchronously.
     /// </summary>
