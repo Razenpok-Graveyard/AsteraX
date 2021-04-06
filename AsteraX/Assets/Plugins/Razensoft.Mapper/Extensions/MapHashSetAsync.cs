@@ -26,12 +26,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -69,12 +69,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -112,12 +112,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -155,12 +155,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -200,12 +200,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -249,12 +249,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -298,12 +298,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -347,12 +347,12 @@ namespace Razensoft.Mapper
             CancellationToken cancellationToken = default)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }

@@ -23,12 +23,12 @@ namespace Razensoft.Mapper
             List<TSource> source)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -61,12 +61,12 @@ namespace Razensoft.Mapper
             Collection<TSource> source)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -99,12 +99,12 @@ namespace Razensoft.Mapper
             TSource[] source)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -137,12 +137,12 @@ namespace Razensoft.Mapper
             IEnumerable<TSource> source)
             where TDestination : new()
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -173,12 +173,12 @@ namespace Razensoft.Mapper
             this IImmutableMapper<TSource, TDestination> mapper,
             List<TSource> source)
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -209,12 +209,12 @@ namespace Razensoft.Mapper
             this IImmutableMapper<TSource, TDestination> mapper,
             Collection<TSource> source)
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -245,12 +245,12 @@ namespace Razensoft.Mapper
             this IImmutableMapper<TSource, TDestination> mapper,
             TSource[] source)
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -281,12 +281,12 @@ namespace Razensoft.Mapper
             this IImmutableMapper<TSource, TDestination> mapper,
             IEnumerable<TSource> source)
         {
-            if (mapper is null)
+            if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            if (source is null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
