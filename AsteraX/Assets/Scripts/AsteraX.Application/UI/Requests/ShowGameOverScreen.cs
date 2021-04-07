@@ -8,6 +8,8 @@ namespace AsteraX.Application.UI.Requests
     {
         public long Level { get; set; }
         public int Score { get; set; }
+
+        public static ShowGameOverScreen From(GameSession gameSession) => Mapper.Instance.Map(gameSession);
         
         public class Mapper : IMapper<GameSession, ShowGameOverScreen>
         {

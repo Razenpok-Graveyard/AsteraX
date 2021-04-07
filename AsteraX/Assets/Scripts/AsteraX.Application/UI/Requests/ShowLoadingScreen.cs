@@ -10,6 +10,8 @@ namespace AsteraX.Application.UI.Requests
         public int Asteroids { get; set; }
         public int Children { get; set; }
 
+        public static ShowLoadingScreen From(Level level) => Mapper.Instance.Map(level);
+
         public class Mapper : IMapper<Level, ShowLoadingScreen>
         {
             public static Mapper Instance { get; } = new Mapper();

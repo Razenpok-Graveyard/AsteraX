@@ -8,6 +8,8 @@ namespace AsteraX.Application.Game.Requests
     public class SpawnAsteroids : IRequest
     {
         public List<AsteroidDto> Asteroids { get; set; } = new List<AsteroidDto>();
+
+        public static SpawnAsteroids From(IEnumerable<Asteroid> asteroids) => Mapper.Instance.Map(asteroids);
         
         public class Mapper : IMapper<IEnumerable<Asteroid>, SpawnAsteroids>
         {

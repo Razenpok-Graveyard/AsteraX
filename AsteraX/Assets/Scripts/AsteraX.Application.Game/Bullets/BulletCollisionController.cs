@@ -114,8 +114,8 @@ namespace AsteraX.Application.Game.Bullets
                     Id = level.Id
                 };
                 var asteroids = gameSession.GetAsteroids();
-                var showLoadingScreen = ShowLoadingScreen.Mapper.Instance.Map(level);
-                var spawnAsteroids = SpawnAsteroids.Mapper.Instance.Map(asteroids);
+                var showLoadingScreen = ShowLoadingScreen.From(level);
+                var spawnAsteroids = SpawnAsteroids.From(asteroids);
 
                 _mediator.Publish(levelReached);
                 _mediator.Send(new DisablePlayerInput());

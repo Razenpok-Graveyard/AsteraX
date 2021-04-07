@@ -62,8 +62,8 @@ namespace AsteraX.Application.UI.MainMenu
                 _gameSessionRepository.Save();
 
                 var asteroids = gameSession.GetAsteroids();
-                var showLoadingScreen = ShowLoadingScreen.Mapper.Instance.Map(level);
-                var spawnAsteroids = SpawnAsteroids.Mapper.Instance.Map(asteroids);
+                var showLoadingScreen = ShowLoadingScreen.From(level);
+                var spawnAsteroids = SpawnAsteroids.From(asteroids);
 
                 _mediator.Send(new HideMainMenuScreen());
                 await _mediator.AsyncSend(showLoadingScreen, ct);

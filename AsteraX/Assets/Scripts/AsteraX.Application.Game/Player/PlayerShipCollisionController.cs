@@ -92,7 +92,7 @@ namespace AsteraX.Application.Game.Player
 
             private async UniTask ShowGameOver(GameSession gameSession, CancellationToken ct)
             {
-                var showGameOverScreen = ShowGameOverScreen.Mapper.Instance.Map(gameSession);
+                var showGameOverScreen = ShowGameOverScreen.From(gameSession);
                 var respawnPlayerShip = new RespawnPlayerShip{ IntoInitialPosition = true };
                 await _mediator.AsyncSend(showGameOverScreen, ct);
                 _mediator.Send(new ClearAsteroids());
@@ -115,8 +115,8 @@ namespace AsteraX.Application.Game.Player
                     Id = level.Id
                 };
                 var asteroids = gameSession.GetAsteroids();
-                var showLoadingScreen = ShowLoadingScreen.Mapper.Instance.Map(level);
-                var spawnAsteroids = SpawnAsteroids.Mapper.Instance.Map(asteroids);
+                var showLoadingScreen = ShowLoadingScreen.From(level);
+                var spawnAsteroids = SpawnAsteroids.From(asteroids);
 
                 _mediator.Publish(levelReached);
                 await _mediator.AsyncSend(showLoadingScreen, ct);
