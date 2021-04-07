@@ -1,7 +1,9 @@
 {
     "name": "Razensoft.Mapper",
     "rootNamespace": "Razensoft.Mapper",
-    "references": [],
+    "references": [
+        "UniTask"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

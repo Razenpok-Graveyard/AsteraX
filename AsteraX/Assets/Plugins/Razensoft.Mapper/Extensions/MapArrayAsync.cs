@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Razensoft.Mapper
 {
@@ -24,7 +24,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSourceCollection, TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSourceCollection, TSource, TDestination>(
             this IAsyncMapper<TSource, TDestination> mapper,
             TSourceCollection source,
             TDestination[] destination,
@@ -48,7 +48,7 @@ namespace Razensoft.Mapper
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            var tasks = new Task[sourceCount ?? source.Count()];
+            var tasks = new UniTask[sourceCount ?? source.Count()];
             var i = 0;
             foreach (var sourceItem in source)
             {
@@ -59,7 +59,7 @@ namespace Razensoft.Mapper
                 ++i;
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             return destination;
         }
@@ -76,7 +76,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncMapper<TSource, TDestination> mapper,
             List<TSource> source,
             CancellationToken cancellationToken = default)
@@ -93,7 +93,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Count;
-            var tasks = new Task[sourceCount];
+            var tasks = new UniTask[sourceCount];
             var destination = new TDestination[sourceCount];
             for (var i = 0; i < sourceCount; ++i)
             {
@@ -103,7 +103,7 @@ namespace Razensoft.Mapper
                 tasks[i] = mapper.MapAsync(sourceItem, destinationItem, cancellationToken);
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             return destination;
         }
@@ -120,7 +120,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncMapper<TSource, TDestination> mapper,
             Collection<TSource> source,
             CancellationToken cancellationToken = default)
@@ -137,7 +137,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Count;
-            var tasks = new Task[sourceCount];
+            var tasks = new UniTask[sourceCount];
             var destination = new TDestination[sourceCount];
             for (var i = 0; i < sourceCount; ++i)
             {
@@ -147,7 +147,7 @@ namespace Razensoft.Mapper
                 tasks[i] = mapper.MapAsync(sourceItem, destinationItem, cancellationToken);
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             return destination;
         }
@@ -164,7 +164,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncMapper<TSource, TDestination> mapper,
             TSource[] source,
             CancellationToken cancellationToken = default)
@@ -181,7 +181,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Length;
-            var tasks = new Task[sourceCount];
+            var tasks = new UniTask[sourceCount];
             var destination = new TDestination[sourceCount];
             for (var i = 0; i < sourceCount; ++i)
             {
@@ -191,7 +191,7 @@ namespace Razensoft.Mapper
                 tasks[i] = mapper.MapAsync(sourceItem, destinationItem, cancellationToken);
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             return destination;
         }
@@ -208,7 +208,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncMapper<TSource, TDestination> mapper,
             IEnumerable<TSource> source,
             CancellationToken cancellationToken = default)
@@ -225,7 +225,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Count();
-            var tasks = new Task[sourceCount];
+            var tasks = new UniTask[sourceCount];
             var destination = new TDestination[sourceCount];
             var i = 0;
             foreach (var sourceItem in source)
@@ -236,7 +236,7 @@ namespace Razensoft.Mapper
                 ++i;
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             return destination;
         }
@@ -256,7 +256,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSourceCollection, TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSourceCollection, TSource, TDestination>(
             this IAsyncImmutableMapper<TSource, TDestination> mapper,
             TSourceCollection source,
             TDestination[] destination,
@@ -280,7 +280,7 @@ namespace Razensoft.Mapper
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            var tasks = new Task<TDestination>[sourceCount ?? source.Count()];
+            var tasks = new UniTask<TDestination>[sourceCount ?? source.Count()];
             var i = 0;
             foreach (var sourceItem in source)
             {
@@ -289,12 +289,12 @@ namespace Razensoft.Mapper
                 ++i;
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             for (var j = 0; j < tasks.Length; ++j)
             {
 #pragma warning disable VSTHRD103 // Call async methods when in an async method.
-                destination[j] = tasks[j].Result;
+                destination[j] = tasks[j].GetAwaiter().GetResult();
 #pragma warning restore VSTHRD103 // Call async methods when in an async method.
             }
 
@@ -313,7 +313,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncImmutableMapper<TSource, TDestination> mapper,
             List<TSource> source,
             CancellationToken cancellationToken = default)
@@ -330,7 +330,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Count;
-            var tasks = new Task<TDestination>[sourceCount];
+            var tasks = new UniTask<TDestination>[sourceCount];
             var destination = new TDestination[sourceCount];
             for (var i = 0; i < sourceCount; ++i)
             {
@@ -338,12 +338,12 @@ namespace Razensoft.Mapper
                 tasks[i] = mapper.MapAsync(sourceItem, cancellationToken);
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             for (var j = 0; j < tasks.Length; ++j)
             {
 #pragma warning disable VSTHRD103 // Call async methods when in an async method.
-                destination[j] = tasks[j].Result;
+                destination[j] = tasks[j].GetAwaiter().GetResult();
 #pragma warning restore VSTHRD103 // Call async methods when in an async method.
             }
 
@@ -362,7 +362,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncImmutableMapper<TSource, TDestination> mapper,
             Collection<TSource> source,
             CancellationToken cancellationToken = default)
@@ -379,7 +379,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Count;
-            var tasks = new Task<TDestination>[sourceCount];
+            var tasks = new UniTask<TDestination>[sourceCount];
             var destination = new TDestination[sourceCount];
             for (var i = 0; i < sourceCount; ++i)
             {
@@ -387,12 +387,12 @@ namespace Razensoft.Mapper
                 tasks[i] = mapper.MapAsync(sourceItem, cancellationToken);
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             for (var j = 0; j < tasks.Length; ++j)
             {
 #pragma warning disable VSTHRD103 // Call async methods when in an async method.
-                destination[j] = tasks[j].Result;
+                destination[j] = tasks[j].GetAwaiter().GetResult();
 #pragma warning restore VSTHRD103 // Call async methods when in an async method.
             }
 
@@ -411,7 +411,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncImmutableMapper<TSource, TDestination> mapper,
             TSource[] source,
             CancellationToken cancellationToken = default)
@@ -428,7 +428,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Length;
-            var tasks = new Task<TDestination>[sourceCount];
+            var tasks = new UniTask<TDestination>[sourceCount];
             var destination = new TDestination[sourceCount];
             for (var i = 0; i < sourceCount; ++i)
             {
@@ -436,12 +436,12 @@ namespace Razensoft.Mapper
                 tasks[i] = mapper.MapAsync(sourceItem, cancellationToken);
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             for (var j = 0; j < tasks.Length; ++j)
             {
 #pragma warning disable VSTHRD103 // Call async methods when in an async method.
-                destination[j] = tasks[j].Result;
+                destination[j] = tasks[j].GetAwaiter().GetResult();
 #pragma warning restore VSTHRD103 // Call async methods when in an async method.
             }
 
@@ -460,7 +460,7 @@ namespace Razensoft.Mapper
         /// <returns>An array of <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper"/> or <paramref name="source"/> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination[]> MapArrayAsync<TSource, TDestination>(
+        public static async UniTask<TDestination[]> MapArrayAsync<TSource, TDestination>(
             this IAsyncImmutableMapper<TSource, TDestination> mapper,
             IEnumerable<TSource> source,
             CancellationToken cancellationToken = default)
@@ -477,7 +477,7 @@ namespace Razensoft.Mapper
             }
 
             var sourceCount = source.Count();
-            var tasks = new Task<TDestination>[sourceCount];
+            var tasks = new UniTask<TDestination>[sourceCount];
             var destination = new TDestination[sourceCount];
             var i = 0;
             foreach (var sourceItem in source)
@@ -486,12 +486,12 @@ namespace Razensoft.Mapper
                 ++i;
             }
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await UniTask.WhenAll(tasks);
 
             for (var j = 0; j < tasks.Length; ++j)
             {
 #pragma warning disable VSTHRD103 // Call async methods when in an async method.
-                destination[j] = tasks[j].Result;
+                destination[j] = tasks[j].GetAwaiter().GetResult();
 #pragma warning restore VSTHRD103 // Call async methods when in an async method.
             }
 

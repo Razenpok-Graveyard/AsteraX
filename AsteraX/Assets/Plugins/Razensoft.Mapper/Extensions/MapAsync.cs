@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Razensoft.Mapper
 {
@@ -17,7 +17,7 @@ namespace Razensoft.Mapper
         /// <returns>The mapped object of type <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper" /> or <paramref name="source" /> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination> MapAsync<TSource, TDestination>(
+        public static async UniTask<TDestination> MapAsync<TSource, TDestination>(
             this IAsyncMapper<TSource, TDestination> mapper,
             TSource source,
             CancellationToken cancellationToken = default)
@@ -34,7 +34,7 @@ namespace Razensoft.Mapper
             }
 
             var destination = new TDestination();
-            await mapper.MapAsync(source, destination, cancellationToken).ConfigureAwait(false);
+            await mapper.MapAsync(source, destination, cancellationToken);
             return destination;
         }
 
@@ -49,7 +49,7 @@ namespace Razensoft.Mapper
         /// <returns>The mapped object of type <typeparamref name="TDestination"/>.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="mapper" /> or <paramref name="source" /> is
         /// <c>null</c>.</exception>
-        public static async Task<TDestination> MapAsync<TSource, TDestination>(
+        public static async UniTask<TDestination> MapAsync<TSource, TDestination>(
             this IAsyncImmutableMapper<TSource, TDestination> mapper,
             TSource source,
             CancellationToken cancellationToken = default)
@@ -65,7 +65,7 @@ namespace Razensoft.Mapper
                 throw new ArgumentNullException(nameof(source));
             }
 
-            var destination = await mapper.MapAsync(source, cancellationToken).ConfigureAwait(false);
+            var destination = await mapper.MapAsync(source, cancellationToken);
             return destination;
         }
     }

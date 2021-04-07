@@ -58,8 +58,7 @@ namespace Razensoft.Mapper
                 throw new ArgumentNullException(nameof(source));
             }
 
-            var destination = mapper.Map(source);
-            return destination;
+            return mapper.Map(source);
         }
     }
 }

@@ -1,5 +1,5 @@
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Razensoft.Mapper
 {
@@ -16,6 +16,6 @@ namespace Razensoft.Mapper
         /// <param name="source">The source object to map from.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The destination object to map to.</returns>
-        Task<TDestination> MapAsync(TSource source, CancellationToken cancellationToken);
+        UniTask<TDestination> MapAsync(TSource source, CancellationToken cancellationToken = default);
     }
 }
