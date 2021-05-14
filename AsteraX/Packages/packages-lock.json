@@ -35,6 +35,13 @@
       "dependencies": {},
       "hash": "7e4b37b3956bf09272da9ecd153634fb6dd4d62b"
     },
+    "com.razensoft.mapper": {
+      "version": "https://github.com/Razenpok/Razensoft.Mapper.git?path=src/Razensoft.Mapper#1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "5ff822ff7fec57253394b39d93c1e3b4a639f386"
+    },
     "com.razensoft.mediator": {
       "version": "https://github.com/Razenpok/Razensoft.Mediator.git?path=src/Razensoft.Mediator#1.0.0",
       "depth": 0,
